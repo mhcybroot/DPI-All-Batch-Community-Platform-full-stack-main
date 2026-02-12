@@ -48,11 +48,11 @@
                         <div
                             style="position: absolute; top: 0; left: 0; height: 100%; width: 100%; pointer-events: none; z-index: 1;">
                             <div style="height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--color-moss-emerald-dim), transparent); transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0.3;"
-                                th:style="'width:' + (option.voteCount > 0 ? (option.voteCount * 100 / (poll.totalVotes > 0 ? poll.totalVotes : 1)) : 0) + '%;'">
+                                th:style="|width: ${option.voteCount > 0 ? (option.voteCount * 100 / (poll.totalVotes > 0 ? poll.totalVotes : 1)) : 0}%|">
                             </div>
                             <!-- Active Line Indicator -->
                             <div style="position: absolute; bottom: 0; left: 0; height: 2px; background: var(--color-moss-emerald); transition: width 1s ease;"
-                                th:style="'width:' + (option.voteCount > 0 ? (option.voteCount * 100 / (poll.totalVotes > 0 ? poll.totalVotes : 1)) : 0) + '%;'">
+                                th:style="|width: ${option.voteCount > 0 ? (option.voteCount * 100 / (poll.totalVotes > 0 ? poll.totalVotes : 1)) : 0}%|">
                             </div>
                         </div>
                     </div>

@@ -115,8 +115,8 @@
 
                     <!-- Stats Column -->
                     <div style="display: flex; gap: 0.5rem; align-items: flex-start;">
-                        <div class="stat-badge" th:classappend="${q.voteCount > 0 ? 'answered' : ''}">
-                            <span class="stat-value" th:text="${q.voteCount}">0</span>
+                        <div class="stat-badge" th:classappend="${q.upvotes > 0 ? 'answered' : ''}">
+                            <span class="stat-value" th:text="${q.upvotes}">0</span>
                             <span class="stat-label">VOTES</span>
                         </div>
                         <div class="stat-badge" th:classappend="${q.answerCount > 0 ? 'answered' : ''}">

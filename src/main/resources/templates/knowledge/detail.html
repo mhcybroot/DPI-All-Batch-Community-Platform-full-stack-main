@@ -94,7 +94,7 @@
                                 <button class="vote-btn-neural" type="submit" title="Resonate Up">▲</button>
                             </form>
 
-                            <span class="vote-count-neural" th:text="${question.voteCount}">0</span>
+                            <span class="vote-count-neural" th:text="${question.upvotes}">0</span>
 
                             <form th:action="@{/web/knowledge/{id}/vote(id=${question.id})}" method="post">
                                 <input type="hidden" name="voteType" value="DOWNVOTE">
@@ -109,7 +109,7 @@
                             style="margin-bottom:1rem; line-height: 1.3;">Title</h1>
 
                         <div style="white-space:pre-line; margin-bottom:1.5rem; line-height: 1.6; color: var(--color-frozen-white); font-size: 1.1rem;"
-                            th:text="${question.content}">Content</div>
+                            th:text="${question.body}">Content</div>
 
                         <div class="tag-list" th:if="${question.tags != null}"
                             style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
@@ -147,7 +147,7 @@
                                     <input type="hidden" name="voteType" value="UPVOTE">
                                     <button class="vote-btn-neural" type="submit">▲</button>
                                 </form>
-                                <span class="vote-count-neural" th:text="${answer.voteCount}"
+                                <span class="vote-count-neural" th:text="${answer.upvotes}"
                                     style="font-size: 1rem;">0</span>
                                 <form th:action="@{/web/knowledge/answers/{id}/vote(id=${answer.id})}" method="post">
                                     <input type="hidden" name="questionId" th:value="${question.id}">
@@ -165,7 +165,7 @@
                             </div>
 
                             <div style="white-space:pre-line; line-height: 1.6; margin-bottom: 1rem;"
-                                th:text="${answer.content}">Answer</div>
+                                th:text="${answer.body}">Answer</div>
 
                             <div class="card-footer"
                                 style="display: flex; justify-content:space-between; align-items: center; border-top: 1px solid var(--color-glass-border); padding-top: 1rem;">
