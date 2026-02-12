@@ -35,57 +35,58 @@
             </div>
 
             <!-- Stats Row -->
-            <div class="grid grid-4 section">
-                <div class="card stat-card">
+            <div class="grid grid-4 section floating-grid">
+                <div class="card glass-card stat-card gsap-reveal">
                     <div class="stat-value" th:text="${upcomingEvents != null ? upcomingEvents.size() : 0}">0</div>
                     <div class="stat-label">Upcoming Events</div>
                 </div>
-                <div class="card stat-card">
+                <div class="card glass-card stat-card gsap-reveal">
                     <div class="stat-value" th:text="${todayBirthdays != null ? todayBirthdays.size() : 0}">0</div>
                     <div class="stat-label">Birthdays Today</div>
                 </div>
-                <div class="card stat-card">
+                <div class="card glass-card stat-card gsap-reveal">
                     <div class="stat-value" th:text="${notices != null ? notices.size() : 0}">0</div>
                     <div class="stat-label">Active Notices</div>
                 </div>
-                <div class="card stat-card">
+                <div class="card glass-card stat-card gsap-reveal">
                     <div class="stat-value">🎓</div>
                     <div class="stat-label">Community</div>
                 </div>
             </div>
 
             <!-- Birthday & Notices Row -->
-            <div class="grid grid-2">
+            <div class="grid grid-2 floating-grid">
 
                 <!-- Today's Birthdays -->
-                <div class="section">
+                <div class="section gsap-reveal">
                     <h2 class="section-title">🎂 Birthdays Today</h2>
                     <div th:if="${todayBirthdays != null and !todayBirthdays.isEmpty()}">
-                        <div class="card" th:each="bday : ${todayBirthdays}" style="margin-bottom: 0.75rem;">
+                        <div class="card glass-card" th:each="bday : ${todayBirthdays}" style="margin-bottom: 0.75rem;">
                             <div class="card-body">
-                                <strong th:text="${bday.fullName}">Name</strong>
+                                <strong th:text="${bday.fullName}" class="text-green">Name</strong>
                                 <span class="card-meta" th:text="' — ' + ${bday.dateOfBirth}"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="card empty-state" th:if="${todayBirthdays == null or todayBirthdays.isEmpty()}">
+                    <div class="card glass-card empty-state"
+                        th:if="${todayBirthdays == null or todayBirthdays.isEmpty()}">
                         <p>No birthdays today 🎈</p>
                     </div>
                 </div>
 
                 <!-- Pinned Notices -->
-                <div class="section">
+                <div class="section gsap-reveal">
                     <h2 class="section-title">📢 Latest Notices</h2>
                     <div th:if="${notices != null and !notices.isEmpty()}">
-                        <div class="card" th:each="notice : ${notices}" style="margin-bottom: 0.75rem;">
+                        <div class="card glass-card" th:each="notice : ${notices}" style="margin-bottom: 0.75rem;">
                             <div class="card-header">
-                                <span class="card-title" th:text="${notice.title}">Notice</span>
+                                <span class="card-title text-copper" th:text="${notice.title}">Notice</span>
                                 <span class="badge badge-warning" th:if="${notice.isPinned}">Pinned</span>
                             </div>
                             <div class="card-body" th:text="${notice.content}">Content</div>
                         </div>
                     </div>
-                    <div class="card empty-state" th:if="${notices == null or notices.isEmpty()}">
+                    <div class="card glass-card empty-state" th:if="${notices == null or notices.isEmpty()}">
                         <p>No active notices</p>
                     </div>
                 </div>
@@ -93,11 +94,11 @@
             </div>
 
             <!-- Upcoming Events -->
-            <div class="section">
+            <div class="section gsap-reveal">
                 <h2 class="section-title">📅 Upcoming Events</h2>
-                <div class="grid grid-3" th:if="${upcomingEvents != null and !upcomingEvents.isEmpty()}">
-                    <a th:each="event : ${upcomingEvents}" th:href="@{/web/events/{id}(id=${event.id})}" class="card"
-                        style="text-decoration: none; color: inherit;">
+                <div class="grid grid-3 floating-grid" th:if="${upcomingEvents != null and !upcomingEvents.isEmpty()}">
+                    <a th:each="event : ${upcomingEvents}" th:href="@{/web/events/{id}(id=${event.id})}"
+                        class="card glass-card" style="text-decoration: none; color: inherit;" data-magnetic>
                         <div class="card-header">
                             <span class="card-title" th:text="${event.title}">Event</span>
                             <span class="badge badge-primary" th:text="${event.status}">Status</span>
@@ -108,7 +109,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="card empty-state" th:if="${upcomingEvents == null or upcomingEvents.isEmpty()}">
+                <div class="card glass-card empty-state" th:if="${upcomingEvents == null or upcomingEvents.isEmpty()}">
                     <p>No upcoming events — check back later!</p>
                 </div>
             </div>

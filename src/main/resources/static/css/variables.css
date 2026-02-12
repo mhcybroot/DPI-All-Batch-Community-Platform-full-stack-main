@@ -1,0 +1,75 @@
+:root {
+    /* --- Constants & Primitives --- */
+    --font-human: 'Playfair Display', serif;
+    --font-machine: 'JetBrains Mono', 'Fira Code', monospace;
+    --font-interface: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --ease-boot: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-organic: cubic-bezier(0.23, 1, 0.32, 1);
+
+    --transition-fast: 0.2s var(--ease-organic);
+    --transition-medium: 0.4s var(--ease-organic);
+
+    --glass-radius: 16px;
+
+    /* Primitives - Biological */
+    --prim-obsidian: #0b0e14;
+    --prim-obsidian-glass: rgba(11, 14, 20, 0.7);
+    --prim-moss: #2d5a27;
+    --prim-moss-dim: rgba(45, 90, 39, 0.2);
+    --prim-copper: #b87333;
+    --prim-copper-dim: rgba(184, 115, 51, 0.2);
+    --prim-white: #e0e6ed;
+    --prim-gray: #8c92ac;
+
+    /* Primitives - Frosted */
+    --prim-platinum: #f0f4f8;
+    --prim-frost-glass: rgba(255, 255, 255, 0.65);
+    --prim-slate: #5e6575;
+    --prim-dark-text: #1a202c;
+}
+
+/* --- Theme: Biological Machine (Default) --- */
+:root,
+[data-theme="biological"] {
+    --bg: var(--prim-obsidian);
+    --bg-card: var(--prim-obsidian-glass);
+    --bg-input: rgba(0, 0, 0, 0.4);
+
+    --text: var(--prim-white);
+    --text-muted: var(--prim-gray);
+    --text-heading: var(--prim-white);
+
+    --primary: var(--prim-moss);
+    --secondary: var(--prim-copper);
+
+    --border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.15);
+    --glass-shadow: rgba(0, 0, 0, 0.5);
+
+    /* Input/Button specific overrides for glass components */
+    --glass-surface: rgba(255, 255, 255, 0.05);
+    --glass-border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Theme: Frosted Silicon (Light) --- */
+[data-theme="frosted"] {
+    --bg: var(--prim-platinum);
+    --bg-card: var(--prim-frost-glass);
+    --bg-input: rgba(255, 255, 255, 0.5);
+
+    --text: var(--prim-dark-text);
+    --text-muted: var(--prim-slate);
+    --text-heading: var(--prim-dark-text);
+
+    --primary: var(--prim-moss);
+    --secondary: var(--prim-copper);
+
+    --border: rgba(255, 255, 255, 0.6);
+    --glass-highlight: rgba(255, 255, 255, 0.8);
+    --glass-shadow: rgba(100, 116, 139, 0.15);
+
+    /* Input/Button specific overrides */
+    --glass-surface: rgba(255, 255, 255, 0.4);
+    --glass-border-color: rgba(255, 255, 255, 0.5);
+}

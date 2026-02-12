@@ -22,39 +22,50 @@
             <div class="page-header">
                 <h1>💼 Job Board</h1>
                 <div class="actions">
-                    <a th:href="@{/web/jobs/new}" class="btn btn-primary">+ Post a Job</a>
-                    <a th:href="@{/web/jobs/my-jobs}" class="btn btn-secondary">My Jobs</a>
+                    <a th:href="@{/web/jobs/new}" class="btn btn-magnetic-primary" data-magnetic>
+                        <span class="hover-text-reveal">+ Post a Job</span>
+                    </a>
+                    <a th:href="@{/web/jobs/my-jobs}" class="btn btn-magnetic" data-magnetic
+                        style="border-color: var(--color-frozen-white); color: var(--color-frozen-white);">
+                        <span class="hover-text-reveal">My Jobs</span>
+                    </a>
                 </div>
             </div>
 
-            <div class="card mb-4">
+            <div class="card glass-card mb-4 gsap-reveal">
                 <div class="card-body">
                     <form th:action="@{/web/jobs}" method="get" class="row g-3 align-items-end">
                         <div class="col-md-4">
-                            <label class="form-label">Status</label>
-                            <select name="status" class="form-select" onchange="this.form.submit()">
-                                <option value="">All Statuses</option>
+                            <label class="form-label text-muted">Status</label>
+                            <select name="status" class="form-control glass-input" onchange="this.form.submit()">
+                                <option value="" style="background: var(--color-obsidian);">All Statuses</option>
                                 <option th:each="s : ${jobStatuses}" th:value="${s}" th:text="${s}"
-                                    th:selected="${s == paramStatus}"></option>
+                                    th:selected="${s == paramStatus}" style="background: var(--color-obsidian);">
+                                </option>
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Type</label>
-                            <select name="jobType" class="form-select" onchange="this.form.submit()">
-                                <option value="">All Types</option>
+                            <label class="form-label text-muted">Type</label>
+                            <select name="jobType" class="form-control glass-input" onchange="this.form.submit()">
+                                <option value="" style="background: var(--color-obsidian);">All Types</option>
                                 <option th:each="t : ${jobTypes}" th:value="${t}" th:text="${t}"
-                                    th:selected="${t == paramJobType}"></option>
+                                    th:selected="${t == paramJobType}" style="background: var(--color-obsidian);">
+                                </option>
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <a th:href="@{/web/jobs}" class="btn btn-outline-secondary w-100">Clear Filters</a>
+                            <a th:href="@{/web/jobs}" class="btn btn-magnetic w-100" data-magnetic
+                                style="border-color: var(--color-cyber-copper); color: var(--color-cyber-copper);">
+                                <span class="hover-text-reveal">Clear Filters</span>
+                            </a>
                         </div>
                     </form>
                 </div>
             </div>
 
             <div th:if="${jobsPage != null and jobsPage.hasContent()}">
-                <div th:each="job : ${jobsPage.content}" class="card" style="margin-bottom:0.75rem;">
+                <div th:each="job : ${jobsPage.content}" class="card glass-card gsap-reveal"
+                    style="margin-bottom:0.75rem;" data-magnetic>
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>

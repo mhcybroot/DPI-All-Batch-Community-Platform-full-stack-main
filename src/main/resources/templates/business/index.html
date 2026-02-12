@@ -19,30 +19,51 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>🏪 Business Directory</h1>
+                <h1 class="kinetic-text">🏢 Corporate Directory</h1>
                 <div class="actions">
-                    <a th:href="@{/web/business/register}" class="btn btn-primary">+ Register Business</a>
-                    <a th:href="@{/web/business/my-business}" class="btn btn-secondary">My Businesses</a>
+                    <a th:href="@{/web/business/register}" class="btn btn-magnetic-primary" data-magnetic>+ Register
+                        Entity</a>
+                    <a th:href="@{/web/business/my-business}" class="btn btn-magnetic" data-magnetic>My Assets</a>
                 </div>
             </div>
-            <div class="card" style="margin-bottom:1.5rem;">
-                <form><input type="text" name="search" class="form-control" placeholder="Search businesses..."
-                        th:value="${search}" hx-get="/web/business" hx-target="body"
-                        hx-trigger="keyup changed delay:300ms" hx-push-url="true"></form>
+
+            <div class="card glass-card gsap-reveal" style="margin-bottom:2rem; padding: 1rem;">
+                <form style="position: relative;">
+                    <span
+                        style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); opacity: 0.5;">🔍</span>
+                    <input type="text" name="search" class="form-control glass-input"
+                        placeholder="Query Corporate Database..." th:value="${search}" hx-get="/web/business"
+                        hx-target="body" hx-trigger="keyup changed delay:300ms" hx-push-url="true"
+                        style="padding-left: 2.5rem;">
+                </form>
             </div>
-            <div th:if="${businessPage != null and businessPage.hasContent()}" class="grid grid-3">
-                <a th:each="biz : ${businessPage.content}" th:href="@{/web/business/{id}(id=${biz.id})}" class="card"
-                    style="text-decoration:none;color:inherit;">
-                    <div class="card-header"><span class="card-title" th:text="${biz.businessName}">Name</span></div>
+
+            <div th:if="${businessPage != null and businessPage.hasContent()}" class="grid grid-3 floating-grid">
+                <a th:each="biz : ${businessPage.content}" th:href="@{/web/business/{id}(id=${biz.id})}"
+                    class="card glass-card gsap-reveal"
+                    style="text-decoration:none; color:inherit; transition: transform 0.3s ease;" data-magnetic>
+                    <div class="card-header">
+                        <span class="card-title kinetic-text" th:text="${biz.businessName}">Name</span>
+                    </div>
                     <div class="card-body">
-                        <p th:text="${biz.category}">Category</p>
-                        <p class="card-meta" th:text="${biz.location}">Location</p>
+                        <div style="margin-bottom: 0.5rem;">
+                            <span class="badge"
+                                style="background: var(--color-cyber-copper-dim); color: var(--color-cyber-copper); border: 1px solid var(--color-cyber-copper-dim);"
+                                th:text="${biz.category}">Category</span>
+                        </div>
+                        <div class="card-meta"
+                            style="font-family: var(--font-machine); color: var(--color-silicon-gray);">
+                            <span style="margin-right: 0.5rem;">📍</span> <span
+                                th:text="${biz.location}">Location</span>
+                        </div>
                     </div>
                 </a>
             </div>
-            <div class="empty-state" th:if="${businessPage == null or !businessPage.hasContent()}">
-                <div class="empty-icon">🏪</div>
-                <p>No businesses registered yet.</p>
+
+            <div class="empty-state glass-card gsap-reveal"
+                th:if="${businessPage == null or !businessPage.hasContent()}">
+                <div class="empty-icon" style="filter: drop-shadow(0 0 10px var(--color-cyber-copper));">🏢</div>
+                <p class="text-muted">No corporate entities found in this sector.</p>
             </div>
         </div>
     </main>

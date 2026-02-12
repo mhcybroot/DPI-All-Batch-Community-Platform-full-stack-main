@@ -17,76 +17,85 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>🔍 Member Directory</h1>
-                <p>Search for batchmates by name or bio.</p>
+                <h1 class="kinetic-text">🔍 Directory Database</h1>
+                <p class="text-muted">Search for connected nodes (batchmates) by name or bio-data.</p>
             </div>
 
-            <div class="card" style="margin-bottom:1.5rem;">
+            <div class="card glass-card gsap-reveal" style="margin-bottom:1.5rem; padding: 1.5rem;">
                 <form>
-                    <input type="text" name="query" class="form-control" placeholder="Type a name or keyword..."
-                        th:value="${query}" hx-get="/web/directory/search" hx-target="#results"
-                        hx-trigger="keyup changed delay:300ms" hx-include="this" hx-swap="innerHTML">
+                    <input type="text" name="query" class="form-control glass-input"
+                        placeholder="Initiate query protocol..." th:value="${query}" hx-get="/web/directory/search"
+                        hx-target="#results" hx-trigger="keyup changed delay:300ms" hx-include="this"
+                        hx-swap="innerHTML"
+                        style="padding: 1rem 1.5rem; font-size: 1.2rem; background: rgba(0,0,0,0.2);">
                 </form>
             </div>
 
-            <div class="card" style="margin-bottom:1.5rem;">
-                <div class="card-header"><span class="card-title">🔎 Advanced Filters</span></div>
+            <div class="card glass-card gsap-reveal" style="margin-bottom:1.5rem;">
+                <div class="card-header" style="cursor: pointer;"
+                    onclick="this.nextElementSibling.classList.toggle('hidden')">
+                    <span class="card-title kinetic-text">🔎 Advanced Filter Logic</span>
+                    <span style="float:right;">▼</span>
+                </div>
+                <!-- Simple interaction to toggle visibility, or just leave open -->
                 <div class="card-body">
                     <form th:action="@{/web/directory/filter}" method="get"
-                        style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:flex-end;">
-                        <div class="form-group" style="flex:1; min-width:150px;">
-                            <label class="form-label">Skill</label>
-                            <input type="text" name="skill" class="form-control" placeholder="e.g. Java, Python"
-                                th:value="${filterSkill}">
+                        style="display:flex; gap:1rem; flex-wrap:wrap; align-items:flex-end;">
+                        <div class="form-group" style="flex:1; min-width:200px;">
+                            <label class="form-label text-muted">Skill Module</label>
+                            <input type="text" name="skill" class="form-control glass-input"
+                                placeholder="e.g. Java, Python" th:value="${filterSkill}">
                         </div>
-                        <div class="form-group" style="flex:1; min-width:150px;">
-                            <label class="form-label">Location</label>
-                            <input type="text" name="location" class="form-control" placeholder="e.g. Dhaka"
+                        <div class="form-group" style="flex:1; min-width:200px;">
+                            <label class="form-label text-muted">Geo-Location</label>
+                            <input type="text" name="location" class="form-control glass-input" placeholder="e.g. Dhaka"
                                 th:value="${filterLocation}">
                         </div>
-                        <div class="form-group" style="flex:1; min-width:150px;">
-                            <label class="form-label">Employment</label>
-                            <select name="employmentStatus" class="form-control">
-                                <option value="">All</option>
-                                <option value="EMPLOYED" th:selected="${filterEmploymentStatus == 'EMPLOYED'}">Employed
-                                </option>
-                                <option value="UNEMPLOYED" th:selected="${filterEmploymentStatus == 'UNEMPLOYED'}">
-                                    Unemployed</option>
-                                <option value="STUDENT" th:selected="${filterEmploymentStatus == 'STUDENT'}">Student
-                                </option>
-                                <option value="FREELANCER" th:selected="${filterEmploymentStatus == 'FREELANCER'}">
-                                    Freelancer</option>
+                        <div class="form-group" style="flex:1; min-width:200px;">
+                            <label class="form-label text-muted">Employment Status</label>
+                            <select name="employmentStatus" class="form-control glass-input">
+                                <option value="" class="text-dark">All Protocols</option>
+                                <option value="EMPLOYED" th:selected="${filterEmploymentStatus == 'EMPLOYED'}"
+                                    class="text-dark">Employed</option>
+                                <option value="UNEMPLOYED" th:selected="${filterEmploymentStatus == 'UNEMPLOYED'}"
+                                    class="text-dark">Unemployed</option>
+                                <option value="STUDENT" th:selected="${filterEmploymentStatus == 'STUDENT'}"
+                                    class="text-dark">Student</option>
+                                <option value="FREELANCER" th:selected="${filterEmploymentStatus == 'FREELANCER'}"
+                                    class="text-dark">Freelancer</option>
                             </select>
                         </div>
                         <div style="display:flex; gap:0.5rem;">
-                            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
-                            <a th:href="@{/web/directory}" class="btn btn-secondary btn-sm">Clear</a>
+                            <button type="submit" class="btn btn-magnetic-primary" data-magnetic>Filter Data</button>
+                            <a th:href="@{/web/directory}" class="btn btn-ghost" style="opacity:0.7;">Clear Trace</a>
                         </div>
                     </form>
                 </div>
             </div>
 
             <div id="results">
-                <div th:if="${results != null and !results.isEmpty()}" class="grid grid-3">
-                    <div class="card" th:each="profile : ${results}">
+                <div th:if="${results != null and !results.isEmpty()}" class="grid grid-3 floating-grid">
+                    <div class="card glass-card gsap-reveal" th:each="profile : ${results}" data-magnetic
+                        style="transition: transform 0.3s ease;">
                         <div class="card-header">
-                            <span class="card-title" th:text="${profile.fullName ?: 'Member'}">Name</span>
+                            <span class="card-title kinetic-text" th:text="${profile.fullName ?: 'Member'}">Name</span>
                         </div>
-                        <div class="card-body">
-                            <p th:if="${profile.bio}" th:text="${profile.bio}" style="margin-bottom:0.5rem;"></p>
+                        <div class="card-body text-muted">
+                            <p th:if="${profile.bio}" th:text="${profile.bio}"
+                                style="margin-bottom:1rem; font-style: italic; opacity: 0.9;"></p>
                             <div class="tag-list" th:if="${profile.skills != null}">
-                                <span class="tag" th:each="skill : ${profile.skills}"
-                                    th:text="${skill.name}">Skill</span>
+                                <span class="tag" th:each="skill : ${profile.skills}" th:text="${skill.name}"
+                                    style="background: var(--color-cyber-copper-dim); color: var(--color-cyber-copper); border: 1px solid var(--color-cyber-copper-dim);">Skill</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="empty-state" th:if="${results != null and results.isEmpty()}">
-                    <p>No members found matching your criteria.</p>
+                <div class="empty-state glass-card gsap-reveal" th:if="${results != null and results.isEmpty()}">
+                    <p class="text-muted">No data nodes found matching criteria.</p>
                 </div>
-                <div class="empty-state" th:if="${results == null}">
-                    <div class="empty-icon">🔍</div>
-                    <p>Start typing to search or use the filters above</p>
+                <div class="empty-state glass-card gsap-reveal" th:if="${results == null}">
+                    <div class="empty-icon" style="filter: drop-shadow(0 0 10px var(--color-silicon-gray));">🔍</div>
+                    <p class="text-muted">Initiate query to scan the network.</p>
                 </div>
             </div>
         </div>

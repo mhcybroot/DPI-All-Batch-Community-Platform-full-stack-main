@@ -15,30 +15,58 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>📊 Create New Poll</h1>
+                <h1 class="kinetic-text">📊 Create Consensus Node</h1>
             </div>
-            <form th:action="@{/web/polls}" method="post" class="card" style="max-width:600px;" id="pollForm">
-                <div class="form-group"><label class="form-label">Question</label><input type="text" name="question"
-                        class="form-control" required placeholder="What would you like to ask?"></div>
-                <div class="form-group"><label class="form-label">Event ID (optional)</label><input type="number"
-                        name="eventId" class="form-control" placeholder="Leave blank for standalone poll"></div>
+
+            <form th:action="@{/web/polls}" method="post" class="card glass-card gsap-reveal"
+                style="max-width:700px; padding: 2rem;" id="pollForm">
                 <div class="form-group">
-                    <label class="form-label">Options</label>
+                    <label class="form-label text-muted">Core Question</label>
+                    <input type="text" name="question" class="form-control glass-input" required
+                        placeholder="Define the variable to be resolved..." style="font-size: 1.1rem;">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label text-muted">Linked Event ID (Optional)</label>
+                    <input type="number" name="eventId" class="form-control glass-input"
+                        placeholder="Associate with an event node...">
+                </div>
+
+                <div class="form-group" style="margin-top: 2rem;">
+                    <label class="form-label text-muted"
+                        style="border-bottom: 1px solid var(--color-glass-border); display: block; padding-bottom: 0.5rem; margin-bottom: 1rem;">Response
+                        Options</label>
                     <div id="optionsContainer">
-                        <div style="margin-bottom:0.5rem;display:flex;gap:0.5rem;"><input type="text" name="options"
-                                class="form-control" required placeholder="Option 1"></div>
-                        <div style="margin-bottom:0.5rem;display:flex;gap:0.5rem;"><input type="text" name="options"
-                                class="form-control" required placeholder="Option 2"></div>
+                        <div style="margin-bottom:1rem; display:flex; gap:0.5rem;">
+                            <span style="padding: 0.75rem; color: var(--color-moss-emerald);">01</span>
+                            <input type="text" name="options" class="form-control glass-input" required
+                                placeholder="Option Alpha">
+                        </div>
+                        <div style="margin-bottom:1rem; display:flex; gap:0.5rem;">
+                            <span style="padding: 0.75rem; color: var(--color-moss-emerald);">02</span>
+                            <input type="text" name="options" class="form-control glass-input" required
+                                placeholder="Option Beta">
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="addOption()">+ Add Option</button>
+                    <button type="button" class="btn btn-ghost" onclick="addOption()"
+                        style="color: var(--color-cyber-copper);">+ Append Option Node</button>
                 </div>
-                <div class="form-group" style="display:flex;gap:1.5rem;">
-                    <label><input type="checkbox" name="multipleChoice" value="true"> Allow multiple votes</label>
-                    <label><input type="checkbox" name="anonymous" value="true"> Anonymous voting</label>
+
+                <div class="form-group"
+                    style="display:flex; gap:2rem; margin-top: 1.5rem; padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 8px;">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="multipleChoice" value="true">
+                        <span class="text-muted">Allow Multiple Vectors</span>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="anonymous" value="true">
+                        <span class="text-muted">Anonymous Protocol</span>
+                    </label>
                 </div>
-                <div style="display:flex;gap:0.75rem;">
-                    <button type="submit" class="btn btn-primary">Create Poll</button>
-                    <a th:href="@{/web/polls}" class="btn btn-secondary">Cancel</a>
+
+                <div style="display:flex; gap:1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-magnetic-primary" data-magnetic>Initialize Poll</button>
+                    <a th:href="@{/web/polls}" class="btn btn-magnetic" data-magnetic>Abort</a>
                 </div>
             </form>
         </div>

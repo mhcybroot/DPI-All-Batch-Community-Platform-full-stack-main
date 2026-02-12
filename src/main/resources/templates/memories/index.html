@@ -25,43 +25,72 @@
             </div>
 
             <!-- Upload Form -->
-            <div class="card" style="margin-bottom:1.5rem;">
-                <h3 class="card-title" style="margin-bottom:1rem;">Share a Memory</h3>
-                <form th:action="@{/web/memories}" method="post">
-                    <div class="form-group">
-                        <label class="form-label">Title</label>
-                        <input type="text" name="title" class="form-control" required
-                            placeholder="Give your memory a title">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <textarea name="description" class="form-control" rows="2"
-                            placeholder="Describe this memory..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Media URL</label>
-                        <input type="url" name="mediaUrl" class="form-control" required placeholder="https://...">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Media Type</label>
-                        <select name="mediaType" class="form-control">
-                            <option value="IMAGE">Image</option>
-                            <option value="VIDEO">Video</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Upload Memory</button>
-                </form>
+            <button id="toggle-memory-form" class="btn btn-magnetic-primary mb-4" data-magnetic
+                style="margin-bottom: 1.5rem;">
+                <span class="hover-text-reveal">+ Share a Memory</span>
+            </button>
+
+            <div id="memory-form-container" class="card glass-card" style="margin-bottom:1.5rem; display: none;">
+                <div class="card-body">
+                    <h3 class="card-title kinetic-text" style="margin-bottom:1rem;">Share a Memory</h3>
+                    <form th:action="@{/web/memories}" method="post">
+                        <div class="form-group">
+                            <label class="form-label text-muted">Title</label>
+                            <input type="text" name="title" class="form-control glass-input" required
+                                placeholder="Give your memory a title">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label text-muted">Description</label>
+                            <textarea name="description" class="form-control glass-input" rows="2"
+                                placeholder="Describe this memory..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label text-muted">Media URL</label>
+                            <input type="url" name="mediaUrl" class="form-control glass-input" required
+                                placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label text-muted">Media Type</label>
+                            <select name="mediaType" class="form-control glass-input">
+                                <option value="IMAGE" style="background: var(--color-obsidian);">Image</option>
+                                <option value="VIDEO" style="background: var(--color-obsidian);">Video</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-magnetic-primary" data-magnetic>
+                            <span class="hover-text-reveal">Upload Memory</span>
+                        </button>
+                    </form>
+                </div>
             </div>
 
+            <script>
+                document.getElementById('toggle-memory-form').addEventListener('click', function () {
+                    const formContainer = document.getElementById('memory-form-container');
+                    if (formContainer.style.display === 'none') {
+                        formContainer.style.display = 'block';
+
+                        // GSAP Reveal if available
+                        if (typeof gsap !== 'undefined') {
+                            gsap.fromTo(formContainer,
+                                { height: 0, opacity: 0 },
+                                { height: 'auto', opacity: 1, duration: 0.5, ease: "cubic-bezier(0.23, 1, 0.32, 1)" }
+                            );
+                        }
+                        this.style.display = 'none'; // Hide button after clicking (optional, or change text)
+                    }
+                });
+            </script>
+
             <!-- Gallery -->
-            <div class="grid grid-3" th:if="${memories != null and !memories.isEmpty()}">
-                <div class="card" th:each="memory : ${memories}">
+            <div class="grid grid-3 floating-grid" th:if="${memories != null and !memories.isEmpty()}">
+                <div class="card glass-card gsap-reveal" th:each="memory : ${memories}" data-magnetic>
                     <div class="card-header">
-                        <span class="card-title" th:text="${memory.title}">Title</span>
+                        <span class="card-title kinetic-text" th:text="${memory.title}">Title</span>
                     </div>
                     <div class="card-body">
-                        <p th:if="${memory.description}" th:text="${memory.description}">Desc</p>
-                        <p class="card-meta">Type: <span th:text="${memory.mediaType}">IMAGE</span></p>
+                        <p th:if="${memory.description}" th:text="${memory.description}" class="text-muted">Desc</p>
+                        <p class="card-meta">Type: <span th:text="${memory.mediaType}" class="text-copper">IMAGE</span>
+                        </p>
                     </div>
                     <div class="card-footer" th:if="${memory.uploaderId == currentUserId or isAdmin}">
                         <form th:action="@{/web/memories/{id}/delete(id=${memory.id})}" method="post"

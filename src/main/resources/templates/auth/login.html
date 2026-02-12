@@ -4,47 +4,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — DPI Community</title>
+    <title>Sign In - DPI Community</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Embedded critical CSS for login page to prevent flash of unstyled content */
+        body.login-page {
+            background: #0f172a;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Ambient Background Effects */
+        .ambient-light {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+            filter: blur(80px);
+        }
+
+        .ambient-1 {
+            top: -150px;
+            left: -150px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
+        }
+
+        .ambient-2 {
+            bottom: -150px;
+            right: -150px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 24px;
+            z-index: 10;
+        }
+    </style>
 </head>
 
-<body>
-    <div class="auth-wrapper">
-        <div class="auth-card">
-            <h1>🎓 Welcome Back</h1>
-            <p class="auth-subtitle">Sign in to your DPI Community account</p>
+<body class="login-page">
+    <div class="ambient-light ambient-1"></div>
+    <div class="ambient-light ambient-2"></div>
 
-            <div class="alert alert-danger" th:if="${param.error}">
-                ✕ Invalid email or password. Please try again.
-            </div>
-            <div class="alert alert-success" th:if="${param.logout}" data-auto-dismiss>
-                ✓ You have been logged out successfully.
-            </div>
-            <div class="alert alert-success" th:if="${param.registered}" data-auto-dismiss>
-                ✓ Registration successful! Please wait for admin approval, then log in.
-            </div>
+    <div class="glass-card auth-card">
+        <div class="header" style="text-align: center; margin-bottom: 2rem;">
+            <div class="logo"
+                style="font-size: 2.5rem; margin-bottom: 0.5rem; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));">
+                🎓</div>
+            <h1 class="title"
+                style="font-size: 1.75rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                Welcome Back</h1>
+            <p class="subtitle" style="color: rgba(255, 255, 255, 0.7);">Sign in to your DPI Community account</p>
+        </div>
 
-            <form th:action="@{/web/auth/do-login}" method="post">
-                <div class="form-group">
-                    <label class="form-label" for="email">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com"
-                        required autofocus>
+        <!-- Alerts -->
+        <div class="alert alert-danger" th:if="${param.error}"
+            style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5;">
+            ✕ Invalid email or password.
+        </div>
+        <div class="alert alert-success" th:if="${param.logout}" data-auto-dismiss
+            style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.3); color: #6ee7b7;">
+            ✓ You have been logged out successfully.
+        </div>
+        <div class="alert alert-success" th:if="${param.registered}" data-auto-dismiss
+            style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.3); color: #6ee7b7;">
+            ✓ Registration successful! Check email for approval.
+        </div>
+
+        <form th:action="@{/web/auth/do-login}" method="post">
+            <div class="form-group">
+                <div class="input-group" style="position: relative;">
+                    <span class="input-icon"
+                        style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); z-index: 2;">✉️</span>
+                    <input type="email" id="email" name="email" class="form-control glass-input"
+                        placeholder="Email Address" required autofocus style="padding-left: 3rem;">
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="password">Password</label>
-                    <input type="password" id="password" name="password" class="form-control"
-                        placeholder="Enter your password" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
-            </form>
-
-            <div class="auth-footer">
-                Don't have an account? <a th:href="@{/web/auth/register}">Register here</a>
             </div>
+
+            <div class="form-group">
+                <div class="input-group" style="position: relative;">
+                    <span class="input-icon"
+                        style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); z-index: 2;">🔒</span>
+                    <input type="password" id="password" name="password" class="form-control glass-input"
+                        placeholder="Password" required style="padding-left: 3rem;">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg gradient-btn">Sign In</button>
+        </form>
+
+        <div class="divider"
+            style="display: flex; align-items: center; margin: 1.5rem 0; color: rgba(255, 255, 255, 0.5); font-size: 0.875rem;">
+            <span style="flex:1; height:1px; background:rgba(255,255,255,0.1);"></span>
+            <span style="padding: 0 1rem;">or continue with</span>
+            <span style="flex:1; height:1px; background:rgba(255,255,255,0.1);"></span>
+        </div>
+
+        <div class="social-buttons"
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <button class="btn btn-secondary glass-btn">
+                <span>G</span> Google
+            </button>
+            <button class="btn btn-secondary glass-btn">
+                <span>f</span> Facebook
+            </button>
+        </div>
+
+        <div class="auth-footer" style="color: rgba(255, 255, 255, 0.6);">
+            Don't have an account? <a th:href="@{/web/auth/register}" style="color: #818cf8; font-weight: 600;">Register
+                here</a>
         </div>
     </div>
 </body>

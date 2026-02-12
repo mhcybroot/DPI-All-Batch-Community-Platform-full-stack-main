@@ -1,73 +1,138 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${pageTitle != null ? pageTitle + ' — DPI Community' : 'DPI Batch Community Platform'}">DPI Community</title>
+    <title th:text="${pageTitle != null ? pageTitle + ' — DPI Community' : 'DPI Batch Community Platform'}">DPI
+        Community</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- Scripts -->
     <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script th:src="@{/js/app.js}" defer></script>
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav class="navbar" th:fragment="navbar">
-    <div class="container">
-        <a href="/web/dashboard" class="navbar-brand">🎓 <span>DPI Community</span></a>
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <nav class="navbar glass-nav" th:fragment="navbar"
+        style="backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border);">
+        <div class="container">
+            <a href="/web/dashboard" class="navbar-brand kinetic-text" style="font-family: var(--font-display);">🎓
+                <span>DPI Community</span></a>
 
-        <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+            <button class="nav-toggle btn-magnetic" data-magnetic aria-label="Toggle navigation">☰</button>
 
-        <ul class="nav-links">
-            <li><a th:href="@{/web/dashboard}" th:classappend="${activeNav == 'dashboard' ? 'active' : ''}">Dashboard</a></li>
-            <li><a th:href="@{/web/forum}" th:classappend="${activeNav == 'forum' ? 'active' : ''}">Forum</a></li>
-            <li><a th:href="@{/web/events}" th:classappend="${activeNav == 'events' ? 'active' : ''}">Events</a></li>
-            <li><a th:href="@{/web/knowledge}" th:classappend="${activeNav == 'knowledge' ? 'active' : ''}">Q&amp;A</a></li>
-            <li><a th:href="@{/web/notices}" th:classappend="${activeNav == 'notices' ? 'active' : ''}">Notices</a></li>
-            <li><a th:href="@{/web/memories}" th:classappend="${activeNav == 'memories' ? 'active' : ''}">Memories</a></li>
-            <li><a th:href="@{/web/jobs}" th:classappend="${activeNav == 'jobs' ? 'active' : ''}">Jobs</a></li>
-            <li><a th:href="@{/web/mentorship}" th:classappend="${activeNav == 'mentorship' ? 'active' : ''}">Mentorship</a></li>
-            <li><a th:href="@{/web/directory}" th:classappend="${activeNav == 'directory' ? 'active' : ''}">Directory</a></li>
-            <li sec:authorize="hasRole('ADMINISTRATOR')">
-                <a th:href="@{/web/admin/approvals}" th:classappend="${activeNav == 'admin' ? 'active' : ''}" style="color: var(--accent);">⚙ Admin</a>
-            </li>
-        </ul>
+            <ul class="nav-links">
+                <li><a th:href="@{/web/dashboard}"
+                        th:classappend="${activeNav == 'dashboard' ? 'active' : ''}">Dashboard</a></li>
+                <li><a th:href="@{/web/forum}" th:classappend="${activeNav == 'forum' ? 'active' : ''}">Forum</a></li>
+                <li><a th:href="@{/web/events}" th:classappend="${activeNav == 'events' ? 'active' : ''}">Events</a>
+                </li>
+                <li><a th:href="@{/web/knowledge}"
+                        th:classappend="${activeNav == 'knowledge' ? 'active' : ''}">Q&amp;A</a></li>
+                <li><a th:href="@{/web/notices}" th:classappend="${activeNav == 'notices' ? 'active' : ''}">Notices</a>
+                </li>
+                <li><a th:href="@{/web/memories}"
+                        th:classappend="${activeNav == 'memories' ? 'active' : ''}">Memories</a></li>
+                <li><a th:href="@{/web/jobs}" th:classappend="${activeNav == 'jobs' ? 'active' : ''}">Jobs</a></li>
+                <li><a th:href="@{/web/mentorship}"
+                        th:classappend="${activeNav == 'mentorship' ? 'active' : ''}">Mentorship</a></li>
+                <li><a th:href="@{/web/directory}"
+                        th:classappend="${activeNav == 'directory' ? 'active' : ''}">Directory</a></li>
+                <li sec:authorize="hasRole('ADMINISTRATOR')">
+                    <a th:href="@{/web/admin/approvals}" th:classappend="${activeNav == 'admin' ? 'active' : ''}"
+                        style="color: var(--color-cyber-copper);">⚙ Admin</a>
+                </li>
+            </ul>
 
-        <div class="nav-right">
-            <a th:href="@{/web/profile}" class="nav-user" sec:authorize="isAuthenticated()">
-                👤 <span sec:authentication="name">User</span>
-            </a>
-            <form th:action="@{/web/auth/logout}" method="post" style="display:inline;" sec:authorize="isAuthenticated()">
-                <button type="submit" class="btn btn-sm btn-secondary">Logout</button>
-            </form>
+            <div class="nav-right" style="display: flex; align-items: center; gap: 1rem;">
+                <button id="theme-toggle" class="btn btn-sm btn-magnetic" data-magnetic aria-label="Toggle Theme"
+                    style="padding: 0.25rem 0.75rem; border-color: var(--color-glass-border); border-radius: 50%;">
+                    <span id="theme-icon">👁</span>
+                </button>
+
+                <div class="nav-user" sec:authorize="isAuthenticated()"
+                    style="padding: 0.25rem 0.75rem; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid var(--color-glass-border);">
+                    <a th:href="@{/web/profile}"
+                        style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>👤</span> <span sec:authentication="name" style="font-weight: 500;">User</span>
+                    </a>
+                </div>
+
+                <form th:action="@{/web/auth/logout}" method="post" style="display:inline;"
+                    sec:authorize="isAuthenticated()">
+                    <button type="submit" class="btn btn-sm btn-ghost" style="opacity: 0.8 !important;">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        (function () {
+            const toggle = document.getElementById('theme-toggle');
+            const icon = document.getElementById('theme-icon');
+            const root = document.documentElement;
+            const STORAGE_KEY = 'dpi_theme';
+
+            // Icons
+            const ICON_BIO = '👁'; // Biological
+            const ICON_FROST = '❄'; // Frosted
+
+            function setTheme(theme) {
+                root.setAttribute('data-theme', theme);
+                localStorage.setItem(STORAGE_KEY, theme);
+                icon.textContent = theme === 'frosted' ? ICON_FROST : ICON_BIO;
+            }
+
+            // Init
+            const savedTheme = localStorage.getItem(STORAGE_KEY) || 'biological';
+            setTheme(savedTheme);
+
+            // Toggle
+            if (toggle) {
+                toggle.addEventListener('click', () => {
+                    const current = root.getAttribute('data-theme');
+                    const next = current === 'biological' ? 'frosted' : 'biological';
+                    setTheme(next);
+                });
+            }
+        })();
+    </script>
+
+    <!-- Flash Messages -->
+    <div class="container" th:if="${successMessage != null or errorMessage != null}" style="margin-top: 1rem;">
+        <div class="alert alert-success" th:if="${successMessage}" data-auto-dismiss>
+            ✓ <span th:text="${successMessage}"></span>
+        </div>
+        <div class="alert alert-danger" th:if="${errorMessage}" data-auto-dismiss>
+            ✕ <span th:text="${errorMessage}"></span>
         </div>
     </div>
-</nav>
 
-<!-- Flash Messages -->
-<div class="container" th:if="${successMessage != null or errorMessage != null}" style="margin-top: 1rem;">
-    <div class="alert alert-success" th:if="${successMessage}" data-auto-dismiss>
-        ✓ <span th:text="${successMessage}"></span>
-    </div>
-    <div class="alert alert-danger" th:if="${errorMessage}" data-auto-dismiss>
-        ✕ <span th:text="${errorMessage}"></span>
-    </div>
-</div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container" th:replace="${content}">
+            <!-- Page content injected here -->
+        </div>
+    </main>
 
-<!-- Main Content -->
-<main class="main-content">
-    <div class="container" th:replace="${content}">
-        <!-- Page content injected here -->
-    </div>
-</main>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <p>© 2026 DPI Batch Community Platform. Built with ❤️ by our community.</p>
-    </div>
-</footer>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform. Built with ❤️ by our community.</p>
+        </div>
+    </footer>
 
 </body>
+
 </html>

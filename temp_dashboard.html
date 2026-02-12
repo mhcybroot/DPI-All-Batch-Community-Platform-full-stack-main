@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#36cf17",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#142111",
+                        "deep-moss": "#142111",
+                        "warm-beige": "#f5f2ed"
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass {
+            background: rgba(20, 33, 17, 0.4);
+            border: 1px solid rgba(54, 207, 23, 0.1);
+            box-shadow: inset 0 0 20px rgba(54, 207, 23, 0.05);
+        }
+        .pebble-shape {
+            border-radius: 60% 40% 70% 30% / 40% 50% 60% 70%;
+        }
+        .blob {
+            position: absolute;
+            filter: blur(60px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-deep-moss dark:text-background-light min-h-screen relative overflow-x-hidden pb-24">
+<!-- Fluid Background Blobs -->
+<div class="blob bg-primary w-64 h-64 top-[-5%] left-[-10%] rounded-full"></div>
+<div class="blob bg-primary/40 w-80 h-80 bottom-20 right-[-15%] rounded-full"></div>
+<div class="max-w-md mx-auto px-6 pt-12">
+<!-- Header -->
+<header class="mb-10">
+<div class="flex justify-between items-start">
+<div class="max-w-[70%]">
+<h1 class="text-4xl font-bold leading-tight text-deep-moss dark:text-white">
+                        Good morning, <span class="italic text-primary">Julian</span>
+</h1>
+<p class="text-sm opacity-60 mt-2 font-sans tracking-wide uppercase">Tuesday, Oct 24</p>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary p-0.5">
+<img alt="User Profile" class="w-full h-full object-cover rounded-full" data-alt="Close up portrait of a smiling person" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8EYcjhPSagly-D43CoMCSSwS8cTmiNwSU1AxFZkF6C4bE-NbXv_F_8bY7fkYSSmd_U2qtPwmYK1o3cQt_I1OrnVgdUgZuhPWPBtH8wkH8yM-1zVpoGfiUDXd2X-g-I1MU3RQYkLPlc_Uvr8E2gwuS22wo0sG_T7wGMSxenaUJymC7NnHKEJuDnZ-TLX8C3VuoWR-rgdOxRVpdTqckUl8nEd3RJnls3cA9B0UFjklmoA_H9osnlgEDNkIMPoNfVg99Pa7Sl0HGfec"/>
+</div>
+</div>
+</header>
+<!-- Dynamic Grid Layout -->
+<div class="space-y-6">
+<!-- Hero Karma Widget -->
+<div class="glass rounded-xl p-6 flex items-center gap-6 relative overflow-hidden">
+<div class="relative w-24 h-24 shrink-0 flex items-center justify-center">
+<!-- SVG Progress Ring -->
+<svg class="w-full h-full -rotate-90">
+<circle class="text-primary/10" cx="48" cy="48" fill="transparent" r="42" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="48" cy="48" fill="transparent" r="42" stroke="currentColor" stroke-dasharray="264" stroke-dashoffset="66" stroke-width="8"></circle>
+</svg>
+<div class="absolute text-2xl font-bold">84</div>
+</div>
+<div>
+<h2 class="text-xl font-semibold mb-1">Karma Score</h2>
+<p class="text-sm opacity-70 mb-3 leading-snug">Your organic growth is up 12% this week.</p>
+<button class="bg-primary text-deep-moss px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                        Insights
+                    </button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-6 items-stretch">
+<!-- Activity Feed -->
+<div class="glass rounded-xl p-5 flex flex-col justify-between">
+<h3 class="text-xs uppercase tracking-widest opacity-50 font-bold mb-4">Focus</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-sm font-medium">Meditation</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary/30"></div>
+<span class="text-sm font-medium opacity-60">Deep Work</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary/30"></div>
+<span class="text-sm font-medium opacity-60">Stretching</span>
+</div>
+</div>
+<div class="mt-6">
+<span class="text-3xl font-bold">2.4</span>
+<span class="text-xs opacity-50 ml-1 italic">hours today</span>
+</div>
+</div>
+<!-- Event Card -->
+<div class="bg-deep-moss dark:bg-primary/20 text-white rounded-xl p-5 relative overflow-hidden flex flex-col">
+<div class="pebble-shape bg-primary w-12 h-14 flex flex-col items-center justify-center text-deep-moss mb-4 shrink-0">
+<span class="text-xs font-bold leading-none">OCT</span>
+<span class="text-lg font-bold leading-none">28</span>
+</div>
+<div>
+<h3 class="text-lg font-bold leading-tight mb-1">Forest Retreat</h3>
+<p class="text-xs opacity-70">3 Days in Oregon Wilderness</p>
+</div>
+<div class="mt-auto pt-6 flex -space-x-2">
+<img alt="" class="w-6 h-6 rounded-full border border-deep-moss" data-alt="Small avatar of a woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARYQ0dB1zdHAG17RS7uTbTQ7bV3SSw87edij3Oo6lBO4r0Y97e5fxW84SYyZfno6gJguaWqINQJfupucw3zkEj_Vc6OYAlIlZohpkxGNScSYQwk3gEr5cjCYsh7SDPKFIZZ4H2yOCn92uJCwBJDOeOKL0tTdNY4wSYArhpyRmpEoy9teFEqxcBcj5nz2mvw96FwvYwrVyUjdtfRwDuWMququ9RwKE64GQ-keDG4D5SvNok0F_6Mys-nv_g_XYhUEXf8jrLpV22lzE"/>
+<img alt="" class="w-6 h-6 rounded-full border border-deep-moss" data-alt="Small avatar of a man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKpFCFVMgz2IsTagOIMiKdk2qOHrFbZcZQVeD-6EEqqL3OviljskzIu-Xq8OCbo3sGDegTEn1Px1TOmxONsAAnr4Y7-rUnPeMXb6orTNUCB-uYFTgjwO8l3IyGb7PIbwTEoasKpMWt3ByiJoSgiYSeuG5p49rgPu0kwWZSBtif0J0KELum1U8H-jJq3C_0kxBmwAmqIwL0sjr_22_4hmqmjftkPqCF8qX6DJJCW40P-u3_QfaonbSMijpIXR1YxoFjV4zO6x4W4L0"/>
+<div class="w-6 h-6 rounded-full bg-primary/40 border border-deep-moss flex items-center justify-center text-[8px]">+4</div>
+</div>
+</div>
+</div>
+<!-- Vertical Activity Feed -->
+<div class="pt-4">
+<h3 class="text-lg font-bold mb-6 italic ml-1">Recent Cultivation</h3>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-4 glass rounded-xl">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-icons-round">eco</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Garden Maintenance</p>
+<p class="text-xs opacity-50 italic">Completed 2 hours ago</p>
+</div>
+</div>
+<span class="text-xs font-bold text-primary">+45xp</span>
+</div>
+<div class="flex items-center justify-between p-4 glass rounded-xl">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-icons-round">water_drop</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Hydration Target</p>
+<p class="text-xs opacity-50 italic">Milestone reached</p>
+</div>
+</div>
+<span class="text-xs font-bold text-primary">+10xp</span>
+</div>
+<div class="flex items-center justify-between p-4 glass rounded-xl">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-icons-round">auto_awesome</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Sleep Hygiene</p>
+<p class="text-xs opacity-50 italic">Optimal recovery</p>
+</div>
+</div>
+<span class="text-xs font-bold text-primary">+30xp</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation Bar -->
+<nav class="fixed bottom-6 left-6 right-6 h-20 glass rounded-full flex items-center justify-between px-8 z-50">
+<button class="text-primary">
+<span class="material-icons-round text-3xl">grid_view</span>
+</button>
+<button class="text-deep-moss/40 dark:text-white/40">
+<span class="material-icons-round text-3xl">insights</span>
+</button>
+<div class="relative -top-10">
+<button class="w-16 h-16 bg-primary text-deep-moss rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
+<span class="material-icons-round text-3xl">add</span>
+</button>
+</div>
+<button class="text-deep-moss/40 dark:text-white/40">
+<span class="material-icons-round text-3xl">notifications_none</span>
+</button>
+<button class="text-deep-moss/40 dark:text-white/40">
+<span class="material-icons-round text-3xl">settings</span>
+</button>
+</nav>
+<!-- iOS Indicator -->
+<div class="fixed bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-deep-moss/10 dark:bg-white/10 rounded-full"></div>
+</body></html>

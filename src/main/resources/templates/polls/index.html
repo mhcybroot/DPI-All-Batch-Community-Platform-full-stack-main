@@ -16,19 +16,35 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>📊 Active Polls</h1>
+                <h1 class="kinetic-text">📊 Consensus Protocol</h1>
+                <div class="actions">
+                    <a th:href="@{/web/polls/create}" class="btn btn-magnetic-primary" data-magnetic>+ Initiate Poll</a>
+                </div>
             </div>
-            <div th:if="${polls != null and !polls.isEmpty()}" class="grid grid-2">
-                <a th:each="poll : ${polls}" th:href="@{/web/polls/{id}(id=${poll.id})}" class="card"
-                    style="text-decoration:none;color:inherit;">
-                    <div class="card-header"><span class="card-title" th:text="${poll.question}">Question</span></div>
-                    <div class="card-body card-meta"
-                        th:text="${poll.options != null ? poll.options.size() + ' options' : ''}">Options</div>
+
+            <div th:if="${polls != null and !polls.isEmpty()}" class="grid grid-2 floating-grid">
+                <a th:each="poll : ${polls}" th:href="@{/web/polls/{id}(id=${poll.id})}"
+                    class="card glass-card gsap-reveal"
+                    style="text-decoration:none; color:inherit; transition: transform 0.3s ease;" data-magnetic>
+                    <div class="card-header">
+                        <span class="card-title kinetic-text" th:text="${poll.question}">Question</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta"
+                            style="color: var(--color-moss-emerald); font-family: var(--font-machine);">
+                            <span
+                                th:text="${poll.options != null ? poll.options.size() + ' Options Configured' : 'No Options'}">Options</span>
+                        </div>
+                        <div class="text-muted" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            Status: <span style="color: var(--color-cyber-copper);">Active</span>
+                        </div>
+                    </div>
                 </a>
             </div>
-            <div class="empty-state" th:if="${polls == null or polls.isEmpty()}">
-                <div class="empty-icon">📊</div>
-                <p>No active polls right now.</p>
+
+            <div class="empty-state glass-card gsap-reveal" th:if="${polls == null or polls.isEmpty()}">
+                <div class="empty-icon" style="filter: drop-shadow(0 0 10px var(--color-moss-emerald));">📊</div>
+                <p class="text-muted">Consensus Module Offline. No active polls found.</p>
             </div>
         </div>
     </main>

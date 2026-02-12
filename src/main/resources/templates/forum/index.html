@@ -20,31 +20,35 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>💬 Discussion Forum</h1>
-                <p>Browse categories and join the conversation.</p>
+                <h1 class="kinetic-text">💬 Discussion Forum</h1>
+                <p class="text-muted">Browse categories and join the conversation.</p>
             </div>
 
-            <div class="grid grid-3" th:if="${categories != null and !categories.isEmpty()}">
-                <div th:each="cat : ${categories}" class="card" style="position: relative;">
-                    <a th:href="@{/web/forum/category/{id}(id=${cat.id})}"
-                        style="text-decoration:none; color:inherit; display:block;">
-                        <div class="card-header">
-                            <span class="card-title" th:text="${cat.name}">Category</span>
-                        </div>
-                        <div class="card-body" th:text="${cat.description ?: 'Browse posts in this category'}">
-                            Description
-                        </div>
-                    </a>
-                    <div sec:authorize="hasRole('ADMINISTRATOR')"
-                        style="position:absolute; top:0.5rem; right:0.5rem; display:flex; gap:0.25rem;">
-                        <a th:href="@{/web/forum/categories/{id}/edit(id=${cat.id})}" class="btn btn-sm btn-secondary"
-                            style="padding:0.25rem 0.5rem; font-size:0.75rem;" title="Edit Category">✏️</a>
+            <div class="grid grid-3 floating-grid" th:if="${categories != null and !categories.isEmpty()}">
+                <a th:each="cat : ${categories}" th:href="@{/web/forum/category/{id}(id=${cat.id})}"
+                    class="card glass-card gsap-reveal"
+                    style="text-decoration:none; color:inherit; display:block; position: relative;" data-magnetic>
+                    <div class="card-header">
+                        <span class="card-title kinetic-text" th:text="${cat.name}">Category</span>
                     </div>
-                </div>
+                    <div class="card-body text-muted" th:text="${cat.description ?: 'Browse posts in this category'}">
+                        Description
+                    </div>
+
+                    <div sec:authorize="hasRole('ADMINISTRATOR')"
+                        style="position:absolute; top:0.5rem; right:0.5rem; z-index: 10;">
+                        <object th:href="@{/web/forum/categories/{id}/edit(id=${cat.id})}"
+                            class="btn btn-sm btn-secondary" style="padding:0.25rem 0.5rem; font-size:0.75rem;"
+                            title="Edit Category"
+                            onclick="window.location.href=this.getAttribute('th:href'); return false;">✏️</object>
+                        <!-- Note: Using object/onclick to prevent nested a-tag issues, or we can move admin button outside the main anchor -->
+                    </div>
+                </a>
             </div>
-            <div class="empty-state" th:if="${categories == null or categories.isEmpty()}">
-                <div class="empty-icon">💬</div>
-                <p>No forum categories yet. An admin needs to create some.</p>
+
+            <div class="empty-state glass-card gsap-reveal" th:if="${categories == null or categories.isEmpty()}">
+                <div class="empty-icon" style="filter: drop-shadow(0 0 10px var(--color-cyber-copper));">💬</div>
+                <p class="text-muted">No forum categories yet. The silence is deafening.</p>
             </div>
         </div>
     </main>

@@ -20,29 +20,33 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>📅 Events</h1>
+                <h1 class="kinetic-text">📅 Events Protocol</h1>
                 <div class="actions">
-                    <a th:href="@{/web/events/new}" class="btn btn-primary">+ Create Event</a>
-                    <a th:href="@{/web/events/my-events}" class="btn btn-secondary">My Events</a>
-                    <a th:href="@{/web/events/my-registrations}" class="btn btn-secondary">My Registrations</a>
+                    <a th:href="@{/web/events/new}" class="btn btn-magnetic-primary" data-magnetic>+ Create Event</a>
+                    <a th:href="@{/web/events/my-events}" class="btn btn-magnetic" data-magnetic>My Events</a>
+                    <a th:href="@{/web/events/my-registrations}" class="btn btn-magnetic" data-magnetic>My
+                        Registrations</a>
                 </div>
             </div>
-            <div class="grid grid-3" th:if="${events != null and !events.isEmpty()}">
-                <a th:each="event : ${events}" th:href="@{/web/events/{id}(id=${event.id})}" class="card"
-                    style="text-decoration:none;color:inherit;">
+
+            <div class="grid grid-3 floating-grid" th:if="${events != null and !events.isEmpty()}">
+                <a th:each="event : ${events}" th:href="@{/web/events/{id}(id=${event.id})}"
+                    class="card glass-card gsap-reveal" style="text-decoration:none;color:inherit;" data-magnetic>
                     <div class="card-header">
-                        <span class="card-title" th:text="${event.title}">Event</span>
-                        <span class="badge badge-primary" th:text="${event.status}">Status</span>
+                        <span class="card-title kinetic-text" th:text="${event.title}">Event</span>
+                        <span class="badge badge-primary" th:text="${event.status}"
+                            style="background: var(--color-moss-emerald-dim); color: var(--color-moss-emerald); border: 1px solid var(--color-moss-emerald);">Status</span>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body text-muted">
                         <p>📍 <span th:text="${event.venue ?: 'TBD'}">Venue</span></p>
                         <p>📆 <span th:text="${event.eventDate}">Date</span></p>
                     </div>
                 </a>
             </div>
-            <div class="empty-state" th:if="${events == null or events.isEmpty()}">
-                <div class="empty-icon">📅</div>
-                <p>No upcoming events.</p>
+
+            <div class="empty-state glass-card gsap-reveal" th:if="${events == null or events.isEmpty()}">
+                <div class="empty-icon" style="filter: drop-shadow(0 0 10px var(--color-moss-emerald));">📅</div>
+                <p class="text-muted">Chronometer Offline. No upcoming events synchronized.</p>
             </div>
         </div>
     </main>

@@ -17,25 +17,49 @@
     </div>
     <main class="main-content">
         <div class="container">
-            <a th:href="@{/web/polls}" class="btn btn-secondary btn-sm" style="margin-bottom:1rem;">← Back to Polls</a>
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title" th:text="${poll.question}">Question</h1>
+            <div class="page-header" style="margin-bottom: 2rem;">
+                <a th:href="@{/web/polls}" class="btn btn-ghost" style="opacity: 0.7;">← Return to Consensus</a>
+            </div>
+
+            <div class="card glass-card gsap-reveal" style="padding: 2rem;">
+                <div class="card-header"
+                    style="border-bottom: 1px solid var(--color-glass-border); padding-bottom: 1.5rem; margin-bottom: 2rem;">
+                    <h1 class="card-title kinetic-text" th:text="${poll.question}" style="font-size: 2rem;">Question
+                    </h1>
                 </div>
+
                 <div class="card-body">
-                    <div th:each="option : ${poll.options}" style="margin-bottom:0.75rem;">
+                    <div th:each="option : ${poll.options}" style="margin-bottom: 1.5rem; position: relative;">
                         <form th:action="@{/web/polls/{id}/vote(id=${poll.id})}" method="post"
-                            style="display:flex;align-items:center;gap:0.75rem;">
+                            style="display:flex; align-items:center; gap: 1rem; position: relative; z-index: 2;">
                             <input type="hidden" name="optionId" th:value="${option.id}">
-                            <button type="submit" class="btn btn-sm btn-secondary"
-                                th:text="${option.optionText}">Option</button>
-                            <span class="card-meta" th:text="${option.voteCount + ' votes'}">0 votes</span>
-                            <div style="flex:1;background:var(--border);border-radius:4px;height:8px;">
-                                <div style="height:100%;border-radius:4px;background:linear-gradient(135deg, var(--primary), var(--secondary));"
-                                    th:style="'width:' + (option.voteCount > 0 ? (option.voteCount * 100 / (poll.totalVotes > 0 ? poll.totalVotes : 1)) : 0) + '%;height:100%;border-radius:4px;background:linear-gradient(135deg, var(--primary), var(--secondary));'">
-                                </div>
-                            </div>
+
+                            <button type="submit" class="btn btn-magnetic"
+                                style="flex: 1; text-align: left; justify-content: flex-start; background: rgba(255,255,255,0.05); border: 1px solid var(--color-glass-border);"
+                                data-magnetic>
+                                <span th:text="${option.optionText}">Option</span>
+                            </button>
+
+                            <span class="card-meta" th:text="${option.voteCount + ' votes'}"
+                                style="width: 80px; text-align: right; color: var(--color-silicon-gray);">0 votes</span>
                         </form>
+
+                        <!-- Progress Bar Background -->
+                        <div
+                            style="position: absolute; top: 0; left: 0; height: 100%; width: 100%; pointer-events: none; z-index: 1;">
+                            <div style="height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--color-moss-emerald-dim), transparent); transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0.3;"
+                                th:style="'width:' + (option.voteCount > 0 ? (option.voteCount * 100 / (poll.totalVotes > 0 ? poll.totalVotes : 1)) : 0) + '%;'">
+                            </div>
+                            <!-- Active Line Indicator -->
+                            <div style="position: absolute; bottom: 0; left: 0; height: 2px; background: var(--color-moss-emerald); transition: width 1s ease;"
+                                th:style="'width:' + (option.voteCount > 0 ? (option.voteCount * 100 / (poll.totalVotes > 0 ? poll.totalVotes : 1)) : 0) + '%;'">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-muted" style="margin-top: 2rem; font-size: 0.9rem; text-align: center;">
+                        Total Votes Register: <span th:text="${poll.totalVotes}"
+                            style="color: var(--color-cyber-copper);">0</span>
                     </div>
                 </div>
             </div>

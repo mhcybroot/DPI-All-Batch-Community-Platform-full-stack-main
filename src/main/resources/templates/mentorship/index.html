@@ -19,40 +19,52 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>🤝 Mentorship</h1>
+                <h1 class="kinetic-text">🤝 Neural Uplink</h1>
                 <div class="actions">
-                    <a th:href="@{/web/mentorship/register}" class="btn btn-primary">Become a Mentor</a>
-                    <a th:href="@{/web/mentorship/requests}" class="btn btn-secondary">My Requests</a>
+                    <a th:href="@{/web/mentorship/register}" class="btn btn-magnetic-primary" data-magnetic>Become a
+                        Mentor</a>
+                    <a th:href="@{/web/mentorship/requests}" class="btn btn-magnetic" data-magnetic>My Requests</a>
                 </div>
             </div>
-            <div class="card" style="margin-bottom:1.5rem;">
-                <form style="display:flex;gap:0.75rem;">
-                    <input type="text" name="expertise" class="form-control" placeholder="Search by expertise..."
-                        th:value="${expertise}" style="max-width:400px;">
-                    <button type="submit" class="btn btn-primary">Search</button>
+
+            <div class="card glass-card gsap-reveal" style="margin-bottom:1.5rem; padding: 1.5rem;">
+                <form style="display:flex; gap:1rem; align-items: center;">
+                    <input type="text" name="expertise" class="form-control glass-input"
+                        placeholder="Search neural expertise..." th:value="${expertise}"
+                        style="flex-grow: 1; max-width:500px;">
+                    <button type="submit" class="btn btn-magnetic" data-magnetic>Search</button>
                 </form>
             </div>
-            <div th:if="${mentorsPage != null and mentorsPage.hasContent()}" class="grid grid-3">
-                <div class="card" th:each="mentor : ${mentorsPage.content}">
-                    <div class="card-header"><span class="card-title"
-                            th:text="${mentor.fullName ?: 'Mentor'}">Name</span></div>
-                    <div class="card-body">
-                        <p th:if="${mentor.expertise}" th:text="${'Expertise: ' + mentor.expertise}">Expertise</p>
-                        <p th:if="${mentor.bio}" class="card-meta" th:text="${mentor.bio}">Bio</p>
+
+            <div th:if="${mentorsPage != null and mentorsPage.hasContent()}" class="grid grid-3 floating-grid">
+                <div class="card glass-card gsap-reveal" th:each="mentor : ${mentorsPage.content}" data-magnetic
+                    style="position: relative;">
+                    <div class="card-header">
+                        <span class="card-title kinetic-text" th:text="${mentor.fullName ?: 'Mentor'}">Name</span>
                     </div>
-                    <div class="card-footer">
-                        <form th:action="@{/web/mentorship/connect}" method="post">
+                    <div class="card-body text-muted">
+                        <p th:if="${mentor.expertise}">
+                            <span style="color: var(--color-moss-emerald);">⚡ Expertise:</span>
+                            <span th:text="${mentor.expertise}">Expertise</span>
+                        </p>
+                        <p th:if="${mentor.bio}" class="card-meta" th:text="${mentor.bio}"
+                            style="font-style: italic; opacity: 0.8;">Bio</p>
+                    </div>
+                    <div class="card-footer"
+                        style="border-top: 1px solid var(--color-glass-border); padding-top: 1rem; margin-top: auto;">
+                        <form th:action="@{/web/mentorship/connect}" method="post" style="display: flex; gap: 0.5rem;">
                             <input type="hidden" name="mentorId" th:value="${mentor.userId}">
-                            <input type="text" name="message" class="form-control" placeholder="Introduce yourself..."
-                                style="max-width:200px;display:inline-block;margin-right:0.5rem;">
-                            <button type="submit" class="btn btn-primary btn-sm">Connect</button>
+                            <input type="text" name="message" class="form-control glass-input"
+                                placeholder="Introduce yourself..." style="flex-grow: 1; font-size: 0.85rem;">
+                            <button type="submit" class="btn btn-sm btn-magnetic-primary">Connect</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="empty-state" th:if="${mentorsPage == null or !mentorsPage.hasContent()}">
-                <div class="empty-icon">🤝</div>
-                <p>No mentors found. Be the first to register!</p>
+
+            <div class="empty-state glass-card gsap-reveal" th:if="${mentorsPage == null or !mentorsPage.hasContent()}">
+                <div class="empty-icon" style="filter: drop-shadow(0 0 10px var(--color-cyber-copper));">🤝</div>
+                <p class="text-muted">Neural Network Unpopulated. Be the first node to register!</p>
             </div>
         </div>
     </main>

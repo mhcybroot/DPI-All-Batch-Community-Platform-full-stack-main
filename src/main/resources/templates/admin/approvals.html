@@ -19,41 +19,57 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>⚙ Admin — Pending Approvals</h1>
+                <h1 class="kinetic-text">⚙ System Administration</h1>
                 <div class="actions">
-                    <a th:href="@{/web/admin/approvals}" class="btn btn-primary">Approvals</a>
-                    <a th:href="@{/web/admin/users/create}" class="btn btn-secondary">Create User</a>
-                    <a th:href="@{/web/admin/audit-logs}" class="btn btn-secondary">Audit Logs</a>
+                    <a th:href="@{/web/admin/approvals}" class="btn btn-magnetic-primary" data-magnetic>Pending
+                        Approvals</a>
+                    <a th:href="@{/web/admin/users/create}" class="btn btn-magnetic" data-magnetic>+ Create User
+                        Node</a>
+                    <a th:href="@{/web/admin/audit-logs}" class="btn btn-magnetic" data-magnetic>Audit Logs</a>
                 </div>
             </div>
 
-            <div th:if="${requests != null and !requests.isEmpty()}">
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
+            <div th:if="${requests != null and !requests.isEmpty()}" class="card glass-card gsap-reveal"
+                style="padding: 0;">
+                <div class="table-wrapper" style="margin: 0;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead style="background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--color-glass-border);">
                             <tr>
-                                <th>#</th>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Requested</th>
-                                <th>Actions</th>
+                                <th style="padding: 1rem; text-align: left; color: var(--color-silicon-gray);">ID</th>
+                                <th style="padding: 1rem; text-align: left; color: var(--color-silicon-gray);">User
+                                    Identity</th>
+                                <th style="padding: 1rem; text-align: left; color: var(--color-silicon-gray);">Comms
+                                    Link</th>
+                                <th style="padding: 1rem; text-align: left; color: var(--color-silicon-gray);">Timestamp
+                                </th>
+                                <th style="padding: 1rem; text-align: left; color: var(--color-silicon-gray);">Protocol
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="req : ${requests}">
-                                <td th:text="${req.id}">1</td>
-                                <td th:text="${req.user.fullName ?: 'User'}">Name</td>
-                                <td th:text="${req.user.email ?: '—'}">Email</td>
-                                <td th:text="${req.requestedAt}">Date</td>
-                                <td style="display:flex;gap:0.5rem;">
+                            <tr th:each="req : ${requests}" style="border-bottom: 1px solid var(--color-glass-border);">
+                                <td th:text="${req.id}" style="padding: 1rem; color: var(--color-moss-emerald);">1</td>
+                                <td th:text="${req.user.fullName ?: 'User'}" style="padding: 1rem; font-weight: 500;">
+                                    Name</td>
+                                <td th:text="${req.user.email ?: '—'}" style="padding: 1rem; font-family: monospace;">
+                                    Email</td>
+                                <td th:text="${req.requestedAt}"
+                                    style="padding: 1rem; color: var(--color-silicon-gray); font-size: 0.9rem;">Date
+                                </td>
+                                <td style="padding: 1rem; display:flex; gap:0.5rem;">
                                     <form th:action="@{/web/admin/approvals/{id}/approve(id=${req.id})}" method="post">
-                                        <button class="btn btn-success btn-sm" type="submit">✓ Approve</button>
+                                        <button class="btn btn-sm" type="submit"
+                                            style="background: rgba(45, 90, 39, 0.2); color: #4caf50; border: 1px solid rgba(76, 175, 80, 0.3);">✓
+                                            Authorize</button>
                                     </form>
                                     <form th:action="@{/web/admin/approvals/{id}/reject(id=${req.id})}" method="post"
-                                        style="display:flex;gap:0.25rem;">
-                                        <input type="text" name="reason" class="form-control" placeholder="Reason"
-                                            style="max-width:150px;padding:0.25rem 0.5rem;font-size:0.8125rem;">
-                                        <button class="btn btn-danger btn-sm" type="submit">✕ Reject</button>
+                                        style="display:flex; gap:0.25rem;">
+                                        <input type="text" name="reason" class="form-control glass-input"
+                                            placeholder="Denial Reason"
+                                            style="max-width:150px; padding:0.25rem 0.5rem; font-size:0.8125rem; height: auto;">
+                                        <button class="btn btn-sm" type="submit"
+                                            style="background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.2);">✕
+                                            Deny</button>
                                     </form>
                                 </td>
                             </tr>
@@ -61,9 +77,10 @@
                     </table>
                 </div>
             </div>
-            <div class="empty-state" th:if="${requests == null or requests.isEmpty()}">
-                <div class="empty-icon">✓</div>
-                <p>No pending approval requests. All caught up!</p>
+
+            <div class="empty-state glass-card gsap-reveal" th:if="${requests == null or requests.isEmpty()}">
+                <div class="empty-icon" style="filter: drop-shadow(0 0 10px var(--color-moss-emerald));">✓</div>
+                <p class="text-muted">System Nominal. No pending authorization requests.</p>
             </div>
         </div>
     </main>

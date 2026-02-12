@@ -20,52 +20,81 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>👤 My Profile</h1>
+                <h1 class="kinetic-text">👤 Identity Protocol</h1>
                 <div class="actions">
-                    <a th:href="@{/web/profile/edit}" class="btn btn-primary">✏ Edit Profile</a>
-                    <a th:href="@{/web/profile/privacy}" class="btn btn-secondary">🔒 Privacy Settings</a>
+                    <a th:href="@{/web/profile/edit}" class="btn btn-magnetic-primary" data-magnetic>✏ Edit Profile</a>
+                    <a th:href="@{/web/profile/privacy}" class="btn btn-magnetic" data-magnetic>🔒 Privacy Settings</a>
                 </div>
             </div>
 
-            <div class="grid grid-2">
-                <div class="card">
-                    <div class="card-header"><span class="card-title">Personal Information</span></div>
+            <div class="grid grid-2 floating-grid">
+                <div class="card glass-card gsap-reveal" style="transform: translateZ(0);">
+                    <div class="card-header"><span class="card-title kinetic-text">Bio-Data Node</span></div>
                     <div class="card-body">
-                        <p><strong>Bio:</strong> <span th:text="${profile.bio ?: 'Not set'}">Bio</span></p>
-                        <p><strong>Date of Birth:</strong> <span
-                                th:text="${profile.dateOfBirth ?: 'Not set'}">DOB</span></p>
-                        <p><strong>Phone:</strong> <span th:text="${profile.phoneNumber ?: 'Not set'}">Phone</span></p>
+                        <div style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--color-silicon-gray);">
+                            <span th:text="${profile.bio ?: 'No bio-data uploaded.'}">Bio</span>
+                        </div>
+                        <div
+                            style="display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1rem; font-size: 0.9rem;">
+                            <strong style="color: var(--color-moss-emerald);">Date of Origin:</strong>
+                            <span th:text="${profile.dateOfBirth ?: 'Unknown'}">DOB</span>
+
+                            <strong style="color: var(--color-moss-emerald);">Comms Link:</strong>
+                            <span th:text="${profile.phoneNumber ?: 'Offline'}">Phone</span>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header"><span class="card-title">Links & Social</span></div>
+
+                <div class="card glass-card gsap-reveal" style="transform: translateZ(0); transition-delay: 0.1s;">
+                    <div class="card-header"><span class="card-title kinetic-text">Network Connections</span></div>
                     <div class="card-body">
-                        <p><strong>LinkedIn:</strong> <a th:if="${profile.linkedinUrl}" th:href="${profile.linkedinUrl}"
-                                th:text="${profile.linkedinUrl}" target="_blank"></a><span
-                                th:unless="${profile.linkedinUrl}">Not set</span></p>
-                        <p><strong>GitHub:</strong> <a th:if="${profile.githubUrl}" th:href="${profile.githubUrl}"
-                                th:text="${profile.githubUrl}" target="_blank"></a><span
-                                th:unless="${profile.githubUrl}">Not set</span></p>
-                        <p><strong>Portfolio:</strong> <a th:if="${profile.portfolioUrl}"
-                                th:href="${profile.portfolioUrl}" th:text="${profile.portfolioUrl}"
-                                target="_blank"></a><span th:unless="${profile.portfolioUrl}">Not set</span></p>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div th:if="${profile.linkedinUrl}" class="link-node">
+                                <span style="margin-right:0.5rem;">🔗</span>
+                                <a th:href="${profile.linkedinUrl}" target="_blank" class="text-link">LinkedIn
+                                    Signal</a>
+                            </div>
+                            <div th:if="${profile.githubUrl}" class="link-node">
+                                <span style="margin-right:0.5rem;">💻</span>
+                                <a th:href="${profile.githubUrl}" target="_blank" class="text-link">GitHub
+                                    Repository</a>
+                            </div>
+                            <div th:if="${profile.portfolioUrl}" class="link-node">
+                                <span style="margin-right:0.5rem;">🌐</span>
+                                <a th:href="${profile.portfolioUrl}" target="_blank" class="text-link">Portfolio
+                                    Domain</a>
+                            </div>
+                            <div th:if="${profile.linkedinUrl == null and profile.githubUrl == null and profile.portfolioUrl == null}"
+                                class="text-muted" style="font-style: italic;">
+                                No external uplinks established.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="section" style="margin-top:1.5rem;">
-                <h2 class="section-title">🛠 Skills</h2>
-                <div class="tag-list" th:if="${profile.skills != null and !profile.skills.isEmpty()}">
-                    <span class="tag" th:each="skill : ${profile.skills}" th:text="${skill.name}">Skill</span>
+            <div class="section glass-card gsap-reveal"
+                style="margin-top:1.5rem; padding: 1.5rem; transition-delay: 0.2s;">
+                <h2 class="section-title kinetic-text"
+                    style="border-bottom: 1px solid var(--color-glass-border); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    🛠 Skill Module</h2>
+
+                <div class="tag-list" th:if="${profile.skills != null and !profile.skills.isEmpty()}"
+                    style="margin-bottom: 1rem;">
+                    <span class="tag" th:each="skill : ${profile.skills}" th:text="${skill.name}"
+                        style="background: var(--color-cyber-copper-dim); color: var(--color-cyber-copper); border: 1px solid var(--color-cyber-copper-dim); padding: 0.25rem 0.75rem;">Skill</span>
                 </div>
-                <p th:if="${profile.skills == null or profile.skills.isEmpty()}" class="card-meta">No skills added yet.
+
+                <p th:if="${profile.skills == null or profile.skills.isEmpty()}" class="text-muted"
+                    style="font-style: italic; margin-bottom: 1rem;">
+                    Skill database empty. Initiate upload.
                 </p>
 
                 <form th:action="@{/web/profile/skills}" method="post"
-                    style="margin-top:1rem; display:flex; gap:0.5rem;">
-                    <input type="text" name="skills" class="form-control" placeholder="Add skills (comma-separated)"
-                        style="max-width:400px;">
-                    <button type="submit" class="btn btn-secondary btn-sm">Add Skills</button>
+                    style="display:flex; gap:0.5rem; align-items: center;">
+                    <input type="text" name="skills" class="form-control glass-input"
+                        placeholder="Upload skills (comma-separated)..." style="max-width:500px; flex-grow: 1;">
+                    <button type="submit" class="btn btn-magnetic" data-magnetic>Add Skills</button>
                 </form>
             </div>
         </div>

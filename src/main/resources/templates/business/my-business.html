@@ -18,51 +18,72 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>🏪 My Businesses</h1>
+                <h1 class="kinetic-text">💼 My Corporate Assets</h1>
                 <div class="actions">
-                    <a th:href="@{/web/business}" class="btn btn-secondary">← Back to Directory</a>
-                    <a th:href="@{/web/business/register}" class="btn btn-primary">+ Register Business</a>
+                    <a th:href="@{/web/business}" class="btn btn-ghost" style="opacity: 0.7;">← Directory Access</a>
+                    <a th:href="@{/web/business/register}" class="btn btn-magnetic-primary" data-magnetic>+ Register New
+                        Entity</a>
                 </div>
             </div>
 
-            <div th:if="${businessPage != null and businessPage.hasContent()}">
-                <div th:each="biz : ${businessPage.content}" class="card" style="margin-bottom:0.75rem;">
-                    <div class="card-header">
-                        <span class="card-title" th:text="${biz.businessName}">Name</span>
-                        <span class="badge badge-primary" th:text="${biz.category}">Category</span>
+            <div th:if="${businessPage != null and businessPage.hasContent()}" class="grid floating-grid"
+                style="grid-template-columns: 1fr;">
+                <div th:each="biz : ${businessPage.content}" class="card glass-card gsap-reveal"
+                    style="margin-bottom:1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                    <div class="card-header"
+                        style="border-bottom: 1px solid var(--color-glass-border); padding-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span class="card-title kinetic-text" th:text="${biz.businessName}"
+                            style="font-size: 1.25rem;">Name</span>
+                        <span class="badge"
+                            style="background: var(--color-moss-emerald-dim); color: var(--color-moss-emerald); border: 1px solid var(--color-moss-emerald-dim);"
+                            th:text="${biz.category}">Category</span>
                     </div>
                     <div class="card-body">
-                        <p class="card-meta" th:text="${biz.location}">Location</p>
-                        <p th:if="${biz.website}" class="card-meta"><a th:href="${biz.website}" target="_blank"
-                                rel="noopener">Website ↗</a></p>
+                        <div
+                            style="display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1rem; color: var(--color-silicon-gray);">
+                            <strong>HQ Location:</strong> <span th:text="${biz.location}">Location</span>
+                            <strong>Digital Uplink:</strong>
+                            <span th:if="${biz.website}"><a th:href="${biz.website}" target="_blank" rel="noopener"
+                                    class="text-link">Access Site ↗</a></span>
+                            <span th:unless="${biz.website}" class="text-muted">Offline</span>
+                        </div>
                     </div>
-                    <div class="card-footer" style="display:flex;gap:0.5rem;">
-                        <a th:href="@{/web/business/{id}/edit(id=${biz.id})}" class="btn btn-sm btn-secondary">✎
-                            Edit</a>
+                    <div class="card-footer"
+                        style="padding-top: 0.75rem; border-top: 1px solid var(--color-glass-border); display:flex; gap:0.5rem;">
+                        <a th:href="@{/web/business/{id}/edit(id=${biz.id})}" class="btn btn-sm btn-ghost">✎ Edit
+                            Protocol</a>
 
                         <form th:action="@{/web/business/{id}/delete(id=${biz.id})}" method="post"
-                            onsubmit="return confirm('Delete this business profile?')" style="margin-left:auto;">
-                            <button type="submit" class="btn btn-danger btn-sm">🗑 Delete</button>
+                            onsubmit="return confirm('Confirm liquidation of this corporate entity? This action is irreversible.')"
+                            style="margin-left:auto;">
+                            <button type="submit" class="btn btn-sm"
+                                style="color: #ff4d4d; background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.2);">🗑
+                                Liquidate</button>
                         </form>
                     </div>
                 </div>
 
                 <!-- Pagination -->
-                <div class="pagination" th:if="${businessPage.totalPages > 1}">
+                <div class="pagination glass-card" th:if="${businessPage.totalPages > 1}"
+                    style="justify-content: center; padding: 0.5rem;">
                     <a th:if="${businessPage.number > 0}"
-                        th:href="@{/web/business/my-business(page=${businessPage.number - 1})}">← Prev</a>
+                        th:href="@{/web/business/my-business(page=${businessPage.number - 1})}" class="btn btn-ghost">←
+                        Prev Sector</a>
                     <span class="active"
+                        style="display: flex; align-items: center; padding: 0 1rem; color: var(--color-frozen-white); font-family: var(--font-machine);"
                         th:text="${businessPage.number + 1 + ' / ' + businessPage.totalPages}">1/1</span>
                     <a th:if="${businessPage.number < businessPage.totalPages - 1}"
-                        th:href="@{/web/business/my-business(page=${businessPage.number + 1})}">Next →</a>
+                        th:href="@{/web/business/my-business(page=${businessPage.number + 1})}"
+                        class="btn btn-ghost">Next Sector →</a>
                 </div>
             </div>
 
-            <div class="empty-state" th:if="${businessPage == null or !businessPage.hasContent()}">
-                <div class="empty-icon">🏪</div>
-                <p>You haven't registered any businesses yet.</p>
-                <a th:href="@{/web/business/register}" class="btn btn-primary" style="margin-top:1rem;">Register Your
-                    Business</a>
+            <div class="empty-state glass-card gsap-reveal"
+                th:if="${businessPage == null or !businessPage.hasContent()}">
+                <div class="empty-icon" style="filter: drop-shadow(0 0 10px var(--color-moss-emerald));">💼</div>
+                <p class="text-muted">No corporate assets registered under this identifier.</p>
+                <a th:href="@{/web/business/register}" class="btn btn-magnetic-primary" style="margin-top:1rem;"
+                    data-magnetic>Initiate Registration</a>
             </div>
         </div>
     </main>
