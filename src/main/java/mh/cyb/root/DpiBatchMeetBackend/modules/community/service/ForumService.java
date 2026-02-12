@@ -34,4 +34,9 @@ public interface ForumService {
 
     // Comment CRUD
     void deleteComment(Long id, Long requesterId, boolean isAdmin);
+
+    // Activity & Stats
+    List<ForumActivityDto> getRecentActivity(int limit);
+
+    ForumStatsDto getForumStats();
 }

@@ -14,21 +14,33 @@
     <div th:replace="~{layout/base :: navbar}"></div>
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
+            <div class="page-header kinetic-text">
                 <h1>📂 Create Forum Category</h1>
             </div>
-            <form th:action="@{/web/forum/categories}" method="post" class="card" style="max-width:500px;">
-                <div class="form-group"><label class="form-label">Category Name</label><input type="text" name="name"
-                        class="form-control" required placeholder="e.g. General Discussion"></div>
-                <div class="form-group"><label class="form-label">Description</label><textarea name="description"
-                        class="form-control" rows="3" placeholder="What is this category about?"></textarea></div>
-                <div class="form-group"><label class="form-label">Icon URL (optional)</label><input type="url"
-                        name="iconUrl" class="form-control" placeholder="https://..."></div>
-                <div style="display:flex;gap:0.75rem;">
-                    <button type="submit" class="btn btn-primary">Create Category</button>
-                    <a th:href="@{/web/forum}" class="btn btn-secondary">Cancel</a>
+            <form th:action="@{/web/forum/categories}" method="post" class="card glass-card gsap-reveal"
+                style="max-width:600px;">
+                <div class="form-group">
+                    <label class="form-label text-copper">Category Name</label>
+                    <input type="text" name="name" class="form-control" required placeholder="e.g. General Discussion"
+                        style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: var(--text);">
+                </div>
+                <div class="form-group">
+                    <label class="form-label text-copper">Description</label>
+                    <textarea name="description" class="form-control" rows="4"
+                        placeholder="What is this category about?"
+                        style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: var(--text);"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label text-copper">Icon Identifier</label>
+                    <input type="text" name="iconUrl" class="form-control" placeholder="e.g. terminal, code, coffee"
+                        style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: var(--text);">
+                </div>
+                <div style="display:flex; gap:1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary btn-magnetic" data-magnetic>Create Category</button>
+                    <a th:href="@{/web/forum}" class="btn btn-secondary btn-magnetic" data-magnetic>Cancel</a>
                 </div>
             </form>
+
         </div>
     </main>
     <footer class="footer">

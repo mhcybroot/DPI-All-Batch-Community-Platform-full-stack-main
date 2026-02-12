@@ -6,59 +6,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blood Donor Registry — DPI Community</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/digital-mycelium.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+    <style>
+        /* Bio-Medical Theme Overrides */
+        :root {
+            --color-blood-crimson: #ef4444;
+            --color-blood-dim: rgba(239, 68, 68, 0.2);
+            --color-plasma-glass: rgba(239, 68, 68, 0.1);
+        }
+
+        .bio-theme {
+            --color-moss-emerald: var(--color-blood-crimson);
+            --color-moss-emerald-dim: var(--color-blood-dim);
+        }
+
+        .blood-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-family: var(--font-machine);
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--color-glass-border);
+        }
+
+        .blood-badge.available {
+            border-color: var(--color-blood-crimson);
+            color: var(--color-blood-crimson);
+            box-shadow: 0 0 10px var(--color-blood-dim);
+        }
+
+        .blood-badge.unavailable {
+            border-color: var(--color-silicon-gray);
+            color: var(--color-silicon-gray);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 10px currentColor;
+            animation: bio-pulse 2s infinite;
+        }
+
+        @keyframes bio-pulse {
+            0% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+
+            100% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+        }
+
+        .donor-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-glass-border);
+        }
+
+        .blood-group-display {
+            font-family: var(--font-human);
+            font-size: 2.5rem;
+            color: var(--color-blood-crimson);
+            line-height: 1;
+            text-shadow: 0 0 20px var(--color-blood-dim);
+        }
+    </style>
 </head>
 
-<body>
+<body class="bio-theme">
     <div th:replace="~{layout/base :: navbar}"></div>
+
     <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
-        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+        <div class="glass-card" style="padding: 1rem; border-color: var(--color-moss-emerald);" data-auto-dismiss>
+            <span class="text-green">✓</span> <span th:text="${successMessage}"></span>
+        </div>
     </div>
+
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
-                <h1>🩸 Blood Donor Registry</h1>
+            <!-- Header -->
+            <div class="page-header" style="margin-bottom: 3rem;">
+                <h1 class="kinetic-text" data-text="Bio-Medical Registry">Bio-Medical Registry</h1>
                 <div class="actions">
-                    <a th:href="@{/web/blood-donors/register}" class="btn btn-primary">+ Register as Donor</a>
-                    <a th:href="@{/web/blood-donors/my-profile}" class="btn btn-secondary">My Profile</a>
+                    <a th:href="@{/web/blood-donors/register}" class="btn-magnetic btn-magnetic-primary">
+                        <span>+ Register Donor</span>
+                    </a>
+                    <a th:href="@{/web/blood-donors/my-profile}" class="btn-magnetic">
+                        <span>My Data</span>
+                    </a>
                 </div>
             </div>
-            <div class="card" style="margin-bottom:1.5rem;">
-                <form style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-                    <select name="bloodGroup" class="form-control" style="max-width:200px;">
-                        <option value="">All Blood Groups</option>
-                        <option th:each="bg : ${bloodGroups}" th:value="${bg}" th:text="${bg}"
-                            th:selected="${bg == param.bloodGroup}"></option>
-                    </select>
-                    <input type="text" name="location" class="form-control" placeholder="Location"
-                        style="max-width:250px;" th:value="${param.location}">
-                    <button type="submit" class="btn btn-primary">Search</button>
+
+            <!-- Search Matrix -->
+            <div class="glass-card" style="padding: 1.5rem; margin-bottom: 3rem;">
+                <form
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
+                    <div class="form-group">
+                        <label class="mono-text"
+                            style="font-size: 0.8rem; color: var(--color-silicon-gray); margin-bottom: 0.5rem; display: block;">BLOOD_GROUP</label>
+                        <select name="bloodGroup" class="glass-input form-control" style="width: 100%;">
+                            <option value="">All Groups</option>
+                            <option th:each="bg : ${bloodGroups}" th:value="${bg}" th:text="${bg}"
+                                th:selected="${bg == param.bloodGroup}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="mono-text"
+                            style="font-size: 0.8rem; color: var(--color-silicon-gray); margin-bottom: 0.5rem; display: block;">SECTOR_LOC</label>
+                        <input type="text" name="location" class="glass-input form-control"
+                            placeholder="Search City/Area..." th:value="${param.location}" style="width: 100%;">
+                    </div>
+                    <button type="submit" class="btn-magnetic btn-magnetic-primary" style="height: 42px;">
+                        <span>Scan Registry</span>
+                    </button>
                 </form>
             </div>
-            <div th:if="${donors != null and !donors.isEmpty()}" class="grid grid-3">
-                <div class="card" th:each="donor : ${donors}">
-                    <div class="card-header">
-                        <span class="card-title" th:text="${donor.fullName ?: 'Donor'}">Name</span>
-                        <span class="badge" th:classappend="${donor.available ? 'badge-success' : 'badge-danger'}"
-                            th:text="${donor.available ? 'Available' : 'Unavailable'}">Status</span>
+
+            <!-- Donor Grid -->
+            <div th:if="${donors != null and !donors.isEmpty()}" class="floating-grid">
+                <div class="glass-card" th:each="donor : ${donors}" style="padding: 1.5rem;">
+                    <div class="donor-card-header">
+                        <div>
+                            <div class="blood-group-display" th:text="${donor.bloodGroup}">A+</div>
+                            <div class="mono-text"
+                                style="font-size: 0.9rem; color: var(--color-silicon-gray); margin-top: 0.5rem;">TYPE
+                            </div>
+                        </div>
+                        <div class="blood-badge" th:classappend="${donor.available ? 'available' : 'unavailable'}">
+                            <div class="pulse-dot"></div>
+                            <span th:text="${donor.available ? 'ACTIVE' : 'OFFLINE'}">Status</span>
+                        </div>
                     </div>
+
                     <div class="card-body">
-                        <p><strong>Blood Group:</strong> <span th:text="${donor.bloodGroup}">A+</span></p>
-                        <p th:if="${donor.location}"><strong>Location:</strong> <span
-                                th:text="${donor.location}">City</span></p>
-                        <p th:if="${donor.lastDonationDate}" class="card-meta">Last donation: <span
-                                th:text="${donor.lastDonationDate}">Date</span></p>
+                        <h3 class="card-title" th:text="${donor.fullName ?: 'Donor'}"
+                            style="font-size: 1.2rem; margin-bottom: 0.5rem;">Name</h3>
+
+                        <div
+                            style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--color-frozen-white);">
+                            <span class="text-copper">📍</span>
+                            <span th:text="${donor.location}">Location</span>
+                        </div>
+
+                        <div th:if="${donor.lastDonationDate}" class="mono-text"
+                            style="font-size: 0.8rem; color: var(--color-silicon-gray); margin-top: 1rem;">
+                            LAST_CYCLE: <span th:text="${donor.lastDonationDate}">Date</span>
+                        </div>
                     </div>
+
+                    <!-- Hover Effect Overlay -->
+                    <div style="position: absolute; inset: 0; background: radial-gradient(circle at center, var(--color-blood-dim), transparent 70%); opacity: 0; transition: opacity 0.3s; pointer-events: none;"
+                        class="hover-glow"></div>
                 </div>
             </div>
-            <div class="empty-state" th:if="${donors == null}">
-                <div class="empty-icon">🩸</div>
-                <p>Use the search filters above to find donors.</p>
+
+            <!-- Empty States -->
+            <div class="glass-card" th:if="${donors == null}"
+                style="padding: 3rem; text-align: center; border-style: dashed;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🩸</div>
+                <h3 style="margin-bottom: 0.5rem;">Registry Offline</h3>
+                <p class="text-muted">Initiate scan parameters above to locate compatible donors.</p>
             </div>
-            <div class="empty-state" th:if="${donors != null and donors.isEmpty()}">
-                <p>No donors found matching your criteria.</p>
+
+            <div class="glass-card" th:if="${donors != null and donors.isEmpty()}"
+                style="padding: 3rem; text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">❌</div>
+                <h3 style="margin-bottom: 0.5rem;">No Matches Found</h3>
+                <p class="text-muted">No donor signals detected matching current criteria.</p>
             </div>
         </div>
     </main>
@@ -67,6 +203,36 @@
             <p>© 2026 DPI Batch Community Platform</p>
         </div>
     </footer>
+
+    <script>
+        // Init magnetic buttons if not already handled by app.js global init
+        if (typeof initMagneticButtons === 'function') {
+            initMagneticButtons();
+        }
+
+        // Add specific hover logic for donor cards to show glow
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const glow = card.querySelector('.hover-glow');
+                if (glow) glow.style.opacity = '1';
+            });
+            card.addEventListener('mouseleave', () => {
+                const glow = card.querySelector('.hover-glow');
+                if (glow) glow.style.opacity = '0';
+            });
+        });
+
+        // GSAP Reveal
+        if (typeof gsap !== 'undefined') {
+            gsap.from(".glass-card", {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power3.out"
+            });
+        }
+    </script>
 </body>
 
 </html>

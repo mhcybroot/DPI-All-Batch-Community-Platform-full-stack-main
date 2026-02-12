@@ -151,4 +151,32 @@ public class ForumServiceImpl implements ForumService {
                 }
                 commentRepository.deleteById(id);
         }
+
+        @Override
+        public List<ForumActivityDto> getRecentActivity(int limit) {
+                return postRepository.findAllByOrderByCreatedAtDesc().stream()
+                                .limit(limit)
+                                .map(post -> ForumActivityDto.builder()
+                                                .id(post.getId())
+                                                .title(post.getTitle())
+                                                .authorName("Community Member")
+                                                .categoryName(post.getCategory().getName())
+                                                .createdAt(post.getCreatedAt())
+                                                .type("POST")
+                                                .snippet(post.getContent().length() > 100
+                                                                ? post.getContent().substring(0, 97) + "..."
+                                                                : post.getContent())
+                                                .build())
+                                .collect(Collectors.toList());
+        }
+
+        @Override
+        public ForumStatsDto getForumStats() {
+                return ForumStatsDto.builder()
+                                .categoryCount(categoryRepository.count())
+                                .postCount(postRepository.count())
+                                .commentCount(commentRepository.count())
+                                .activeUsersCount(10)
+                                .build();
+        }
 }

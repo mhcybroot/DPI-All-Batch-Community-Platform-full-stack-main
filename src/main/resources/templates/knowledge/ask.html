@@ -6,27 +6,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ask a Question — DPI Community</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/digital-mycelium.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Neural Hive Theme Overrides */
+        :root {
+            --color-neural-cyan: #06b6d4;
+            --color-neural-dim: rgba(6, 182, 212, 0.1);
+        }
+
+        .neural-theme {
+            --color-moss-emerald: var(--color-neural-cyan);
+            --color-moss-emerald-dim: var(--color-neural-dim);
+        }
+    </style>
 </head>
 
-<body>
+<body class="neural-theme">
     <div th:replace="~{layout/base :: navbar}"></div>
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
-                <h1>❓ Ask a Question</h1>
+            <div class="page-header" style="margin-bottom: 2rem;">
+                <h1 class="kinetic-text" data-text="Inject Query">Inject Query</h1>
+                <p class="text-muted">Submit a new signal to the collective mind.</p>
             </div>
-            <form th:action="@{/web/knowledge/ask}" method="post" class="card" style="max-width:600px;">
-                <div class="form-group"><label class="form-label">Title</label><input type="text" name="title"
-                        class="form-control" required placeholder="What's your question?"></div>
-                <div class="form-group"><label class="form-label">Details</label><textarea name="body"
-                        class="form-control" rows="6" required placeholder="Provide context and details..."></textarea>
+
+            <form th:action="@{/web/knowledge/ask}" method="post" class="glass-card gsap-reveal"
+                style="max-width:800px; padding: 2rem; position: relative; overflow: hidden;">
+                <!-- Decorative Hologram -->
+                <div
+                    style="position: absolute; top: -100px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, var(--color-neural-dim), transparent 70%); border-radius: 50%; pointer-events: none;">
                 </div>
-                <div class="form-group"><label class="form-label">Tags (comma-separated)</label><input type="text"
-                        name="tags" class="form-control" placeholder="java, spring-boot, api"></div>
-                <div style="display:flex;gap:0.75rem;"><button type="submit" class="btn btn-primary">Post
-                        Question</button><a th:href="@{/web/knowledge}" class="btn btn-secondary">Cancel</a></div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="mono-text"
+                        style="color: var(--color-silicon-gray); font-size: 0.8rem; margin-bottom: 0.5rem; display: block;">QUERY_SUBJECT</label>
+                    <input type="text" name="title" class="glass-input form-control" required
+                        placeholder="Concise summary of the anomaly..." style="width: 100%;">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="mono-text"
+                        style="color: var(--color-silicon-gray); font-size: 0.8rem; margin-bottom: 0.5rem; display: block;">DETAILED_ANALYSIS</label>
+                    <textarea name="body" class="glass-input form-control" rows="8" required
+                        placeholder="Provide full context, error logs, and reproduction steps..."
+                        style="width: 100%; font-family: var(--font-interface);"></textarea>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="mono-text"
+                        style="color: var(--color-silicon-gray); font-size: 0.8rem; margin-bottom: 0.5rem; display: block;">SIGNAL_TAGS</label>
+                    <input type="text" name="tags" class="glass-input form-control"
+                        placeholder="java, spring-boot, api (comma separated)" style="width: 100%;">
+                </div>
+
+                <div
+                    style="display:flex; gap:1rem; border-top: 1px solid var(--color-glass-border); padding-top: 1.5rem;">
+                    <button type="submit" class="btn-magnetic btn-magnetic-primary">
+                        <span>Transmission Broadcast</span>
+                    </button>
+                    <a th:href="@{/web/knowledge}" class="btn-magnetic">
+                        <span>Abort</span>
+                    </a>
+                </div>
             </form>
         </div>
     </main>
@@ -35,6 +81,12 @@
             <p>© 2026 DPI Batch Community Platform</p>
         </div>
     </footer>
+    <script th:src="@{/js/app.js}"></script>
+    <script>
+        if (typeof initMagneticButtons === 'function') {
+            initMagneticButtons();
+        }
+    </script>
 </body>
 
 </html>

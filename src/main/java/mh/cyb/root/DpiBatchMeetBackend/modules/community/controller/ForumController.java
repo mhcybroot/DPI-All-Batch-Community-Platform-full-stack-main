@@ -130,4 +130,16 @@ public class ForumController {
         forumService.deleteComment(commentId, user.getId(), isAdmin);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/activity")
+    @Operation(summary = "Get recent activity", description = "Retrieves the latest posts and comments across the forum.")
+    public ResponseEntity<List<ForumActivityDto>> getRecentActivity(@RequestParam(defaultValue = "5") int limit) {
+        return ResponseEntity.ok(forumService.getRecentActivity(limit));
+    }
+
+    @GetMapping("/stats")
+    @Operation(summary = "Get forum stats", description = "Retrieves global forum statistics.")
+    public ResponseEntity<ForumStatsDto> getStats() {
+        return ResponseEntity.ok(forumService.getForumStats());
+    }
 }

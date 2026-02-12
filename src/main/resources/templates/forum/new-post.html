@@ -14,32 +14,38 @@
     <div th:replace="~{layout/base :: navbar}"></div>
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
+            <div class="page-header kinetic-text">
                 <h1>✏ New Post</h1>
             </div>
-            <form th:action="@{/web/forum/posts}" method="post" class="card" style="max-width:600px;">
+            <form th:action="@{/web/forum/posts}" method="post" class="card glass-card gsap-reveal"
+                style="max-width:800px;">
                 <div class="form-group">
-                    <label class="form-label">Category</label>
-                    <select name="categoryId" class="form-control" required>
+                    <label class="form-label text-copper">Category</label>
+                    <select name="categoryId" class="form-control" required
+                        style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: var(--text);">
                         <option value="">Select a category...</option>
-                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Category
+                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"
+                            th:selected="${cat.id == categoryId}">Category
                         </option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Title</label>
-                    <input type="text" name="title" class="form-control" required placeholder="What's on your mind?">
+                    <label class="form-label text-copper">Title</label>
+                    <input type="text" name="title" class="form-control" required placeholder="What's on your mind?"
+                        style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: var(--text);">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Content</label>
-                    <textarea name="content" class="form-control" rows="6" required
-                        placeholder="Share your thoughts..."></textarea>
+                    <label class="form-label text-copper">Content</label>
+                    <textarea name="content" class="form-control" rows="10" required
+                        placeholder="Share your thoughts..."
+                        style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: var(--text);"></textarea>
                 </div>
-                <div style="display:flex; gap:0.75rem;">
-                    <button type="submit" class="btn btn-primary">Publish Post</button>
-                    <a th:href="@{/web/forum}" class="btn btn-secondary">Cancel</a>
+                <div style="display:flex; gap:1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary btn-magnetic" data-magnetic>Publish Post</button>
+                    <a th:href="@{/web/forum}" class="btn btn-secondary btn-magnetic" data-magnetic>Cancel</a>
                 </div>
             </form>
+
         </div>
     </main>
     <footer class="footer">

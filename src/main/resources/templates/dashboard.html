@@ -93,6 +93,33 @@
 
             </div>
 
+            <!-- Recent Forum Activity -->
+            <div class="section gsap-reveal">
+                <h2 class="section-title">💬 Latest from Forum</h2>
+                <div class="grid grid-2 floating-grid"
+                    th:if="${recentForumPosts != null and !recentForumPosts.isEmpty()}">
+                    <a th:each="activity : ${recentForumPosts}" th:href="@{/web/forum/posts/{id}(id=${activity.id})}"
+                        class="card glass-card" style="text-decoration: none; color: inherit;" data-magnetic>
+                        <div class="card-header">
+                            <span class="card-title text-green" th:text="${activity.title}">Post Title</span>
+                            <span class="badge badge-secondary" th:text="${activity.categoryName}">Category</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted" th:text="${activity.snippet}">Snippet...</p>
+                            <div class="card-meta" style="margin-top: 0.5rem; font-size: 0.75rem;">
+                                <span th:text="${activity.authorName}">Author</span> •
+                                <span th:text="${#temporals.format(activity.createdAt, 'dd MMM yyyy')}">Date</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="card glass-card empty-state"
+                    th:if="${recentForumPosts == null or recentForumPosts.isEmpty()}">
+                    <p>No recent forum activity. Join the conversation!</p>
+                </div>
+            </div>
+
+
             <!-- Upcoming Events -->
             <div class="section gsap-reveal">
                 <h2 class="section-title">📅 Upcoming Events</h2>

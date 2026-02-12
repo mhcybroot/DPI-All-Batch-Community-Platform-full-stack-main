@@ -6,81 +6,201 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${question.title + ' — DPI Q&amp;A'}">Q&amp;A — DPI Community</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/digital-mycelium.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+    <style>
+        /* Neural Hive Theme Overrides */
+        :root {
+            --color-neural-cyan: #06b6d4;
+            --color-neural-dim: rgba(6, 182, 212, 0.1);
+            --color-neural-glow: rgba(6, 182, 212, 0.4);
+        }
+
+        .neural-theme {
+            --color-moss-emerald: var(--color-neural-cyan);
+            --color-moss-emerald-dim: var(--color-neural-dim);
+        }
+
+        .vote-control-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            border: 1px solid var(--color-glass-border);
+        }
+
+        .vote-btn-neural {
+            background: transparent;
+            border: none;
+            color: var(--color-silicon-gray);
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.2s var(--ease-organic);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .vote-btn-neural:hover {
+            background: var(--color-neural-dim);
+            color: var(--color-neural-cyan);
+            box-shadow: 0 0 10px var(--color-neural-dim);
+        }
+
+        .vote-count-neural {
+            font-family: var(--font-machine);
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--color-frozen-white);
+        }
+    </style>
 </head>
 
-<body>
+<body class="neural-theme">
     <div th:replace="~{layout/base :: navbar}"></div>
+
     <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
-        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+        <div class="glass-card" style="padding: 1rem; border-color: var(--color-neural-cyan);" data-auto-dismiss>
+            <span class="text-green">✓</span> <span th:text="${successMessage}"></span>
+        </div>
     </div>
+
     <main class="main-content">
         <div class="container">
-            <a th:href="@{/web/knowledge}" class="btn btn-secondary btn-sm" style="margin-bottom:1rem;">← Back to
-                Q&amp;A</a>
+            <a th:href="@{/web/knowledge}" class="btn-magnetic" style="margin-bottom:1rem; display: inline-flex;">
+                <span>← Return to Hive</span>
+            </a>
 
-            <!-- Question -->
-            <div class="card" style="margin-bottom:2rem;">
-                <div style="display:flex;gap:1rem;">
+            <!-- Question Card -->
+            <div class="glass-card gsap-reveal" style="margin-bottom:2rem; padding: 2rem;">
+                <div style="display:flex; gap:1.5rem;">
+                    <!-- Voting Side -->
                     <div class="vote-controls">
-                        <form th:action="@{/web/knowledge/{id}/vote(id=${question.id})}" method="post"><input
-                                type="hidden" name="voteType" value="UPVOTE"><button class="vote-btn"
-                                type="submit">▲</button></form>
-                        <span class="vote-count" th:text="${question.voteCount}">0</span>
-                        <form th:action="@{/web/knowledge/{id}/vote(id=${question.id})}" method="post"><input
-                                type="hidden" name="voteType" value="DOWNVOTE"><button class="vote-btn"
-                                type="submit">▼</button></form>
-                    </div>
-                    <div style="flex:1;">
-                        <h1 th:text="${question.title}" style="margin-bottom:0.5rem;">Title</h1>
-                        <div style="white-space:pre-line;margin-bottom:1rem;" th:text="${question.content}">Content
-                        </div>
-                        <div class="tag-list" th:if="${question.tags != null}">
-                            <span class="tag" th:each="tag : ${question.tags}" th:text="${tag}">Tag</span>
-                        </div>
-                        <p class="card-meta" style="margin-top:0.5rem;" th:text="${'Asked ' + question.createdAt}">Date
-                        </p>
-                    </div>
-                </div>
-            </div>
+                        <div class="vote-control-panel">
+                            <form th:action="@{/web/knowledge/{id}/vote(id=${question.id})}" method="post">
+                                <input type="hidden" name="voteType" value="UPVOTE">
+                                <button class="vote-btn-neural" type="submit" title="Resonate Up">▲</button>
+                            </form>
 
-            <!-- Answers -->
-            <h2 class="section-title">💡 Answers (<span th:text="${answers != null ? answers.size() : 0}">0</span>)</h2>
-            <div th:each="answer : ${answers}" class="card" style="margin-bottom:0.75rem;">
-                <div style="display:flex;gap:1rem;">
-                    <div class="vote-controls">
-                        <form th:action="@{/web/knowledge/answers/{id}/vote(id=${answer.id})}" method="post"><input
-                                type="hidden" name="questionId" th:value="${question.id}"><input type="hidden"
-                                name="voteType" value="UPVOTE"><button class="vote-btn" type="submit">▲</button></form>
-                        <span class="vote-count" th:text="${answer.voteCount}">0</span>
-                        <form th:action="@{/web/knowledge/answers/{id}/vote(id=${answer.id})}" method="post"><input
-                                type="hidden" name="questionId" th:value="${question.id}"><input type="hidden"
-                                name="voteType" value="DOWNVOTE"><button class="vote-btn" type="submit">▼</button>
-                        </form>
-                    </div>
-                    <div style="flex:1;">
-                        <div th:if="${answer.accepted}" class="badge badge-success" style="margin-bottom:0.5rem;">✓
-                            Accepted Answer</div>
-                        <div style="white-space:pre-line;" th:text="${answer.content}">Answer</div>
-                        <div class="card-footer" style="justify-content:space-between;">
-                            <span class="card-meta" th:text="${'Answered ' + answer.createdAt}">Date</span>
-                            <form th:unless="${answer.accepted}"
-                                th:action="@{/web/knowledge/answers/{id}/accept(id=${answer.id})}" method="post">
-                                <input type="hidden" name="questionId" th:value="${question.id}">
-                                <button class="btn btn-success btn-sm" type="submit">✓ Accept</button>
+                            <span class="vote-count-neural" th:text="${question.voteCount}">0</span>
+
+                            <form th:action="@{/web/knowledge/{id}/vote(id=${question.id})}" method="post">
+                                <input type="hidden" name="voteType" value="DOWNVOTE">
+                                <button class="vote-btn-neural" type="submit" title="Dampen Signal">▼</button>
                             </form>
                         </div>
                     </div>
+
+                    <!-- Content Side -->
+                    <div style="flex:1;">
+                        <h1 class="kinetic-text" th:text="${question.title}"
+                            style="margin-bottom:1rem; line-height: 1.3;">Title</h1>
+
+                        <div style="white-space:pre-line; margin-bottom:1.5rem; line-height: 1.6; color: var(--color-frozen-white); font-size: 1.1rem;"
+                            th:text="${question.content}">Content</div>
+
+                        <div class="tag-list" th:if="${question.tags != null}"
+                            style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            <span th:each="tag : ${question.tags}" class="mono-text"
+                                style="font-size: 0.8rem; padding: 0.2rem 0.75rem; border: 1px solid var(--color-neural-cyan); border-radius: 20px; color: var(--color-neural-cyan); background: var(--color-neural-dim);">
+                                #<span th:text="${tag}">Tag</span>
+                            </span>
+                        </div>
+
+                        <div class="card-meta"
+                            style="border-top: 1px solid var(--color-glass-border); padding-top: 1rem; display: flex; justify-content: space-between;">
+                            <span class="mono-text" style="color: var(--color-silicon-gray); font-size: 0.9rem;"
+                                th:text="${'INJECTED: ' + #temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Add Answer -->
-            <form th:action="@{/web/knowledge/{id}/answer(id=${question.id})}" method="post" class="card"
-                style="margin-top:1rem;">
-                <div class="form-group"><label class="form-label">Your Answer</label><textarea name="content"
-                        class="form-control" rows="4" required placeholder="Share your knowledge..."></textarea></div>
-                <button type="submit" class="btn btn-primary">Post Answer</button>
+            <!-- Answers Section -->
+            <div class="gsap-reveal" style="margin-bottom: 2rem;">
+                <h2 class="kinetic-text" data-text="Responses" style="margin-bottom: 1.5rem;">
+                    Signal Responses (<span th:text="${answers != null ? answers.size() : 0}">0</span>)
+                </h2>
+
+                <div th:each="answer : ${answers}" class="glass-card"
+                    th:style="${answer.accepted ? 'margin-bottom:1rem; border-color: var(--color-neural-cyan); box-shadow: 0 0 20px var(--color-neural-dim);' : 'margin-bottom:1rem;'}"
+                    style="margin-bottom:1rem;">
+
+                    <div style="display:flex; gap:1.5rem; padding: 1.5rem;">
+                        <!-- Answer Voting -->
+                        <div class="vote-controls">
+                            <div class="vote-control-panel">
+                                <form th:action="@{/web/knowledge/answers/{id}/vote(id=${answer.id})}" method="post">
+                                    <input type="hidden" name="questionId" th:value="${question.id}">
+                                    <input type="hidden" name="voteType" value="UPVOTE">
+                                    <button class="vote-btn-neural" type="submit">▲</button>
+                                </form>
+                                <span class="vote-count-neural" th:text="${answer.voteCount}"
+                                    style="font-size: 1rem;">0</span>
+                                <form th:action="@{/web/knowledge/answers/{id}/vote(id=${answer.id})}" method="post">
+                                    <input type="hidden" name="questionId" th:value="${question.id}">
+                                    <input type="hidden" name="voteType" value="DOWNVOTE">
+                                    <button class="vote-btn-neural" type="submit">▼</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Answer Content -->
+                        <div style="flex:1;">
+                            <div th:if="${answer.accepted}" class="mono-text"
+                                style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-neural-cyan); margin-bottom: 1rem; padding: 0.25rem 0.75rem; background: var(--color-neural-dim); border-radius: 12px; font-size: 0.8rem;">
+                                <span>✓ VALIDATED SOLUTION</span>
+                            </div>
+
+                            <div style="white-space:pre-line; line-height: 1.6; margin-bottom: 1rem;"
+                                th:text="${answer.content}">Answer</div>
+
+                            <div class="card-footer"
+                                style="display: flex; justify-content:space-between; align-items: center; border-top: 1px solid var(--color-glass-border); padding-top: 1rem;">
+                                <span class="mono-text" style="color: var(--color-silicon-gray); font-size: 0.8rem;"
+                                    th:text="${'T: ' + #temporals.format(answer.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span>
+
+                                <form th:unless="${answer.accepted}"
+                                    th:action="@{/web/knowledge/answers/{id}/accept(id=${answer.id})}" method="post">
+                                    <input type="hidden" name="questionId" th:value="${question.id}">
+                                    <button class="btn-magnetic" type="submit"
+                                        style="padding: 0.25rem 1rem; font-size: 0.8rem;">
+                                        <span>Accept Signal</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Answer Form -->
+            <form th:action="@{/web/knowledge/{id}/answer(id=${question.id})}" method="post"
+                class="glass-card gsap-reveal" style="padding: 2rem;">
+                <h3 class="mono-text" style="color: var(--color-neural-cyan); margin-bottom: 1rem;">TRANSMIT_RESPONSE
+                </h3>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <textarea name="content" class="glass-input form-control" rows="6" required
+                        placeholder="Share your technical analysis..."
+                        style="width: 100%; font-family: var(--font-interface);"></textarea>
+                </div>
+
+                <button type="submit" class="btn-magnetic btn-magnetic-primary">
+                    <span>Broadcast Response</span>
+                </button>
             </form>
         </div>
     </main>
@@ -89,6 +209,11 @@
             <p>© 2026 DPI Batch Community Platform</p>
         </div>
     </footer>
+    <script>
+        if (typeof initMagneticButtons === 'function') {
+            initMagneticButtons();
+        }
+    </script>
 </body>
 
 </html>

@@ -36,6 +36,7 @@ public class ForumViewController {
 
     @GetMapping("/category/{id}")
     public String categoryPosts(@PathVariable Long id, Model model) {
+        model.addAttribute("category", forumService.getCategoryById(id));
         model.addAttribute("posts", forumService.getPostsByCategory(id));
         model.addAttribute("categoryId", id);
         model.addAttribute("activeNav", "forum");

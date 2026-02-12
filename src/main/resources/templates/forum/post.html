@@ -20,54 +20,76 @@
     <main class="main-content">
         <div class="container">
 
-            <a th:href="@{/web/forum}" class="btn btn-secondary btn-sm" style="margin-bottom:1rem;">← Back to Forum</a>
+            <a th:href="@{/web/forum/category/{id}(id=${post.categoryId})}"
+                class="btn btn-secondary btn-sm btn-magnetic" style="margin-bottom:1rem;" data-magnetic>← Back to
+                Category</a>
 
             <!-- Post -->
-            <div class="card" style="margin-bottom:2rem;">
+            <article class="card glass-card gsap-reveal" style="margin-bottom:2rem;">
                 <div class="card-header">
-                    <h1 class="card-title" th:text="${post.title}">Title</h1>
-                    <span class="card-meta" th:text="${post.createdAt}">Date</span>
+                    <h1 class="card-title kinetic-text text-green" th:text="${post.title}">Title</h1>
+                    <div class="card-meta">
+                        <span th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}">Date</span>
+                    </div>
                 </div>
-                <div class="card-body" style="white-space: pre-line;" th:text="${post.content}">Content</div>
-                <div class="card-footer" th:if="${post.authorId == currentUserId or isAdmin}">
+                <div class="card-body" style="white-space: pre-line; line-height: 1.6; color: var(--text);"
+                    th:text="${post.content}">Content</div>
+                <div class="card-footer" th:if="${post.authorId == currentUserId or isAdmin}"
+                    style="gap: 1rem; border-top: 1px solid var(--glass-border-color); padding-top: 1rem;">
+                    <a th:href="@{/web/forum/posts/{id}/edit(id=${post.id})}"
+                        class="btn btn-secondary btn-sm btn-magnetic" data-magnetic>✏️ Edit Post</a>
                     <form th:action="@{/web/forum/posts/{id}/delete(id=${post.id})}" method="post"
                         onsubmit="return confirm('Delete this post?')">
-                        <button type="submit" class="btn btn-danger btn-sm">🗑 Delete Post</button>
+                        <button type="submit" class="btn btn-danger btn-sm btn-magnetic" data-magnetic>🗑 Delete
+                            Post</button>
                     </form>
                 </div>
-            </div>
+            </article>
 
             <!-- Comments -->
-            <div class="section">
-                <h2 class="section-title">💬 Comments (<span
+            <section class="section gsap-reveal">
+                <h2 class="section-title kinetic-text">💬 Comments (<span
                         th:text="${comments != null ? comments.size() : 0}">0</span>)</h2>
 
-                <div th:if="${comments != null and !comments.isEmpty()}">
-                    <div class="card" th:each="comment : ${comments}" style="margin-bottom:0.75rem;">
-                        <div class="card-body" th:text="${comment.content}">Comment</div>
-                        <div class="card-footer" style="justify-content: space-between;">
-                            <span class="card-meta" th:text="${comment.createdAt}">Date</span>
+                <div th:if="${comments != null and !comments.isEmpty()}" class="floating-grid">
+                    <div class="card glass-card" th:each="comment : ${comments}" style="margin-bottom:1rem;">
+                        <div class="card-body" th:text="${comment.content}" style="color: var(--text-muted);">Comment
+                        </div>
+                        <div class="card-footer"
+                            style="justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem;">
+                            <span class="card-meta"
+                                th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}">Date</span>
                             <form th:if="${comment.authorId == currentUserId or isAdmin}"
                                 th:action="@{/web/forum/comments/{id}/delete(id=${comment.id})}" method="post"
                                 onsubmit="return confirm('Delete this comment?')">
                                 <input type="hidden" name="postId" th:value="${post.id}">
-                                <button type="submit" class="btn btn-danger btn-sm">🗑</button>
+                                <button type="submit" class="btn btn-danger btn-sm btn-magnetic"
+                                    data-magnetic>🗑</button>
                             </form>
                         </div>
                     </div>
                 </div>
 
+                <div class="card glass-card empty-state" th:if="${comments == null or comments.isEmpty()}"
+                    style="margin-bottom: 2rem;">
+                    <p>No comments yet. Start the conversation!</p>
+                </div>
+
                 <!-- Add Comment -->
-                <form th:action="@{/web/forum/posts/{id}/comments(id=${post.id})}" method="post" class="card"
-                    style="margin-top:1rem;">
+                <form th:action="@{/web/forum/posts/{id}/comments(id=${post.id})}" method="post"
+                    class="card glass-card gsap-reveal" style="margin-top:2rem;">
                     <div class="form-group">
-                        <label class="form-label">Add a comment</label>
+                        <label class="form-label text-copper">Add a comment</label>
                         <textarea name="content" class="form-control" rows="3" required
-                            placeholder="Write your comment..."></textarea>
+                            placeholder="Write your comment..."
+                            style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: var(--text);"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                    <div style="margin-top: 1rem;">
+                        <button type="submit" class="btn btn-primary btn-magnetic" data-magnetic>Post Comment</button>
+                    </div>
                 </form>
-            </div>
+            </section>
+
 
         </div>
     </main>

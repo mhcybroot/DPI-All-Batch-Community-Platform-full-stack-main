@@ -19,27 +19,36 @@
     </div>
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
-                <h1>📂 Posts</h1>
+            <div class="page-header kinetic-text"
+                style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>📂 Posts</h1>
+                    <p class="text-muted" th:text="${category.name}">Category Name</p>
+                </div>
                 <div class="actions">
-                    <a th:href="@{/web/forum}" class="btn btn-secondary">← Back to Categories</a>
-                    <a th:href="@{/web/forum/posts/new}" class="btn btn-primary">+ New Post</a>
+                    <a th:href="@{/web/forum}" class="btn btn-secondary btn-magnetic" data-magnetic>← Back</a>
+                    <a th:href="@{/web/forum/posts/new(categoryId=${category.id})}" class="btn btn-primary btn-magnetic"
+                        data-magnetic>+ New Post</a>
                 </div>
             </div>
 
-            <div th:if="${posts != null and !posts.isEmpty()}">
-                <div class="card" th:each="post : ${posts}" style="margin-bottom:0.75rem;">
+            <div class="grid grid-2 floating-grid" th:if="${posts != null and !posts.isEmpty()}">
+                <a th:each="post : ${posts}" th:href="@{/web/forum/posts/{id}(id=${post.id})}"
+                    class="card glass-card gsap-reveal" style="text-decoration: none; color: inherit;" data-magnetic>
                     <div class="card-header">
-                        <a th:href="@{/web/forum/posts/{id}(id=${post.id})}" class="card-title"
-                            th:text="${post.title}">Post Title</a>
-                        <span class="card-meta" th:text="${post.createdAt}">Date</span>
+                        <span class="card-title text-green kinetic-text" th:text="${post.title}">Post Title</span>
+                        <span class="card-meta"
+                            th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}">Date</span>
                     </div>
-                    <div class="card-body" th:text="${#strings.abbreviate(post.content, 200)}">Preview</div>
-                </div>
+                    <div class="card-body">
+                        <p class="text-muted" th:text="${#strings.abbreviate(post.content, 150)}">Preview</p>
+                    </div>
+                </a>
             </div>
-            <div class="empty-state" th:if="${posts == null or posts.isEmpty()}">
+            <div class="card glass-card empty-state gsap-reveal" th:if="${posts == null or posts.isEmpty()}">
                 <p>No posts yet. Be the first to start a discussion!</p>
             </div>
+
         </div>
     </main>
     <footer class="footer">

@@ -14,20 +14,28 @@
     <div th:replace="~{layout/base :: navbar}"></div>
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
+            <div class="page-header kinetic-text">
                 <h1>✏️ Edit Post</h1>
             </div>
-            <form th:action="@{/web/forum/posts/{id}/edit(id=${post.id})}" method="post" class="card"
-                style="max-width:600px;">
-                <div class="form-group"><label class="form-label">Title</label><input type="text" name="title"
-                        class="form-control" th:value="${post.title}" required></div>
-                <div class="form-group"><label class="form-label">Content</label><textarea name="content"
-                        class="form-control" rows="8" th:text="${post.content}"></textarea></div>
-                <div style="display:flex;gap:0.75rem;">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a th:href="@{/web/forum/posts/{id}(id=${post.id})}" class="btn btn-secondary">Cancel</a>
+            <form th:action="@{/web/forum/posts/{id}/edit(id=${post.id})}" method="post"
+                class="card glass-card gsap-reveal" style="max-width:800px;">
+                <div class="form-group">
+                    <label class="form-label text-copper">Title</label>
+                    <input type="text" name="title" class="form-control" th:value="${post.title}" required
+                        style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: var(--text);">
+                </div>
+                <div class="form-group">
+                    <label class="form-label text-copper">Content</label>
+                    <textarea name="content" class="form-control" rows="12" th:text="${post.content}"
+                        style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: var(--text);"></textarea>
+                </div>
+                <div style="display:flex; gap:1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary btn-magnetic" data-magnetic>Save Changes</button>
+                    <a th:href="@{/web/forum/posts/{id}(id=${post.id})}" class="btn btn-secondary btn-magnetic"
+                        data-magnetic>Cancel</a>
                 </div>
             </form>
+
         </div>
     </main>
     <footer class="footer">
