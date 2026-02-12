@@ -89,13 +89,15 @@
 
                     <!-- Media Section -->
                     <div style="position: relative; aspect-ratio: 4/3; overflow: hidden; background: #000;">
-                        <img th:if="${memory.mediaType.name() == 'IMAGE'}" th:src="${memory.mediaUrl}" alt="Memory"
-                            style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease-organic);"
-                            class="memory-img">
-
-                        <video th:if="${memory.mediaType.name() == 'VIDEO'}" th:src="${memory.mediaUrl}" controls
-                            style="width: 100%; height: 100%; object-fit: cover;">
-                        </video>
+                        <div class="media-container" th:data-url="${memory.mediaUrl}" th:data-type="${memory.mediaType}"
+                            style="width: 100%; height: 100%; position: relative;">
+                            <!-- Content injected by JS -->
+                            <div class="media-placeholder"
+                                style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; background:#000;">
+                                <span class="spinner"
+                                    style="width:20px; height:20px; border:2px solid rgba(255,255,255,0.3); border-top:2px solid white; border-radius:50%; animation:spin 1s linear infinite;"></span>
+                            </div>
+                        </div>
 
                         <div class="memory-overlay"
                             style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); pointer-events: none;">
@@ -142,11 +144,203 @@
             </div>
         </div>
     </main>
+
+    <!-- Lightbox Overlay -->
+    <div id="memory-lightbox" class="lightbox">
+        <button class="lightbox-close">&times;</button>
+        <div class="lightbox-content"></div>
+    </div>
+
     <footer class="footer">
         <div class="container">
             <p>© 2026 DPI Batch Community Platform</p>
         </div>
     </footer>
+
+    <style>
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Lightbox Styles */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-content {
+            width: 80vw;
+            height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            background: black;
+        }
+
+        .lightbox-content img,
+        .lightbox-content video,
+        .lightbox-content iframe {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .lightbox-content iframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3rem;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 10000;
+            transition: transform 0.2s;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.1);
+            color: #ef4444;
+        }
+
+        .media-container {
+            cursor: pointer;
+        }
+
+        .media-container:hover {
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lightbox Elements
+            const lightbox = document.getElementById('memory-lightbox');
+            const lightboxContent = lightbox.querySelector('.lightbox-content');
+            const closeBtn = lightbox.querySelector('.lightbox-close');
+
+            // Close Functions
+            const closeLightbox = () => {
+                lightbox.classList.remove('active');
+                setTimeout(() => {
+                    lightboxContent.innerHTML = ''; // Stop videos
+                }, 300);
+            };
+
+            if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+            if (lightbox) lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) closeLightbox();
+            });
+
+            document.querySelectorAll('.media-container').forEach(container => {
+                const url = container.dataset.url;
+                const type = container.dataset.type;
+                const placeholder = container.querySelector('.media-placeholder');
+
+                if (type === 'VIDEO') {
+                    let embedHtml = '';
+
+                    // YouTube
+                    const ytMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+                    // Vimeo
+                    const vimeoMatch = url.match(/(?:vimeo.com\/)(\d+)/);
+
+                    if (ytMatch) {
+                        embedHtml = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ytMatch[1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute; top:0; left:0;"></iframe>`;
+                    } else if (vimeoMatch) {
+                        embedHtml = `<iframe src="https://player.vimeo.com/video/${vimeoMatch[1]}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute; top:0; left:0;"></iframe>`;
+                    } else {
+                        // Direct File Fallback
+                        embedHtml = `<video src="${url}" controls style="width:100%; height:100%; object-fit:cover;"></video>`;
+                    }
+
+                    container.innerHTML = embedHtml;
+
+                } else if (type === 'IMAGE') {
+                    const img = new Image();
+                    img.src = url;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+                    img.classList.add('memory-img');
+
+                    img.onload = () => {
+                        container.innerHTML = '';
+                        container.appendChild(img);
+                    };
+
+                    img.onerror = () => {
+                        container.innerHTML = `
+                            <div style="width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:#1a1a1a; color:#666;">
+                                <span style="font-size:2rem;">⚠️</span>
+                                <span style="font-size:0.8rem; margin-top:0.5rem;">Image not found</span>
+                            </div>
+                        `;
+                    };
+                }
+
+                // Add Click Listener for Lightbox
+                container.addEventListener('click', () => {
+                    let contentToClone = container.innerHTML;
+
+                    // For direct videos
+                    if (type === 'VIDEO' && contentToClone.includes('<video')) {
+                        contentToClone = contentToClone.replace('object-fit:cover', 'object-fit:contain');
+                    }
+
+                    lightboxContent.innerHTML = contentToClone;
+
+                    // For images
+                    const lightboxImg = lightboxContent.querySelector('img');
+                    if (lightboxImg) {
+                        lightboxImg.style.objectFit = 'contain';
+                        lightboxImg.style.width = '100%';
+                        lightboxImg.style.height = '100%';
+                    }
+
+                    lightbox.classList.add('active');
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
