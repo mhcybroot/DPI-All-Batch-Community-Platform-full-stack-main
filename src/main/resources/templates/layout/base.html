@@ -21,6 +21,24 @@
 </head>
 
 <body>
+    <!-- System Boot Overlay -->
+    <div id="boot-overlay">
+        <div class="boot-content">
+            <div class="boot-logo">🛡️</div>
+            <div class="boot-text">INITIALIZING...</div>
+            <div class="boot-progress">
+                <div class="boot-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inline script to prevent FOUC of boot screen -->
+    <script>
+        // Check session storage immediately
+        if (!sessionStorage.getItem('dpi_booted')) {
+            document.documentElement.classList.add('boot-pending');
+        }
+    </script>
 
     <!-- Navbar -->
     <!-- Navbar -->

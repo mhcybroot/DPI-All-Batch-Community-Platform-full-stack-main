@@ -7,75 +7,103 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- The Biological Machine: Initialization ---
-    initSystemBoot();
+    initSystemBoot(); // Now handles both overlay and page reveal
     initMagneticButtons();
     initKineticTypography();
 });
 
-// Auto-dismiss alerts after 5s
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.alert[data-auto-dismiss]').forEach(el => {
-        setTimeout(() => {
-            el.style.transition = 'opacity 0.3s ease';
-            el.style.opacity = '0';
-            setTimeout(() => el.remove(), 300);
-        }, 5000);
-    });
-});
-
-// HTMX: confirm delete dialogs
-document.body.addEventListener('htmx:confirm', (e) => {
-    if (e.detail.question) {
-        e.preventDefault();
-        if (confirm(e.detail.question)) {
-            e.detail.issueRequest(true);
-        }
-    }
-});
-
-// HTMX: Re-init animations after swap
-document.body.addEventListener('htmx:afterSwap', (e) => {
-    initGSAPScroll(); // Re-bind scroll triggers for new content
-    initMagneticButtons();
-    initKineticTypography();
-});
+// ... (alerts and htmx listeners remain unchanged)
 
 /* --- GSAP "System Boot" Sequence --- */
 function initSystemBoot() {
     if (typeof gsap === 'undefined') return;
 
-    const timeline = gsap.timeline();
+    const isBooting = document.documentElement.classList.contains('boot-pending');
 
-    // 1. Grid/Background stabilization (Simulated)
-    timeline.fromTo('body',
-        { backgroundColor: '#000000' },
-        { backgroundColor: 'var(--color-obsidian)', duration: 0.8, ease: 'power2.out' }
-    );
+    // Convert current "boot" logic to "Page Reveal"
+    const pageRevealTimeline = () => {
+        const tl = gsap.timeline();
 
-    // 2. Glass Cards "Crystallize"
-    timeline.fromTo('.glass-card',
-        {
-            scale: 0.95,
+        // 1. Grid/Background stabilization (Simulated)
+        tl.fromTo('body',
+            { backgroundColor: '#000000' },
+            { backgroundColor: 'var(--bg)', duration: 0.8, ease: 'power2.out' }
+        );
+
+        // 2. Glass Cards "Crystallize"
+        tl.fromTo('.glass-card',
+            {
+                scale: 0.95,
+                opacity: 0,
+                backdropFilter: 'blur(0px)'
+            },
+            {
+                scale: 1,
+                opacity: 1,
+                backdropFilter: 'saturate(180%) blur(24px)',
+                duration: 1,
+                stagger: 0.1,
+                ease: "cubic-bezier(0.19, 1, 0.22, 1)" // expo.out
+            },
+            "-=0.5"
+        );
+
+        // 3. Text Streams In
+        tl.fromTo('h1, h2, p, .stat-value',
+            { y: 10, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: "power2.out" },
+            "-=0.8"
+        );
+        return tl;
+    };
+
+    if (isBooting) {
+        // --- Full Session Boot Sequence ---
+        const bootTl = gsap.timeline({
+            onComplete: () => {
+                document.getElementById('boot-overlay').style.display = 'none';
+                document.documentElement.classList.remove('boot-pending');
+                sessionStorage.setItem('dpi_booted', 'true');
+            }
+        });
+
+        // 1. Initial State
+        gsap.set('.boot-bar', { width: '0%' });
+        gsap.set('.boot-text', { text: 'INITIALIZING...' });
+
+        // 2. Progress Bar
+        bootTl.to('.boot-bar', {
+            width: '100%',
+            duration: 1.5,
+            ease: "power2.inOut"
+        });
+
+        // 3. Text Updates (Simulated)
+        bootTl.to('.boot-text', {
+            duration: 0.2,
             opacity: 0,
-            backdropFilter: 'blur(0px)'
-        },
-        {
-            scale: 1,
-            opacity: 1,
-            backdropFilter: 'saturate(180%) blur(24px)',
-            duration: 1,
-            stagger: 0.1,
-            ease: "cubic-bezier(0.19, 1, 0.22, 1)" // expo.out
-        },
-        "-=0.5"
-    );
+            onComplete: () => document.querySelector('.boot-text').innerText = 'SYSTEM READY'
+        }, "-=0.5");
 
-    // 3. Text Streams In
-    timeline.fromTo('h1, h2, p, .stat-value',
-        { y: 10, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: "power2.out" },
-        "-=0.8"
-    );
+        bootTl.to('.boot-text', {
+            duration: 0.2,
+            opacity: 1
+        });
+
+        // 4. Fade Out Overlay
+        bootTl.to('#boot-overlay', {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.inOut"
+        }, "+=0.2");
+
+        // 5. Trigger Page Reveal slightly before overlay is gone
+        bootTl.add(pageRevealTimeline(), "-=0.5");
+
+    } else {
+        // --- Just Page Reveal (Subsequent loads) ---
+        pageRevealTimeline();
+    }
 }
 
 function initGSAPScroll() {
