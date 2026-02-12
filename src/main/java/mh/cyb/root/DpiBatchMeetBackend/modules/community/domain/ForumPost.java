@@ -27,6 +27,10 @@ public class ForumPost {
     private Long authorId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", insertable = false, updatable = false)
+    private mh.cyb.root.DpiBatchMeetBackend.modules.user.domain.User author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private ForumCategory category;
 

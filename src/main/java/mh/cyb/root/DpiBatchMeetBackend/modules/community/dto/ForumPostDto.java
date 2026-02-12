@@ -9,6 +9,7 @@ public class ForumPostDto {
     private String title;
     private String content;
     private Long authorId;
+    private String authorName;
     private Long categoryId;
     private String categoryName;
     private LocalDateTime createdAt;

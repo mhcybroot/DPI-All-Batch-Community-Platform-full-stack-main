@@ -29,6 +29,7 @@
                 <div class="card-header">
                     <h1 class="card-title kinetic-text text-green" th:text="${post.title}">Title</h1>
                     <div class="card-meta">
+                        <span th:text="${post.authorName}">Author</span> •
                         <span th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}">Date</span>
                     </div>
                 </div>
@@ -57,8 +58,11 @@
                         </div>
                         <div class="card-footer"
                             style="justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem;">
-                            <span class="card-meta"
-                                th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}">Date</span>
+                            <span class="card-meta">
+                                <span th:text="${comment.authorName}"
+                                    style="color: var(--color-cyber-blue);">Author</span> •
+                                <span th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}">Date</span>
+                            </span>
                             <form th:if="${comment.authorId == currentUserId or isAdmin}"
                                 th:action="@{/web/forum/comments/{id}/delete(id=${comment.id})}" method="post"
                                 onsubmit="return confirm('Delete this comment?')">

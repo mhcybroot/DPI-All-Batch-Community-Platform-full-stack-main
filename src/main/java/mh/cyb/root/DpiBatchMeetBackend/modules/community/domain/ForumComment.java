@@ -24,6 +24,10 @@ public class ForumComment {
     private Long authorId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", insertable = false, updatable = false)
+    private mh.cyb.root.DpiBatchMeetBackend.modules.user.domain.User author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private ForumPost post;
 

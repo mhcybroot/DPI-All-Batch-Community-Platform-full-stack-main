@@ -13,9 +13,11 @@ public interface ForumMapper {
 
     @Mapping(source = "category.id", target = "categoryId")
     @Mapping(source = "category.name", target = "categoryName")
+    @Mapping(source = "author.fullName", target = "authorName")
     ForumPostDto toDto(ForumPost post);
 
     @Mapping(source = "post.id", target = "postId")
+    @Mapping(source = "author.fullName", target = "authorName")
     ForumCommentDto toDto(ForumComment comment);
 
     @Mapping(target = "id", ignore = true)

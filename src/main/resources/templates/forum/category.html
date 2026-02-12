@@ -37,8 +37,10 @@
                     class="card glass-card gsap-reveal" style="text-decoration: none; color: inherit;" data-magnetic>
                     <div class="card-header">
                         <span class="card-title text-green kinetic-text" th:text="${post.title}">Post Title</span>
-                        <span class="card-meta"
-                            th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}">Date</span>
+                        <div class="card-meta" style="font-size: 0.8rem;">
+                            <span th:text="${post.authorName}">Author</span> •
+                            <span th:text="${#temporals.format(post.createdAt, 'dd MMM yy')}">Date</span>
+                        </div>
                     </div>
                     <div class="card-body">
                         <p class="text-muted" th:text="${#strings.abbreviate(post.content, 150)}">Preview</p>
