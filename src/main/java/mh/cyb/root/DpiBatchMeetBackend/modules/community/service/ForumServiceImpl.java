@@ -87,6 +87,13 @@ public class ForumServiceImpl implements ForumService {
         }
 
         @Override
+        public ForumCategoryDto getCategoryById(Long id) {
+                ForumCategory category = categoryRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Category not found"));
+                return forumMapper.toDto(category);
+        }
+
+        @Override
         public ForumCategoryDto updateCategory(Long id, CreateCategoryRequest request) {
                 ForumCategory category = categoryRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Category not found"));

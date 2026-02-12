@@ -19,6 +19,8 @@ public interface ForumService {
     // Category CRUD
     ForumCategoryDto createCategory(CreateCategoryRequest request);
 
+    ForumCategoryDto getCategoryById(Long id);
+
     ForumCategoryDto updateCategory(Long id, CreateCategoryRequest request);
 
     void deleteCategory(Long id);
