@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>👤 My Profile</h1>
+                <div class="actions">
+                    <a th:href="@{/web/profile/edit}" class="btn btn-primary">✏ Edit Profile</a>
+                    <a th:href="@{/web/profile/privacy}" class="btn btn-secondary">🔒 Privacy Settings</a>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Personal Information</span></div>
+                    <div class="card-body">
+                        <p><strong>Bio:</strong> <span th:text="${profile.bio ?: 'Not set'}">Bio</span></p>
+                        <p><strong>Date of Birth:</strong> <span
+                                th:text="${profile.dateOfBirth ?: 'Not set'}">DOB</span></p>
+                        <p><strong>Phone:</strong> <span th:text="${profile.phoneNumber ?: 'Not set'}">Phone</span></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Links & Social</span></div>
+                    <div class="card-body">
+                        <p><strong>LinkedIn:</strong> <a th:if="${profile.linkedinUrl}" th:href="${profile.linkedinUrl}"
+                                th:text="${profile.linkedinUrl}" target="_blank"></a><span
+                                th:unless="${profile.linkedinUrl}">Not set</span></p>
+                        <p><strong>GitHub:</strong> <a th:if="${profile.githubUrl}" th:href="${profile.githubUrl}"
+                                th:text="${profile.githubUrl}" target="_blank"></a><span
+                                th:unless="${profile.githubUrl}">Not set</span></p>
+                        <p><strong>Portfolio:</strong> <a th:if="${profile.portfolioUrl}"
+                                th:href="${profile.portfolioUrl}" th:text="${profile.portfolioUrl}"
+                                target="_blank"></a><span th:unless="${profile.portfolioUrl}">Not set</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top:1.5rem;">
+                <h2 class="section-title">🛠 Skills</h2>
+                <div class="tag-list" th:if="${profile.skills != null and !profile.skills.isEmpty()}">
+                    <span class="tag" th:each="skill : ${profile.skills}" th:text="${skill.name}">Skill</span>
+                </div>
+                <p th:if="${profile.skills == null or profile.skills.isEmpty()}" class="card-meta">No skills added yet.
+                </p>
+
+                <form th:action="@{/web/profile/skills}" method="post"
+                    style="margin-top:1rem; display:flex; gap:0.5rem;">
+                    <input type="text" name="skills" class="form-control" placeholder="Add skills (comma-separated)"
+                        style="max-width:400px;">
+                    <button type="submit" class="btn btn-secondary btn-sm">Add Skills</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

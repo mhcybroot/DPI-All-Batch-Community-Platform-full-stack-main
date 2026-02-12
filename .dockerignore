@@ -1,0 +1,12 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+.git
+.gitignore
+.idea
+.vscode
+backups/
+docker-compose.yml
+api_test.sh

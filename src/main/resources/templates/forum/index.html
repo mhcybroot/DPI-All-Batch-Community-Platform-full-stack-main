@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>💬 Discussion Forum</h1>
+                <p>Browse categories and join the conversation.</p>
+            </div>
+
+            <div class="grid grid-3" th:if="${categories != null and !categories.isEmpty()}">
+                <div th:each="cat : ${categories}" class="card" style="position: relative;">
+                    <a th:href="@{/web/forum/category/{id}(id=${cat.id})}"
+                        style="text-decoration:none; color:inherit; display:block;">
+                        <div class="card-header">
+                            <span class="card-title" th:text="${cat.name}">Category</span>
+                        </div>
+                        <div class="card-body" th:text="${cat.description ?: 'Browse posts in this category'}">
+                            Description
+                        </div>
+                    </a>
+                    <div sec:authorize="hasRole('ADMINISTRATOR')"
+                        style="position:absolute; top:0.5rem; right:0.5rem; display:flex; gap:0.25rem;">
+                        <a th:href="@{/web/forum/categories/{id}/edit(id=${cat.id})}" class="btn btn-sm btn-secondary"
+                            style="padding:0.25rem 0.5rem; font-size:0.75rem;" title="Edit Category">✏️</a>
+                    </div>
+                </div>
+            </div>
+            <div class="empty-state" th:if="${categories == null or categories.isEmpty()}">
+                <div class="empty-icon">💬</div>
+                <p>No forum categories yet. An admin needs to create some.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${event.title + ' — DPI Community'}">Event — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <a th:href="@{/web/events}" class="btn btn-secondary btn-sm" style="margin-bottom:1rem;">← Back to
+                Events</a>
+            <div class="card" style="margin-bottom:2rem;">
+                <div class="card-header">
+                    <h1 class="card-title" th:text="${event.title}">Title</h1>
+                    <span class="badge badge-primary" th:text="${event.status}">Status</span>
+                </div>
+                <div class="card-body">
+                    <p th:if="${event.description}" style="white-space:pre-line;margin-bottom:1rem;"
+                        th:text="${event.description}">Desc</p>
+                    <div class="grid grid-3" style="margin-top:1rem;">
+                        <div><strong>📆 Date</strong>
+                            <p th:text="${event.eventDate}">Date</p>
+                        </div>
+                        <div><strong>📍 Venue</strong>
+                            <p th:text="${event.venue ?: 'TBD'}">Venue</p>
+                        </div>
+                        <div><strong>👥 Attendees</strong>
+                            <p th:text="${attendeeCount + ' approved'}">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+                    <form th:if="${!isRegistered}" th:action="@{/web/events/{id}/register(id=${event.id})}"
+                        method="post">
+                        <input type="text" name="notes" class="form-control" placeholder="Notes (optional)"
+                            style="max-width:300px;display:inline-block;margin-right:0.5rem;">
+                        <button type="submit" class="btn btn-primary">✓ Register</button>
+                    </form>
+                    <form th:if="${isRegistered}" th:action="@{/web/events/{id}/cancel-registration(id=${event.id})}"
+                        method="post">
+                        <button type="submit" class="btn btn-danger">Cancel Registration</button>
+                    </form>
+                    <a th:href="@{/web/polls/event/{id}(id=${event.id})}" class="btn btn-secondary">📊 View Polls</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

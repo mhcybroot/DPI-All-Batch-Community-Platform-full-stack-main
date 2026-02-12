@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — User Approvals — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>⚙ Admin — Pending Approvals</h1>
+                <div class="actions">
+                    <a th:href="@{/web/admin/approvals}" class="btn btn-primary">Approvals</a>
+                    <a th:href="@{/web/admin/users/create}" class="btn btn-secondary">Create User</a>
+                    <a th:href="@{/web/admin/audit-logs}" class="btn btn-secondary">Audit Logs</a>
+                </div>
+            </div>
+
+            <div th:if="${requests != null and !requests.isEmpty()}">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Requested</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="req : ${requests}">
+                                <td th:text="${req.id}">1</td>
+                                <td th:text="${req.user.fullName ?: 'User'}">Name</td>
+                                <td th:text="${req.user.email ?: '—'}">Email</td>
+                                <td th:text="${req.requestedAt}">Date</td>
+                                <td style="display:flex;gap:0.5rem;">
+                                    <form th:action="@{/web/admin/approvals/{id}/approve(id=${req.id})}" method="post">
+                                        <button class="btn btn-success btn-sm" type="submit">✓ Approve</button>
+                                    </form>
+                                    <form th:action="@{/web/admin/approvals/{id}/reject(id=${req.id})}" method="post"
+                                        style="display:flex;gap:0.25rem;">
+                                        <input type="text" name="reason" class="form-control" placeholder="Reason"
+                                            style="max-width:150px;padding:0.25rem 0.5rem;font-size:0.8125rem;">
+                                        <button class="btn btn-danger btn-sm" type="submit">✕ Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="empty-state" th:if="${requests == null or requests.isEmpty()}">
+                <div class="empty-icon">✓</div>
+                <p>No pending approval requests. All caught up!</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

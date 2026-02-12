@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Posts — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📂 Posts</h1>
+                <div class="actions">
+                    <a th:href="@{/web/forum}" class="btn btn-secondary">← Back to Categories</a>
+                    <a th:href="@{/web/forum/posts/new}" class="btn btn-primary">+ New Post</a>
+                </div>
+            </div>
+
+            <div th:if="${posts != null and !posts.isEmpty()}">
+                <div class="card" th:each="post : ${posts}" style="margin-bottom:0.75rem;">
+                    <div class="card-header">
+                        <a th:href="@{/web/forum/posts/{id}(id=${post.id})}" class="card-title"
+                            th:text="${post.title}">Post Title</a>
+                        <span class="card-meta" th:text="${post.createdAt}">Date</span>
+                    </div>
+                    <div class="card-body" th:text="${#strings.abbreviate(post.content, 200)}">Preview</div>
+                </div>
+            </div>
+            <div class="empty-state" th:if="${posts == null or posts.isEmpty()}">
+                <p>No posts yet. Be the first to start a discussion!</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

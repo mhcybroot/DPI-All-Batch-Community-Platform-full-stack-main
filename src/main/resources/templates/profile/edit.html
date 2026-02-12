@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>✏ Edit Profile</h1>
+            </div>
+
+            <form th:action="@{/web/profile/edit}" method="post" class="card" style="max-width:600px;">
+                <div class="form-group">
+                    <label class="form-label">Bio</label>
+                    <textarea name="bio" class="form-control" th:text="${profile.bio}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" name="dateOfBirth" class="form-control" th:value="${profile.dateOfBirth}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="text" name="phoneNumber" class="form-control" th:value="${profile.phoneNumber}"
+                        placeholder="+880...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">LinkedIn URL</label>
+                    <input type="url" name="linkedinUrl" class="form-control" th:value="${profile.linkedinUrl}"
+                        placeholder="https://linkedin.com/in/...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">GitHub URL</label>
+                    <input type="url" name="githubUrl" class="form-control" th:value="${profile.githubUrl}"
+                        placeholder="https://github.com/...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Portfolio URL</label>
+                    <input type="url" name="portfolioUrl" class="form-control" th:value="${profile.portfolioUrl}"
+                        placeholder="https://...">
+                </div>
+                <div style="display:flex; gap:0.75rem;">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a th:href="@{/web/profile}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Board — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>💼 Job Board</h1>
+                <div class="actions">
+                    <a th:href="@{/web/jobs/new}" class="btn btn-primary">+ Post a Job</a>
+                    <a th:href="@{/web/jobs/my-jobs}" class="btn btn-secondary">My Jobs</a>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form th:action="@{/web/jobs}" method="get" class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                <option value="">All Statuses</option>
+                                <option th:each="s : ${jobStatuses}" th:value="${s}" th:text="${s}"
+                                    th:selected="${s == paramStatus}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Type</label>
+                            <select name="jobType" class="form-select" onchange="this.form.submit()">
+                                <option value="">All Types</option>
+                                <option th:each="t : ${jobTypes}" th:value="${t}" th:text="${t}"
+                                    th:selected="${t == paramJobType}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <a th:href="@{/web/jobs}" class="btn btn-outline-secondary w-100">Clear Filters</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div th:if="${jobsPage != null and jobsPage.hasContent()}">
+                <div th:each="job : ${jobsPage.content}" class="card" style="margin-bottom:0.75rem;">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <a th:href="@{/web/jobs/{id}(id=${job.id})}" class="card-title h5 text-decoration-none"
+                                    th:text="${job.title}">Title</a>
+                                <span class="badge bg-secondary ms-2" th:text="${job.jobType}">Type</span>
+                            </div>
+                            <span class="badge"
+                                th:classappend="${job.status.name() == 'ACTIVE' ? 'bg-success' : 'bg-secondary'}"
+                                th:text="${job.status}">ACTIVE</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p><strong th:text="${job.company}">Company</strong> · <span
+                                th:text="${job.location ?: 'Remote'}">Location</span></p>
+                        <p class="card-meta text-muted" th:text="${#temporals.format(job.createdAt, 'MMM d, yyyy')}">
+                            Date</p>
+                    </div>
+                </div>
+                <div class="pagination" th:if="${jobsPage.totalPages > 1}">
+                    <a th:if="${jobsPage.number > 0}"
+                        th:href="@{/web/jobs(page=${jobsPage.number - 1}, status=${paramStatus}, jobType=${paramJobType})}">←
+                        Prev</a>
+                    <span class="active" th:text="${jobsPage.number + 1 + ' / ' + jobsPage.totalPages}">1/1</span>
+                    <a th:if="${jobsPage.number < jobsPage.totalPages - 1}"
+                        th:href="@{/web/jobs(page=${jobsPage.number + 1}, status=${paramStatus}, jobType=${paramJobType})}">Next
+                        →</a>
+                </div>
+            </div>
+            <div class="empty-state" th:if="${jobsPage == null or !jobsPage.hasContent()}">
+                <div class="empty-icon">💼</div>
+                <p>No job postings yet.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📅 Create Event</h1>
+            </div>
+            <form th:action="@{/web/events}" method="post" class="card" style="max-width:600px;">
+                <div class="form-group"><label class="form-label">Title</label><input type="text" name="title"
+                        class="form-control" required placeholder="Event title"></div>
+                <div class="form-group"><label class="form-label">Description</label><textarea name="description"
+                        class="form-control" rows="4" placeholder="Describe the event..."></textarea></div>
+                <div class="form-group"><label class="form-label">Date & Time</label><input type="datetime-local"
+                        name="eventDate" class="form-control" required></div>
+                <div class="form-group"><label class="form-label">Venue</label><input type="text" name="venue"
+                        class="form-control" placeholder="Event location"></div>
+                <div class="form-group"><label class="form-label">Max Attendees</label><input type="number"
+                        name="maxAttendees" class="form-control" placeholder="Leave blank for unlimited"></div>
+                <div style="display:flex;gap:0.75rem;"><button type="submit" class="btn btn-primary">Create
+                        Event</button><a th:href="@{/web/events}" class="btn btn-secondary">Cancel</a></div>
+            </form>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

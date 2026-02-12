@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${job.title + ' — DPI Jobs'}">Job — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <main class="main-content">
+        <div class="container">
+            <a th:href="@{/web/jobs}" class="btn btn-secondary btn-sm" style="margin-bottom:1rem;">← Back to Jobs</a>
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title" th:text="${job.title}">Title</h1><span class="badge badge-primary"
+                        th:text="${job.jobType}">Type</span>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-3" style="margin-bottom:1rem;">
+                        <div><strong>🏢 Company</strong>
+                            <p th:text="${job.company}">Company</p>
+                        </div>
+                        <div><strong>📍 Location</strong>
+                            <p th:text="${job.location ?: 'Remote'}">Location</p>
+                        </div>
+                        <div><strong>💰 Salary</strong>
+                            <p th:text="${job.salaryRange ?: 'Not disclosed'}">Salary</p>
+                        </div>
+                    </div>
+                    <div style="white-space:pre-line;" th:text="${job.description}">Description</div>
+                    <p class="card-meta" style="margin-top:1rem;">Posted <span th:text="${job.createdAt}">Date</span>
+                    </p>
+                </div>
+                <div class="card-footer" th:if="${job.applicationUrl}">
+                    <a th:href="${job.applicationUrl}" target="_blank" class="btn btn-primary">Apply Now →</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

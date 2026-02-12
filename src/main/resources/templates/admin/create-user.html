@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User — Admin — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>⚙ Create New User</h1>
+                <div class="actions">
+                    <a th:href="@{/web/admin/approvals}" class="btn btn-secondary">Approvals</a>
+                    <a th:href="@{/web/admin/users/create}" class="btn btn-primary">Create User</a>
+                    <a th:href="@{/web/admin/audit-logs}" class="btn btn-secondary">Audit Logs</a>
+                </div>
+            </div>
+            <form th:action="@{/web/admin/users/create}" method="post" class="card" style="max-width:500px;">
+                <div class="form-group"><label class="form-label">Full Name</label><input type="text" name="fullName"
+                        class="form-control" required></div>
+                <div class="form-group"><label class="form-label">Email</label><input type="email" name="email"
+                        class="form-control" required></div>
+                <div class="form-group"><label class="form-label">Password</label><input type="password" name="password"
+                        class="form-control" required minlength="6"></div>
+                <div class="form-group"><label class="form-label">Roles</label>
+                    <div th:each="role : ${roles}" style="margin-bottom:0.25rem;">
+                        <label><input type="checkbox" name="roles" th:value="${role.name()}"> <span
+                                th:text="${role.name()}">ROLE</span></label>
+                    </div>
+                </div>
+                <div style="display:flex;gap:0.75rem;">
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                    <a th:href="@{/web/admin/approvals}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

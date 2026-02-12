@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polls — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📊 Active Polls</h1>
+            </div>
+            <div th:if="${polls != null and !polls.isEmpty()}" class="grid grid-2">
+                <a th:each="poll : ${polls}" th:href="@{/web/polls/{id}(id=${poll.id})}" class="card"
+                    style="text-decoration:none;color:inherit;">
+                    <div class="card-header"><span class="card-title" th:text="${poll.question}">Question</span></div>
+                    <div class="card-body card-meta"
+                        th:text="${poll.options != null ? poll.options.size() + ' options' : ''}">Options</div>
+                </a>
+            </div>
+            <div class="empty-state" th:if="${polls == null or polls.isEmpty()}">
+                <div class="empty-icon">📊</div>
+                <p>No active polls right now.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

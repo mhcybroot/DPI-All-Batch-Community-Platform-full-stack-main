@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Donor Profile — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>🩸 My Blood Donor Profile</h1>
+            </div>
+            <div th:if="${profile == null}" class="empty-state">
+                <div class="empty-icon">🩸</div>
+                <p>You have not registered as a blood donor yet.</p><a th:href="@{/web/blood-donors/register}"
+                    class="btn btn-primary">Register as Donor</a>
+            </div>
+            <div th:if="${profile != null}" class="card" style="max-width:500px;">
+                <p><strong>Blood Group:</strong> <span th:text="${profile.bloodGroup}">A+</span></p>
+                <p><strong>Location:</strong> <span th:text="${profile.location}">Location</span></p>
+                <p><strong>Available:</strong> <span th:text="${profile.available ? 'Yes ✅' : 'No ❌'}">Yes</span></p>
+                <p><strong>Last Donation:</strong> <span
+                        th:text="${profile.lastDonationDate != null ? profile.lastDonationDate : 'Not recorded'}">N/A</span>
+                </p>
+                <hr style="margin:1rem 0;">
+                <h3>Toggle Availability</h3>
+                <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+                    <form th:action="@{/web/blood-donors/availability}" method="post">
+                        <input type="hidden" name="isAvailable" value="true">
+                        <button type="submit" class="btn btn-primary btn-sm" th:disabled="${profile.available}">Set
+                            Available</button>
+                    </form>
+                    <form th:action="@{/web/blood-donors/availability}" method="post">
+                        <input type="hidden" name="isAvailable" value="false">
+                        <button type="submit" class="btn btn-danger btn-sm" th:disabled="${!profile.available}">Set
+                            Unavailable</button>
+                    </form>
+                </div>
+                <h3>Update Last Donation Date</h3>
+                <form th:action="@{/web/blood-donors/last-donation}" method="post"
+                    style="display:flex;gap:0.5rem;align-items:end;">
+                    <input type="date" name="lastDonationDate" class="form-control"
+                        th:value="${profile.lastDonationDate}" required style="max-width:200px;">
+                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

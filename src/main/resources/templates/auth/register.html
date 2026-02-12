@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <h1>🎓 Join DPI Community</h1>
+            <p class="auth-subtitle">Create your account to connect with batchmates</p>
+
+            <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+            <form th:action="@{/web/auth/register}" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Your full name"
+                        required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control"
+                        placeholder="Choose a strong password" required minlength="6">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a th:href="@{/web/auth/login}">Sign in</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

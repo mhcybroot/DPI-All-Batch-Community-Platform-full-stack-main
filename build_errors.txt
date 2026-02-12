@@ -1,0 +1,381 @@
+
+> Task :compileJava
+.\gradlew.bat : C:\Use
+rs\Administrator\Downl
+oads\DPI-All-Batch-Com
+munity-Platform-Backen
+d-main (1)\DPI-All-Bat
+ch-Community-Platform-
+Backend-main\src\main\
+java\mh\cyb\root\DpiBa
+tchMeetBackend\modules
+\knowledge\domain\Ques
+tion.java:37: 
+warning: @Builder 
+will ignore the 
+initializing 
+expression entirely. 
+If you want the 
+initializing 
+expression to serve 
+as default, add 
+@Builder.Default. If 
+it is not supposed to 
+be settable during 
+building, make the 
+field final.
+At line:1 char:1
++ .\gradlew.bat 
+compileJava 2>&1 | 
+Out-File -FilePath 
+.\build_errors.tx ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (C:\Users\A   
+ dmini...he field     
+final.:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+    private 
+List<String> tags = 
+new ArrayList<>();
+                      
+   ^
+C:\Users\Administrator
+\Downloads\DPI-All-Bat
+ch-Community-Platform-
+Backend-main (1)\DPI-A
+ll-Batch-Community-Pla
+tform-Backend-main\src
+\main\java\mh\cyb\root
+\DpiBatchMeetBackend\m
+odules\knowledge\domai
+n\Question.java:46: 
+warning: @Builder 
+will ignore the 
+initializing 
+expression entirely. 
+If you want the 
+initializing 
+expression to serve 
+as default, add 
+@Builder.Default. If 
+it is not supposed to 
+be settable during 
+building, make the 
+field final.
+    private 
+List<Answer> answers 
+= new ArrayList<>();
+                      
+   ^
+C:\Users\Administrator
+\Downloads\DPI-All-Bat
+ch-Community-Platform-
+Backend-main (1)\DPI-A
+ll-Batch-Community-Pla
+tform-Backend-main\src
+\main\java\mh\cyb\root
+\DpiBatchMeetBackend\m
+odules\mentorship\doma
+in\MentorProfile.java:
+31: warning: @Builder 
+will ignore the 
+initializing 
+expression entirely. 
+If you want the 
+initializing 
+expression to serve 
+as default, add 
+@Builder.Default. If 
+it is not supposed to 
+be settable during 
+building, make the 
+field final.
+    private 
+List<String> 
+expertise = new 
+ArrayList<>();
+                      
+   ^
+C:\Users\Administrator
+\Downloads\DPI-All-Bat
+ch-Community-Platform-
+Backend-main (1)\DPI-A
+ll-Batch-Community-Pla
+tform-Backend-main\src
+\main\java\mh\cyb\root
+\DpiBatchMeetBackend\m
+odules\user\mapper\Use
+rMapper.java:11: 
+warning: Unmapped 
+target property: 
+"isEnabled".
+    UserDto 
+toDto(User user);
+            ^
+C:\Users\Administrator
+\Downloads\DPI-All-Bat
+ch-Community-Platform-
+Backend-main (1)\DPI-A
+ll-Batch-Community-Pla
+tform-Backend-main\src
+\main\java\mh\cyb\root
+\DpiBatchMeetBackend\m
+odules\event\mapper\Ev
+entMapper.java:28: 
+warning: Unmapped 
+target properties: 
+"id, organizerId, 
+status, createdAt, 
+updatedAt".
+    public abstract 
+Event toEntity(CreateE
+ventRequest request);
+                      
+    ^
+C:\Users\Administrator
+\Downloads\DPI-All-Bat
+ch-Community-Platform-
+Backend-main (1)\DPI-A
+ll-Batch-Community-Pla
+tform-Backend-main\src
+\main\java\mh\cyb\root
+\DpiBatchMeetBackend\m
+odules\event\mapper\Ev
+entMapper.java:31: 
+warning: Unmapped 
+target properties: 
+"id, organizerId, 
+status, createdAt, 
+updatedAt".
+    public abstract 
+void updateEventFromDt
+o(UpdateEventRequest 
+request, 
+@MappingTarget Event 
+event);
+                      
+   ^
+C:\Users\Administrator
+\Downloads\DPI-All-Bat
+ch-Community-Platform-
+Backend-main (1)\DPI-A
+ll-Batch-Community-Pla
+tform-Backend-main\src
+\main\java\mh\cyb\root
+\DpiBatchMeetBackend\m
+odules\web\knowledge\K
+nowledgeViewController
+.java:69: error: 
+cannot find symbol
+        request.setCon
+tent(content);
+               ^
+  symbol:   method 
+setContent(String)
+  location: variable 
+request of type 
+CreateAnswerRequest
+1 error
+6 warnings
+
+> Task :compileJava FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/Administrator/Downloads/DPI-All-Batch-Community-Platform-Backend-main%20(1)/DPI-All-Batch-Community-Platform-Backend-main/build/reports/problems/problems-report.html
+
+FAILURE: Build failed 
+with an exception.
+
+* What went wrong:
+Execution failed for 
+task ':compileJava'.
+> Compilation failed; 
+see the compiler 
+output below.
+  C:\Users\Administrat
+or\Downloads\DPI-All-B
+atch-Community-Platfor
+m-Backend-main (1)\DPI
+-All-Batch-Community-P
+latform-Backend-main\s
+rc\main\java\mh\cyb\ro
+ot\DpiBatchMeetBackend
+\modules\knowledge\dom
+ain\Question.java:37: 
+warning: @Builder 
+will ignore the 
+initializing 
+expression entirely. 
+If you want the 
+initializing 
+expression to serve 
+as default, add 
+@Builder.Default. If 
+it is not supposed to 
+be settable during 
+building, make the 
+field final.
+      private 
+List<String> tags = 
+new ArrayList<>();
+                      
+     ^
+  C:\Users\Administrat
+or\Downloads\DPI-All-B
+atch-Community-Platfor
+m-Backend-main (1)\DPI
+-All-Batch-Community-P
+latform-Backend-main\s
+rc\main\java\mh\cyb\ro
+ot\DpiBatchMeetBackend
+\modules\knowledge\dom
+ain\Question.java:46: 
+warning: @Builder 
+will ignore the 
+initializing 
+expression entirely. 
+If you want the 
+initializing 
+expression to serve 
+as default, add 
+@Builder.Default. If 
+it is not supposed to 
+be settable during 
+building, make the 
+field final.
+      private 
+List<Answer> answers 
+= new ArrayList<>();
+                      
+     ^
+  C:\Users\Administrat
+or\Downloads\DPI-All-B
+atch-Community-Platfor
+m-Backend-main (1)\DPI
+-All-Batch-Community-P
+latform-Backend-main\s
+rc\main\java\mh\cyb\ro
+ot\DpiBatchMeetBackend
+\modules\mentorship\do
+main\MentorProfile.jav
+a:31: warning: 
+@Builder will ignore 
+the initializing 
+expression entirely. 
+If you want the 
+initializing 
+expression to serve 
+as default, add 
+@Builder.Default. If 
+it is not supposed to 
+be settable during 
+building, make the 
+field final.
+      private 
+List<String> 
+expertise = new 
+ArrayList<>();
+                      
+     ^
+  C:\Users\Administrat
+or\Downloads\DPI-All-B
+atch-Community-Platfor
+m-Backend-main (1)\DPI
+-All-Batch-Community-P
+latform-Backend-main\s
+rc\main\java\mh\cyb\ro
+ot\DpiBatchMeetBackend
+\modules\user\mapper\U
+serMapper.java:11: 
+warning: Unmapped 
+target property: 
+"isEnabled".
+      UserDto 
+toDto(User user);
+              ^
+  C:\Users\Administrat
+or\Downloads\DPI-All-B
+atch-Community-Platfor
+m-Backend-main (1)\DPI
+-All-Batch-Community-P
+latform-Backend-main\s
+rc\main\java\mh\cyb\ro
+ot\DpiBatchMeetBackend
+\modules\event\mapper\
+EventMapper.java:28: 
+warning: Unmapped 
+target properties: 
+"id, organizerId, 
+status, createdAt, 
+updatedAt".
+      public abstract 
+Event toEntity(CreateE
+ventRequest request);
+                      
+      ^
+  C:\Users\Administrat
+or\Downloads\DPI-All-B
+atch-Community-Platfor
+m-Backend-main (1)\DPI
+-All-Batch-Community-P
+latform-Backend-main\s
+rc\main\java\mh\cyb\ro
+ot\DpiBatchMeetBackend
+\modules\event\mapper\
+EventMapper.java:31: 
+warning: Unmapped 
+target properties: 
+"id, organizerId, 
+status, createdAt, 
+updatedAt".
+      public abstract 
+void updateEventFromDt
+o(UpdateEventRequest 
+request, 
+@MappingTarget Event 
+event);
+                      
+     ^
+  C:\Users\Administrat
+or\Downloads\DPI-All-B
+atch-Community-Platfor
+m-Backend-main (1)\DPI
+-All-Batch-Community-P
+latform-Backend-main\s
+rc\main\java\mh\cyb\ro
+ot\DpiBatchMeetBackend
+\modules\web\knowledge
+\KnowledgeViewControll
+er.java:69: error: 
+cannot find symbol
+          request.setC
+ontent(content);
+                 ^
+    symbol:   method 
+setContent(String)
+    location: 
+variable request of 
+type 
+CreateAnswerRequest
+  1 error
+  6 warnings
+
+* Try:
+> Check your code and 
+dependencies to fix 
+the compilation 
+error(s)
+> Run with --scan to 
+get full insights 
+from a Build Scan 
+(powered by 
+Develocity).
+
+BUILD FAILED in 5s
+1 actionable task: 1 executed

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle != null ? pageTitle + ' — DPI Community' : 'DPI Batch Community Platform'}">DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" th:fragment="navbar">
+    <div class="container">
+        <a href="/web/dashboard" class="navbar-brand">🎓 <span>DPI Community</span></a>
+
+        <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+
+        <ul class="nav-links">
+            <li><a th:href="@{/web/dashboard}" th:classappend="${activeNav == 'dashboard' ? 'active' : ''}">Dashboard</a></li>
+            <li><a th:href="@{/web/forum}" th:classappend="${activeNav == 'forum' ? 'active' : ''}">Forum</a></li>
+            <li><a th:href="@{/web/events}" th:classappend="${activeNav == 'events' ? 'active' : ''}">Events</a></li>
+            <li><a th:href="@{/web/knowledge}" th:classappend="${activeNav == 'knowledge' ? 'active' : ''}">Q&amp;A</a></li>
+            <li><a th:href="@{/web/notices}" th:classappend="${activeNav == 'notices' ? 'active' : ''}">Notices</a></li>
+            <li><a th:href="@{/web/memories}" th:classappend="${activeNav == 'memories' ? 'active' : ''}">Memories</a></li>
+            <li><a th:href="@{/web/jobs}" th:classappend="${activeNav == 'jobs' ? 'active' : ''}">Jobs</a></li>
+            <li><a th:href="@{/web/mentorship}" th:classappend="${activeNav == 'mentorship' ? 'active' : ''}">Mentorship</a></li>
+            <li><a th:href="@{/web/directory}" th:classappend="${activeNav == 'directory' ? 'active' : ''}">Directory</a></li>
+            <li sec:authorize="hasRole('ADMINISTRATOR')">
+                <a th:href="@{/web/admin/approvals}" th:classappend="${activeNav == 'admin' ? 'active' : ''}" style="color: var(--accent);">⚙ Admin</a>
+            </li>
+        </ul>
+
+        <div class="nav-right">
+            <a th:href="@{/web/profile}" class="nav-user" sec:authorize="isAuthenticated()">
+                👤 <span sec:authentication="name">User</span>
+            </a>
+            <form th:action="@{/web/auth/logout}" method="post" style="display:inline;" sec:authorize="isAuthenticated()">
+                <button type="submit" class="btn btn-sm btn-secondary">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- Flash Messages -->
+<div class="container" th:if="${successMessage != null or errorMessage != null}" style="margin-top: 1rem;">
+    <div class="alert alert-success" th:if="${successMessage}" data-auto-dismiss>
+        ✓ <span th:text="${successMessage}"></span>
+    </div>
+    <div class="alert alert-danger" th:if="${errorMessage}" data-auto-dismiss>
+        ✕ <span th:text="${errorMessage}"></span>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main class="main-content">
+    <div class="container" th:replace="${content}">
+        <!-- Page content injected here -->
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>© 2026 DPI Batch Community Platform. Built with ❤️ by our community.</p>
+    </div>
+</footer>
+
+</body>
+</html>

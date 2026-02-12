@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Businesses — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>🏪 My Businesses</h1>
+                <div class="actions">
+                    <a th:href="@{/web/business}" class="btn btn-secondary">← Back to Directory</a>
+                    <a th:href="@{/web/business/register}" class="btn btn-primary">+ Register Business</a>
+                </div>
+            </div>
+
+            <div th:if="${businessPage != null and businessPage.hasContent()}">
+                <div th:each="biz : ${businessPage.content}" class="card" style="margin-bottom:0.75rem;">
+                    <div class="card-header">
+                        <span class="card-title" th:text="${biz.businessName}">Name</span>
+                        <span class="badge badge-primary" th:text="${biz.category}">Category</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-meta" th:text="${biz.location}">Location</p>
+                        <p th:if="${biz.website}" class="card-meta"><a th:href="${biz.website}" target="_blank"
+                                rel="noopener">Website ↗</a></p>
+                    </div>
+                    <div class="card-footer" style="display:flex;gap:0.5rem;">
+                        <a th:href="@{/web/business/{id}/edit(id=${biz.id})}" class="btn btn-sm btn-secondary">✎
+                            Edit</a>
+
+                        <form th:action="@{/web/business/{id}/delete(id=${biz.id})}" method="post"
+                            onsubmit="return confirm('Delete this business profile?')" style="margin-left:auto;">
+                            <button type="submit" class="btn btn-danger btn-sm">🗑 Delete</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" th:if="${businessPage.totalPages > 1}">
+                    <a th:if="${businessPage.number > 0}"
+                        th:href="@{/web/business/my-business(page=${businessPage.number - 1})}">← Prev</a>
+                    <span class="active"
+                        th:text="${businessPage.number + 1 + ' / ' + businessPage.totalPages}">1/1</span>
+                    <a th:if="${businessPage.number < businessPage.totalPages - 1}"
+                        th:href="@{/web/business/my-business(page=${businessPage.number + 1})}">Next →</a>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${businessPage == null or !businessPage.hasContent()}">
+                <div class="empty-icon">🏪</div>
+                <p>You haven't registered any businesses yet.</p>
+                <a th:href="@{/web/business/register}" class="btn btn-primary" style="margin-top:1rem;">Register Your
+                    Business</a>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

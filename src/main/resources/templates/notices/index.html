@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notices — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📢 Community Notices</h1>
+                <div class="actions" sec:authorize="hasRole('ADMINISTRATOR')">
+                    <a th:href="@{/web/notices/new}" class="btn btn-primary">+ New Notice</a>
+                </div>
+            </div>
+
+            <div th:if="${notices != null and !notices.isEmpty()}">
+                <div class="card" th:each="notice : ${notices}" style="margin-bottom:0.75rem;">
+                    <div class="card-header">
+                        <span class="card-title" th:text="${notice.title}">Title</span>
+                        <span class="badge badge-warning" th:if="${notice.isPinned}">📌 Pinned</span>
+                        <a sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/web/notices/{id}/edit(id=${notice.id})}"
+                            class="btn btn-sm btn-secondary" style="margin-left:auto;">Edit</a>
+                    </div>
+                    <div class="card-body" style="white-space:pre-line;" th:text="${notice.content}">Content</div>
+                    <div class="card-footer" sec:authorize="hasRole('ADMINISTRATOR')">
+                        <form th:action="@{/web/notices/{id}/delete(id=${notice.id})}" method="post"
+                            onsubmit="return confirm('Delete this notice?')">
+                            <button type="submit" class="btn btn-danger btn-sm">🗑 Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="empty-state" th:if="${notices == null or notices.isEmpty()}">
+                <div class="empty-icon">📢</div>
+                <p>No active notices at the moment.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

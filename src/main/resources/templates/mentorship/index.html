@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentorship — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>🤝 Mentorship</h1>
+                <div class="actions">
+                    <a th:href="@{/web/mentorship/register}" class="btn btn-primary">Become a Mentor</a>
+                    <a th:href="@{/web/mentorship/requests}" class="btn btn-secondary">My Requests</a>
+                </div>
+            </div>
+            <div class="card" style="margin-bottom:1.5rem;">
+                <form style="display:flex;gap:0.75rem;">
+                    <input type="text" name="expertise" class="form-control" placeholder="Search by expertise..."
+                        th:value="${expertise}" style="max-width:400px;">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            <div th:if="${mentorsPage != null and mentorsPage.hasContent()}" class="grid grid-3">
+                <div class="card" th:each="mentor : ${mentorsPage.content}">
+                    <div class="card-header"><span class="card-title"
+                            th:text="${mentor.fullName ?: 'Mentor'}">Name</span></div>
+                    <div class="card-body">
+                        <p th:if="${mentor.expertise}" th:text="${'Expertise: ' + mentor.expertise}">Expertise</p>
+                        <p th:if="${mentor.bio}" class="card-meta" th:text="${mentor.bio}">Bio</p>
+                    </div>
+                    <div class="card-footer">
+                        <form th:action="@{/web/mentorship/connect}" method="post">
+                            <input type="hidden" name="mentorId" th:value="${mentor.userId}">
+                            <input type="text" name="message" class="form-control" placeholder="Introduce yourself..."
+                                style="max-width:200px;display:inline-block;margin-right:0.5rem;">
+                            <button type="submit" class="btn btn-primary btn-sm">Connect</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="empty-state" th:if="${mentorsPage == null or !mentorsPage.hasContent()}">
+                <div class="empty-icon">🤝</div>
+                <p>No mentors found. Be the first to register!</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

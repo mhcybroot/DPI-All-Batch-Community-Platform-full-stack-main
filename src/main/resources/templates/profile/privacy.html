@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Settings — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>🔒 Privacy Settings</h1>
+                <div class="actions">
+                    <a th:href="@{/web/profile}" class="btn btn-secondary">← Back to Profile</a>
+                </div>
+            </div>
+
+            <form th:action="@{/web/profile/privacy}" method="post" class="card" style="max-width:600px;">
+                <div class="card-header"><span class="card-title">Visibility Controls</span></div>
+                <div class="card-body">
+                    <p class="card-meta" style="margin-bottom:1.5rem;">Choose which information is visible to other
+                        members in the directory and your profile.</p>
+
+                    <div class="form-group"
+                        style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                        <div>
+                            <label class="form-label" style="margin-bottom:0;">📧 Email Address</label>
+                            <p class="card-meta" style="margin:0;">Show your email to other members</p>
+                        </div>
+                        <label style="position:relative; display:inline-block; width:50px; height:26px;">
+                            <input type="checkbox" name="showEmail" value="true" th:checked="${privacy.showEmail}"
+                                style="opacity:0; width:0; height:0;">
+                            <span
+                                style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:26px; transition:.3s;"
+                                th:styleappend="${privacy.showEmail ? 'background-color:var(--accent)' : ''}"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group"
+                        style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                        <div>
+                            <label class="form-label" style="margin-bottom:0;">📱 Phone Number</label>
+                            <p class="card-meta" style="margin:0;">Show your phone number to other members</p>
+                        </div>
+                        <label style="position:relative; display:inline-block; width:50px; height:26px;">
+                            <input type="checkbox" name="showPhone" value="true" th:checked="${privacy.showPhone}"
+                                style="opacity:0; width:0; height:0;">
+                            <span
+                                style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:26px; transition:.3s;"
+                                th:styleappend="${privacy.showPhone ? 'background-color:var(--accent)' : ''}"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group"
+                        style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                        <div>
+                            <label class="form-label" style="margin-bottom:0;">📍 Location</label>
+                            <p class="card-meta" style="margin:0;">Show your city and country in your profile</p>
+                        </div>
+                        <label style="position:relative; display:inline-block; width:50px; height:26px;">
+                            <input type="checkbox" name="showLocation" value="true" th:checked="${privacy.showLocation}"
+                                style="opacity:0; width:0; height:0;">
+                            <span
+                                style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:26px; transition:.3s;"
+                                th:styleappend="${privacy.showLocation ? 'background-color:var(--accent)' : ''}"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group"
+                        style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0;">
+                        <div>
+                            <label class="form-label" style="margin-bottom:0;">💼 Employment Status</label>
+                            <p class="card-meta" style="margin:0;">Show your employment status to other members</p>
+                        </div>
+                        <label style="position:relative; display:inline-block; width:50px; height:26px;">
+                            <input type="checkbox" name="showEmployment" value="true"
+                                th:checked="${privacy.showEmployment}" style="opacity:0; width:0; height:0;">
+                            <span
+                                style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:26px; transition:.3s;"
+                                th:styleappend="${privacy.showEmployment ? 'background-color:var(--accent)' : ''}"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="card-footer" style="display:flex; gap:0.75rem;">
+                    <button type="submit" class="btn btn-primary">Save Privacy Settings</button>
+                    <a th:href="@{/web/profile}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

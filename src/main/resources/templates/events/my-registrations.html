@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Registrations — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>🎟️ My Event Registrations</h1>
+            </div>
+            <div th:if="${registrations.isEmpty()}" class="empty-state">
+                <div class="empty-icon">🎟️</div>
+                <p>You haven't registered for any events yet.</p><a th:href="@{/web/events}"
+                    class="btn btn-primary">Browse Events</a>
+            </div>
+            <div th:unless="${registrations.isEmpty()}" class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Status</th>
+                            <th>Registered At</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reg : ${registrations}">
+                            <td><a th:href="@{/web/events/{id}(id=${reg.eventId})}"
+                                    th:text="${reg.eventTitle}">Event</a></td>
+                            <td><span class="badge"
+                                    th:classappend="${reg.status.name() == 'APPROVED' ? 'badge-success' : (reg.status.name() == 'REJECTED' ? 'badge-danger' : 'badge-warning')}"
+                                    th:text="${reg.status}">Status</span></td>
+                            <td th:text="${reg.registeredAt}">Time</td>
+                            <td th:text="${reg.notes}">Notes</td>
+                            <td>
+                                <form th:if="${reg.status.name() == 'PENDING' or reg.status.name() == 'APPROVED'}"
+                                    th:action="@{/web/events/{id}/cancel-registration(id=${reg.eventId})}" method="post"
+                                    style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Cancel registration?')">Cancel</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

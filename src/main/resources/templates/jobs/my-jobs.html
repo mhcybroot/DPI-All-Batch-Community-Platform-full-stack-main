@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Jobs — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>💼 My Job Postings</h1>
+                <div class="actions">
+                    <a th:href="@{/web/jobs}" class="btn btn-secondary">← Back to Board</a>
+                    <a th:href="@{/web/jobs/new}" class="btn btn-primary">+ Post a Job</a>
+                </div>
+            </div>
+
+            <div th:if="${jobsPage != null and jobsPage.hasContent()}">
+                <div th:each="job : ${jobsPage.content}" class="card" style="margin-bottom:0.75rem;">
+                    <div class="card-header">
+                        <span class="card-title" th:text="${job.title}">Title</span>
+                        <span class="badge badge-primary" th:text="${job.status}">Status</span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong th:text="${job.company}">Company</strong> · <span
+                                th:text="${job.location ?: 'Remote'}">Location</span></p>
+                        <p class="card-meta">Posted on <span th:text="${job.createdAt}">Date</span></p>
+                    </div>
+                    <div class="card-footer" style="display:flex;gap:0.5rem;">
+                        <a th:href="@{/web/jobs/{id}/edit(id=${job.id})}" class="btn btn-sm btn-secondary">✎ Edit</a>
+
+                        <form th:action="@{/web/jobs/{id}/status(id=${job.id})}" method="post" style="display:inline;">
+                            <input type="hidden" name="status" th:value="${job.status == 'OPEN' ? 'CLOSED' : 'OPEN'}">
+                            <button type="submit" class="btn btn-sm btn-warning"
+                                th:text="${job.status == 'OPEN' ? '🔒 Close' : '🔓 Reopen'}">Expected Action</button>
+                        </form>
+
+                        <form th:action="@{/web/jobs/{id}/delete(id=${job.id})}" method="post"
+                            onsubmit="return confirm('Delete this job posting?')" style="margin-left:auto;">
+                            <button type="submit" class="btn btn-danger btn-sm">🗑 Delete</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" th:if="${jobsPage.totalPages > 1}">
+                    <a th:if="${jobsPage.number > 0}" th:href="@{/web/jobs/my-jobs(page=${jobsPage.number - 1})}">←
+                        Prev</a>
+                    <span class="active" th:text="${jobsPage.number + 1 + ' / ' + jobsPage.totalPages}">1/1</span>
+                    <a th:if="${jobsPage.number < jobsPage.totalPages - 1}"
+                        th:href="@{/web/jobs/my-jobs(page=${jobsPage.number + 1})}">Next →</a>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${jobsPage == null or !jobsPage.hasContent()}">
+                <div class="empty-icon">💼</div>
+                <p>You haven't posted any jobs yet.</p>
+                <a th:href="@{/web/jobs/new}" class="btn btn-primary" style="margin-top:1rem;">Post Your First Job</a>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

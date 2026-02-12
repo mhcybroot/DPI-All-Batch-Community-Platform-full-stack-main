@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poll — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <a th:href="@{/web/polls}" class="btn btn-secondary btn-sm" style="margin-bottom:1rem;">← Back to Polls</a>
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title" th:text="${poll.question}">Question</h1>
+                </div>
+                <div class="card-body">
+                    <div th:each="option : ${poll.options}" style="margin-bottom:0.75rem;">
+                        <form th:action="@{/web/polls/{id}/vote(id=${poll.id})}" method="post"
+                            style="display:flex;align-items:center;gap:0.75rem;">
+                            <input type="hidden" name="optionId" th:value="${option.id}">
+                            <button type="submit" class="btn btn-sm btn-secondary"
+                                th:text="${option.optionText}">Option</button>
+                            <span class="card-meta" th:text="${option.voteCount + ' votes'}">0 votes</span>
+                            <div style="flex:1;background:var(--border);border-radius:4px;height:8px;">
+                                <div style="height:100%;border-radius:4px;background:linear-gradient(135deg, var(--primary), var(--secondary));"
+                                    th:style="'width:' + (option.voteCount > 0 ? (option.voteCount * 100 / (poll.totalVotes > 0 ? poll.totalVotes : 1)) : 0) + '%;height:100%;border-radius:4px;background:linear-gradient(135deg, var(--primary), var(--secondary));'">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

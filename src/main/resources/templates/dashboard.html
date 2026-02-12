@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div th:replace="~{layout/base :: navbar}"></div>
+
+    <!-- Flash Messages -->
+    <div class="container" th:if="${successMessage != null or errorMessage != null}" style="margin-top: 1rem;">
+        <div class="alert alert-success" th:if="${successMessage}" data-auto-dismiss>✓ <span
+                th:text="${successMessage}"></span></div>
+        <div class="alert alert-danger" th:if="${errorMessage}" data-auto-dismiss>✕ <span
+                th:text="${errorMessage}"></span></div>
+    </div>
+
+    <main class="main-content">
+        <div class="container">
+
+            <!-- Welcome -->
+            <div class="page-header">
+                <h1>👋 Welcome, <span sec:authentication="name">User</span>!</h1>
+                <p>Here's what's happening in your community today.</p>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="grid grid-4 section">
+                <div class="card stat-card">
+                    <div class="stat-value" th:text="${upcomingEvents != null ? upcomingEvents.size() : 0}">0</div>
+                    <div class="stat-label">Upcoming Events</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-value" th:text="${todayBirthdays != null ? todayBirthdays.size() : 0}">0</div>
+                    <div class="stat-label">Birthdays Today</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-value" th:text="${notices != null ? notices.size() : 0}">0</div>
+                    <div class="stat-label">Active Notices</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-value">🎓</div>
+                    <div class="stat-label">Community</div>
+                </div>
+            </div>
+
+            <!-- Birthday & Notices Row -->
+            <div class="grid grid-2">
+
+                <!-- Today's Birthdays -->
+                <div class="section">
+                    <h2 class="section-title">🎂 Birthdays Today</h2>
+                    <div th:if="${todayBirthdays != null and !todayBirthdays.isEmpty()}">
+                        <div class="card" th:each="bday : ${todayBirthdays}" style="margin-bottom: 0.75rem;">
+                            <div class="card-body">
+                                <strong th:text="${bday.fullName}">Name</strong>
+                                <span class="card-meta" th:text="' — ' + ${bday.dateOfBirth}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card empty-state" th:if="${todayBirthdays == null or todayBirthdays.isEmpty()}">
+                        <p>No birthdays today 🎈</p>
+                    </div>
+                </div>
+
+                <!-- Pinned Notices -->
+                <div class="section">
+                    <h2 class="section-title">📢 Latest Notices</h2>
+                    <div th:if="${notices != null and !notices.isEmpty()}">
+                        <div class="card" th:each="notice : ${notices}" style="margin-bottom: 0.75rem;">
+                            <div class="card-header">
+                                <span class="card-title" th:text="${notice.title}">Notice</span>
+                                <span class="badge badge-warning" th:if="${notice.isPinned}">Pinned</span>
+                            </div>
+                            <div class="card-body" th:text="${notice.content}">Content</div>
+                        </div>
+                    </div>
+                    <div class="card empty-state" th:if="${notices == null or notices.isEmpty()}">
+                        <p>No active notices</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="section">
+                <h2 class="section-title">📅 Upcoming Events</h2>
+                <div class="grid grid-3" th:if="${upcomingEvents != null and !upcomingEvents.isEmpty()}">
+                    <a th:each="event : ${upcomingEvents}" th:href="@{/web/events/{id}(id=${event.id})}" class="card"
+                        style="text-decoration: none; color: inherit;">
+                        <div class="card-header">
+                            <span class="card-title" th:text="${event.title}">Event</span>
+                            <span class="badge badge-primary" th:text="${event.status}">Status</span>
+                        </div>
+                        <div class="card-body">
+                            <p>📍 <span th:text="${event.venue ?: 'TBD'}">Venue</span></p>
+                            <p>📆 <span th:text="${event.eventDate}">Date</span></p>
+                        </div>
+                    </a>
+                </div>
+                <div class="card empty-state" th:if="${upcomingEvents == null or upcomingEvents.isEmpty()}">
+                    <p>No upcoming events — check back later!</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform. Built with ❤️ by our community.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

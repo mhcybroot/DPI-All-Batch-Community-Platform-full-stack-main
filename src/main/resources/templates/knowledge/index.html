@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Q&amp;A — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>❓ Knowledge Q&amp;A</h1>
+                <div class="actions">
+                    <a th:href="@{/web/knowledge/ask}" class="btn btn-primary">+ Ask a Question</a>
+                </div>
+            </div>
+            <div style="margin-bottom:1rem;display:flex;gap:0.5rem;">
+                <a th:href="@{/web/knowledge(sort='newest')}" class="btn btn-sm"
+                    th:classappend="${sort == 'newest' ? 'btn-primary' : 'btn-secondary'}">Newest</a>
+                <a th:href="@{/web/knowledge(sort='votes')}" class="btn btn-sm"
+                    th:classappend="${sort == 'votes' ? 'btn-primary' : 'btn-secondary'}">Most Voted</a>
+            </div>
+            <div th:if="${questionsPage != null and questionsPage.hasContent()}">
+                <div th:each="q : ${questionsPage.content}" class="card" style="margin-bottom:0.75rem;">
+                    <div class="card-header">
+                        <a th:href="@{/web/knowledge/{id}(id=${q.id})}" class="card-title"
+                            th:text="${q.title}">Title</a>
+                        <div>
+                            <span class="badge badge-info" th:text="${q.voteCount + ' votes'}">0</span>
+                            <span class="badge badge-success" th:if="${q.answerCount > 0}"
+                                th:text="${q.answerCount + ' answers'}">0</span>
+                        </div>
+                    </div>
+                    <div class="card-body card-meta">
+                        <span th:text="${q.createdAt}">Date</span>
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="pagination" th:if="${questionsPage.totalPages > 1}">
+                    <a th:if="${questionsPage.number > 0}"
+                        th:href="@{/web/knowledge(sort=${sort},page=${questionsPage.number - 1})}">← Prev</a>
+                    <span class="active"
+                        th:text="${questionsPage.number + 1 + ' / ' + questionsPage.totalPages}">1/1</span>
+                    <a th:if="${questionsPage.number < questionsPage.totalPages - 1}"
+                        th:href="@{/web/knowledge(sort=${sort},page=${questionsPage.number + 1})}">Next →</a>
+                </div>
+            </div>
+            <div class="empty-state" th:if="${questionsPage == null or !questionsPage.hasContent()}">
+                <div class="empty-icon">❓</div>
+                <p>No questions yet. Be the first to ask!</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

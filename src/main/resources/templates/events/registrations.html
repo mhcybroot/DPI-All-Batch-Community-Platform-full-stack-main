@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registrations — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📋 Registrations for: <span th:text="${event.title}">Event</span></h1>
+                <a th:href="@{/web/events/{id}(id=${event.id})}" class="btn btn-secondary">← Back to Event</a>
+            </div>
+
+            <!-- Pending Registrations -->
+            <div th:if="${pendingRegistrations != null and !pendingRegistrations.isEmpty()}"
+                style="margin-bottom:2rem;">
+                <h2>⏳ Pending Approvals</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Notes</th>
+                                <th>Registered</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="reg : ${pendingRegistrations}">
+                                <td th:text="${reg.userName}">User</td>
+                                <td th:text="${reg.notes}">Notes</td>
+                                <td th:text="${reg.registeredAt}">Time</td>
+                                <td style="display:flex;gap:0.5rem;">
+                                    <form th:action="@{/web/events/registrations/{id}/approve(id=${reg.id})}"
+                                        method="post">
+                                        <input type="hidden" name="eventId" th:value="${event.id}">
+                                        <button type="submit" class="btn btn-primary btn-sm">Approve</button>
+                                    </form>
+                                    <form th:action="@{/web/events/registrations/{id}/reject(id=${reg.id})}"
+                                        method="post" style="display:flex;gap:0.25rem;">
+                                        <input type="hidden" name="eventId" th:value="${event.id}">
+                                        <input type="text" name="reason" placeholder="Reason" class="form-control"
+                                            style="width:120px;padding:0.25rem 0.5rem;font-size:0.85rem;">
+                                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- All Registrations -->
+            <h2>All Registrations</h2>
+
+            <!-- Status Filter -->
+            <div th:unless="${registrations.isEmpty()}" style="margin-bottom: 1rem;">
+                <label class="form-label" for="statusFilter">Filter by Status:</label>
+                <select id="statusFilter" class="form-control" style="max-width: 200px;"
+                    th:onchange="'window.location.href = \'' + @{/web/events/{id}/registrations(id=${event.id})} + '?status=\' + this.value'">
+                    <option value="ALL" th:selected="${currentStatus == 'ALL'}">All Statuses</option>
+                    <option value="PENDING" th:selected="${currentStatus == 'PENDING'}">Pending</option>
+                    <option value="APPROVED" th:selected="${currentStatus == 'APPROVED'}">Approved</option>
+                    <option value="REJECTED" th:selected="${currentStatus == 'REJECTED'}">Rejected</option>
+                    <option value="WAITLISTED" th:selected="${currentStatus == 'WAITLISTED'}">Waitlisted</option>
+                    <option value="CANCELLED" th:selected="${currentStatus == 'CANCELLED'}">Cancelled</option>
+                    <option value="ATTENDED" th:selected="${currentStatus == 'ATTENDED'}">Attended</option>
+                </select>
+            </div>
+
+            <div th:if="${registrations.isEmpty()}" class="empty-state">
+                <p>No registrations for this event yet.</p>
+            </div>
+            <div th:unless="${registrations.isEmpty()}" class="table-wrapper">
+                <table id="registrationsTable">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Notes</th>
+                            <th>Registered</th>
+                            <th>Reviewed By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reg : ${registrations}" th:attr="data-status=${reg.status.name()}">
+                            <td th:text="${reg.userName}">User</td>
+                            <td><span class="badge"
+                                    th:classappend="${reg.status.name() == 'APPROVED' ? 'badge-success' : (reg.status.name() == 'REJECTED' ? 'badge-danger' : 'badge-warning')}"
+                                    th:text="${reg.status}">Status</span></td>
+                            <td th:text="${reg.notes}">Notes</td>
+                            <td th:text="${reg.registeredAt}">Time</td>
+                            <td th:text="${reg.reviewedByName}">Reviewer</td>
+                            <td>
+                                <form th:if="${reg.status.name() == 'APPROVED'}"
+                                    th:action="@{/web/events/registrations/{id}/mark-attended(id=${reg.id})}"
+                                    method="post">
+                                    <input type="hidden" name="eventId" th:value="${event.id}">
+                                    <button type="submit" class="btn btn-secondary btn-sm">Mark Attended</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

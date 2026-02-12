@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donor Registry — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>🩸 Blood Donor Registry</h1>
+                <div class="actions">
+                    <a th:href="@{/web/blood-donors/register}" class="btn btn-primary">+ Register as Donor</a>
+                    <a th:href="@{/web/blood-donors/my-profile}" class="btn btn-secondary">My Profile</a>
+                </div>
+            </div>
+            <div class="card" style="margin-bottom:1.5rem;">
+                <form style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                    <select name="bloodGroup" class="form-control" style="max-width:200px;">
+                        <option value="">All Blood Groups</option>
+                        <option th:each="bg : ${bloodGroups}" th:value="${bg}" th:text="${bg}"
+                            th:selected="${bg == param.bloodGroup}"></option>
+                    </select>
+                    <input type="text" name="location" class="form-control" placeholder="Location"
+                        style="max-width:250px;" th:value="${param.location}">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            <div th:if="${donors != null and !donors.isEmpty()}" class="grid grid-3">
+                <div class="card" th:each="donor : ${donors}">
+                    <div class="card-header">
+                        <span class="card-title" th:text="${donor.fullName ?: 'Donor'}">Name</span>
+                        <span class="badge" th:classappend="${donor.available ? 'badge-success' : 'badge-danger'}"
+                            th:text="${donor.available ? 'Available' : 'Unavailable'}">Status</span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Blood Group:</strong> <span th:text="${donor.bloodGroup}">A+</span></p>
+                        <p th:if="${donor.location}"><strong>Location:</strong> <span
+                                th:text="${donor.location}">City</span></p>
+                        <p th:if="${donor.lastDonationDate}" class="card-meta">Last donation: <span
+                                th:text="${donor.lastDonationDate}">Date</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="empty-state" th:if="${donors == null}">
+                <div class="empty-icon">🩸</div>
+                <p>Use the search filters above to find donors.</p>
+            </div>
+            <div class="empty-state" th:if="${donors != null and donors.isEmpty()}">
+                <p>No donors found matching your criteria.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

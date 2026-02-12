@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${question.title + ' — DPI Q&amp;A'}">Q&amp;A — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <a th:href="@{/web/knowledge}" class="btn btn-secondary btn-sm" style="margin-bottom:1rem;">← Back to
+                Q&amp;A</a>
+
+            <!-- Question -->
+            <div class="card" style="margin-bottom:2rem;">
+                <div style="display:flex;gap:1rem;">
+                    <div class="vote-controls">
+                        <form th:action="@{/web/knowledge/{id}/vote(id=${question.id})}" method="post"><input
+                                type="hidden" name="voteType" value="UPVOTE"><button class="vote-btn"
+                                type="submit">▲</button></form>
+                        <span class="vote-count" th:text="${question.voteCount}">0</span>
+                        <form th:action="@{/web/knowledge/{id}/vote(id=${question.id})}" method="post"><input
+                                type="hidden" name="voteType" value="DOWNVOTE"><button class="vote-btn"
+                                type="submit">▼</button></form>
+                    </div>
+                    <div style="flex:1;">
+                        <h1 th:text="${question.title}" style="margin-bottom:0.5rem;">Title</h1>
+                        <div style="white-space:pre-line;margin-bottom:1rem;" th:text="${question.content}">Content
+                        </div>
+                        <div class="tag-list" th:if="${question.tags != null}">
+                            <span class="tag" th:each="tag : ${question.tags}" th:text="${tag}">Tag</span>
+                        </div>
+                        <p class="card-meta" style="margin-top:0.5rem;" th:text="${'Asked ' + question.createdAt}">Date
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Answers -->
+            <h2 class="section-title">💡 Answers (<span th:text="${answers != null ? answers.size() : 0}">0</span>)</h2>
+            <div th:each="answer : ${answers}" class="card" style="margin-bottom:0.75rem;">
+                <div style="display:flex;gap:1rem;">
+                    <div class="vote-controls">
+                        <form th:action="@{/web/knowledge/answers/{id}/vote(id=${answer.id})}" method="post"><input
+                                type="hidden" name="questionId" th:value="${question.id}"><input type="hidden"
+                                name="voteType" value="UPVOTE"><button class="vote-btn" type="submit">▲</button></form>
+                        <span class="vote-count" th:text="${answer.voteCount}">0</span>
+                        <form th:action="@{/web/knowledge/answers/{id}/vote(id=${answer.id})}" method="post"><input
+                                type="hidden" name="questionId" th:value="${question.id}"><input type="hidden"
+                                name="voteType" value="DOWNVOTE"><button class="vote-btn" type="submit">▼</button>
+                        </form>
+                    </div>
+                    <div style="flex:1;">
+                        <div th:if="${answer.accepted}" class="badge badge-success" style="margin-bottom:0.5rem;">✓
+                            Accepted Answer</div>
+                        <div style="white-space:pre-line;" th:text="${answer.content}">Answer</div>
+                        <div class="card-footer" style="justify-content:space-between;">
+                            <span class="card-meta" th:text="${'Answered ' + answer.createdAt}">Date</span>
+                            <form th:unless="${answer.accepted}"
+                                th:action="@{/web/knowledge/answers/{id}/accept(id=${answer.id})}" method="post">
+                                <input type="hidden" name="questionId" th:value="${question.id}">
+                                <button class="btn btn-success btn-sm" type="submit">✓ Accept</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Answer -->
+            <form th:action="@{/web/knowledge/{id}/answer(id=${question.id})}" method="post" class="card"
+                style="margin-top:1rem;">
+                <div class="form-group"><label class="form-label">Your Answer</label><textarea name="content"
+                        class="form-control" rows="4" required placeholder="Share your knowledge..."></textarea></div>
+                <button type="submit" class="btn btn-primary">Post Answer</button>
+            </form>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

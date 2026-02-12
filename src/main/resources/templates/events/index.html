@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📅 Events</h1>
+                <div class="actions">
+                    <a th:href="@{/web/events/new}" class="btn btn-primary">+ Create Event</a>
+                    <a th:href="@{/web/events/my-events}" class="btn btn-secondary">My Events</a>
+                    <a th:href="@{/web/events/my-registrations}" class="btn btn-secondary">My Registrations</a>
+                </div>
+            </div>
+            <div class="grid grid-3" th:if="${events != null and !events.isEmpty()}">
+                <a th:each="event : ${events}" th:href="@{/web/events/{id}(id=${event.id})}" class="card"
+                    style="text-decoration:none;color:inherit;">
+                    <div class="card-header">
+                        <span class="card-title" th:text="${event.title}">Event</span>
+                        <span class="badge badge-primary" th:text="${event.status}">Status</span>
+                    </div>
+                    <div class="card-body">
+                        <p>📍 <span th:text="${event.venue ?: 'TBD'}">Venue</span></p>
+                        <p>📆 <span th:text="${event.eventDate}">Date</span></p>
+                    </div>
+                </a>
+            </div>
+            <div class="empty-state" th:if="${events == null or events.isEmpty()}">
+                <div class="empty-icon">📅</div>
+                <p>No upcoming events.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>

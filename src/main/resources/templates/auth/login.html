@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <h1>🎓 Welcome Back</h1>
+            <p class="auth-subtitle">Sign in to your DPI Community account</p>
+
+            <div class="alert alert-danger" th:if="${param.error}">
+                ✕ Invalid email or password. Please try again.
+            </div>
+            <div class="alert alert-success" th:if="${param.logout}" data-auto-dismiss>
+                ✓ You have been logged out successfully.
+            </div>
+            <div class="alert alert-success" th:if="${param.registered}" data-auto-dismiss>
+                ✓ Registration successful! Please wait for admin approval, then log in.
+            </div>
+
+            <form th:action="@{/web/auth/do-login}" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com"
+                        required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control"
+                        placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a th:href="@{/web/auth/register}">Register here</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
