@@ -190,3 +190,78 @@ select.glass-input option {
     transform: translateY(0) scale(1);
     transition: opacity 0.3s ease-in, transform 0.3s var(--ease-spring);
 }
+
+/* --- Cybernetic Switch (Toggle) --- */
+.cyber-switch {
+    position: relative;
+    width: 48px;
+    height: 24px;
+}
+
+.cyber-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.cyber-switch label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-glass-border);
+    transition: .4s var(--ease-organic);
+    border-radius: 2px;
+    /* Techist sharp */
+    border: 1px solid var(--color-glass-border);
+}
+
+.cyber-switch label:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 3px;
+    background: var(--color-silicon-gray);
+    transition: .4s var(--ease-spring);
+    border-radius: 1px;
+}
+
+.cyber-switch input:checked+label {
+    background: var(--color-moss-emerald-dim);
+    border-color: var(--color-moss-emerald);
+}
+
+.cyber-switch input:checked+label:before {
+    transform: translateX(24px);
+    background: var(--color-moss-emerald);
+    box-shadow: 0 0 10px var(--color-moss-emerald);
+}
+
+/* --- General Glass Input --- */
+.glass-input {
+    background: rgba(11, 14, 20, 0.4) !important;
+    border: 1px solid var(--color-glass-border) !important;
+    color: var(--color-frozen-white) !important;
+    border-radius: 4px !important;
+    transition: all var(--transition-medium) !important;
+}
+
+.glass-input:focus {
+    background: rgba(11, 14, 20, 0.6) !important;
+    border-color: var(--color-moss-emerald) !important;
+    box-shadow: 0 0 15px var(--color-moss-emerald-dim) !important;
+    outline: none !important;
+}
+
+.glass-input::placeholder {
+    color: var(--color-silicon-gray);
+    opacity: 0.5;
+}
+
+.privacy-module:hover {
+    background: rgba(255, 255, 255, 0.02);
+}

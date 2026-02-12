@@ -14,24 +14,53 @@
     <div th:replace="~{layout/base :: navbar}"></div>
     <main class="main-content">
         <div class="container">
-            <a th:href="@{/web/business}" class="btn btn-secondary btn-sm" style="margin-bottom:1rem;">← Back</a>
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title" th:text="${business.businessName}">Name</h1>
+            <a th:href="@{/web/business}" class="btn btn-magnetic btn-sm gsap-reveal" data-magnetic
+                style="margin-bottom:1.5rem;">← Sector Index</a>
+
+            <div class="card glass-card gsap-reveal" style="padding: 2.5rem;">
+                <div class="card-header"
+                    style="border-bottom: 1px solid var(--color-glass-border); padding-bottom: 1.5rem; margin-bottom: 2rem;">
+                    <h1 class="kinetic-text" th:text="${business.businessName}"
+                        style="font-size: 2.5rem; color: var(--color-moss-emerald);">Business Name</h1>
+                    <div style="margin-top: 0.5rem;">
+                        <span class="badge"
+                            style="background: var(--color-cyber-copper-dim); color: var(--color-cyber-copper); border: 1px solid var(--color-cyber-copper-dim);"
+                            th:text="${business.category}">Category</span>
+                    </div>
                 </div>
+
                 <div class="card-body">
-                    <div class="grid grid-2" style="margin-bottom:1rem;">
-                        <div><strong>📂 Category</strong>
-                            <p th:text="${business.category}">Category</p>
+                    <div class="grid grid-2" style="gap: 2rem; margin-bottom: 2.5rem;">
+                        <div class="data-node">
+                            <strong
+                                style="display: block; font-family: var(--font-machine); font-size: 0.75rem; color: var(--color-silicon-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">Sector
+                                ID</strong>
+                            <p th:text="${business.category}" style="font-size: 1.1rem;">Category</p>
                         </div>
-                        <div><strong>📍 Location</strong>
-                            <p th:text="${business.location}">Location</p>
+                        <div class="data-node">
+                            <strong
+                                style="display: block; font-family: var(--font-machine); font-size: 0.75rem; color: var(--color-silicon-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">Geographic
+                                Node</strong>
+                            <p th:text="${business.location}" style="font-size: 1.1rem;">Location</p>
                         </div>
                     </div>
-                    <p th:if="${business.description}" style="white-space:pre-line;" th:text="${business.description}">
-                        Desc</p>
-                    <p th:if="${business.website}" style="margin-top:0.5rem;"><a th:href="${business.website}"
-                            target="_blank">🌐 Visit Website</a></p>
+
+                    <div style="margin-bottom: 2.5rem;">
+                        <strong
+                            style="display: block; font-family: var(--font-machine); font-size: 0.75rem; color: var(--color-silicon-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">Protocol
+                            Description</strong>
+                        <p th:if="${business.description}"
+                            style="white-space:pre-line; color: var(--text-muted); line-height: 1.8;"
+                            th:text="${business.description}">Description</p>
+                    </div>
+
+                    <div th:if="${business.website}"
+                        style="padding-top: 1.5rem; border-top: 1px solid var(--color-glass-border);">
+                        <a th:href="${business.website}" target="_blank" rel="noopener" class="btn btn-magnetic-primary"
+                            data-magnetic>
+                            🌐 External Uplink Established ↗
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

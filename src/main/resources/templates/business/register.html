@@ -14,23 +14,49 @@
     <div th:replace="~{layout/base :: navbar}"></div>
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
-                <h1>🏪 Register Your Business</h1>
+            <div class="page-header gsap-reveal">
+                <h1 class="kinetic-text">🏢 Entity Registration</h1>
+                <p class="text-muted" style="margin-top: 0.5rem;">Initiate a new corporate node within the DPI network.
+                </p>
             </div>
-            <form th:action="@{/web/business}" method="post" class="card" style="max-width:600px;">
-                <div class="form-group"><label class="form-label">Business Name</label><input type="text"
-                        name="businessName" class="form-control" required></div>
-                <div class="form-group"><label class="form-label">Category</label><input type="text" name="industry"
-                        class="form-control" required placeholder="e.g. IT, Restaurant, Retail"></div>
-                <div class="form-group"><label class="form-label">Description</label><textarea name="description"
-                        class="form-control" rows="4" placeholder="Describe your business..."></textarea></div>
-                <div class="form-group"><label class="form-label">Location</label><input type="text" name="location"
-                        class="form-control" placeholder="City, Area"></div>
-                <div class="form-group"><label class="form-label">Website</label><input type="url" name="website"
-                        class="form-control" placeholder="https://..."></div>
 
-                <div style="display:flex;gap:0.75rem;"><button type="submit" class="btn btn-primary">Register</button><a
-                        th:href="@{/web/business}" class="btn btn-secondary">Cancel</a></div>
+            <form th:action="@{/web/business}" method="post" class="card glass-card gsap-reveal"
+                style="max-width:700px; padding: 2.5rem;">
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="form-label">Business Identifier</label>
+                    <input type="text" name="businessName" class="form-control glass-input" required
+                        placeholder="Legal entity name...">
+                </div>
+
+                <div class="grid grid-2" style="gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label class="form-label">Industry Classification</label>
+                        <input type="text" name="industry" class="form-control glass-input" required
+                            placeholder="e.g. IT Services, Logistics">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Geographic Node</label>
+                        <input type="text" name="location" class="form-control glass-input" placeholder="City, Region">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="form-label">Operational Logic (Description)</label>
+                    <textarea name="description" class="form-control glass-input" rows="5"
+                        placeholder="Detail the entity's core functions and objectives..."></textarea>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 2.5rem;">
+                    <label class="form-label">Digital Access Port (Website URL)</label>
+                    <input type="url" name="website" class="form-control glass-input"
+                        placeholder="https://external-uplink.com">
+                </div>
+
+                <div
+                    style="display:flex; gap:1rem; align-items: center; border-top: 1px solid var(--color-glass-border); padding-top: 2rem;">
+                    <button type="submit" class="btn btn-magnetic-primary" data-magnetic>Commit Registration</button>
+                    <a th:href="@{/web/business}" class="btn btn-magnetic" data-magnetic>Abort Protocol</a>
+                </div>
             </form>
         </div>
     </main>

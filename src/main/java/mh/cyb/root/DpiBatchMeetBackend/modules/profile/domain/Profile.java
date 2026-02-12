@@ -34,7 +34,7 @@ public class Profile extends BaseEntity {
 
     private String phoneNumber;
 
-    private String linkedInUrl;
+    private String linkedinUrl;
     private String githubUrl;
     private String portfolioUrl;
 

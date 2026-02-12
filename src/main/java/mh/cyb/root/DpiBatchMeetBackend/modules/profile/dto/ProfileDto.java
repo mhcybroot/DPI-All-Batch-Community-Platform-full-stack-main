@@ -13,7 +13,7 @@ public class ProfileDto {
     private LocalDate dateOfBirth;
     // private String title; // Removed as not in Entity
     private String phoneNumber;
-    private String linkedInUrl;
+    private String linkedinUrl;
     private String githubUrl;
     private String portfolioUrl;
     private String locationCity;

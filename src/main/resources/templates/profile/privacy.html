@@ -15,82 +15,88 @@
     <div th:replace="~{layout/base :: navbar}"></div>
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
-                <h1>🔒 Privacy Settings</h1>
+            <div class="page-header gsap-reveal">
+                <h1 class="kinetic-text">🔒 Privacy Calibration</h1>
                 <div class="actions">
-                    <a th:href="@{/web/profile}" class="btn btn-secondary">← Back to Profile</a>
+                    <a th:href="@{/web/profile}" class="btn btn-magnetic" data-magnetic>← Return to Identity</a>
                 </div>
             </div>
 
-            <form th:action="@{/web/profile/privacy}" method="post" class="card" style="max-width:600px;">
-                <div class="card-header"><span class="card-title">Visibility Controls</span></div>
+            <form th:action="@{/web/profile/privacy}" method="post" class="card glass-card gsap-reveal"
+                style="max-width:700px; padding: 2.5rem;">
+                <div class="card-header"
+                    style="border-bottom: 1px solid var(--color-glass-border); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                    <span class="card-title kinetic-text" style="font-size: 1.25rem;">Visibility Matrix</span>
+                </div>
                 <div class="card-body">
-                    <p class="card-meta" style="margin-bottom:1.5rem;">Choose which information is visible to other
-                        members in the directory and your profile.</p>
+                    <p class="text-muted" style="margin-bottom: 2rem; font-size: 0.95rem;">Configure identity broadcast
+                        parameters across the network grid.</p>
 
-                    <div class="form-group"
-                        style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                    <!-- Toggle Nodes -->
+                    <div class="privacy-module"
+                        style="display:flex; align-items:center; justify-content:space-between; padding: 1.25rem 0; border-bottom: 1px solid var(--color-glass-border);">
                         <div>
-                            <label class="form-label" style="margin-bottom:0;">📧 Email Address</label>
-                            <p class="card-meta" style="margin:0;">Show your email to other members</p>
+                            <label class="form-label" style="margin-bottom:0.25rem; font-size: 1.05rem;">📧 Email
+                                Uplink</label>
+                            <p class="text-muted" style="margin:0; font-size: 0.85rem;">Allow peer-to-peer electronic
+                                mail discovery.</p>
                         </div>
-                        <label style="position:relative; display:inline-block; width:50px; height:26px;">
-                            <input type="checkbox" name="showEmail" value="true" th:checked="${privacy.showEmail}"
-                                style="opacity:0; width:0; height:0;">
-                            <span
-                                style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:26px; transition:.3s;"
-                                th:styleappend="${privacy.showEmail ? 'background-color:var(--accent)' : ''}"></span>
-                        </label>
+                        <div class="cyber-switch">
+                            <input type="checkbox" name="showEmail" id="showEmail" value="true"
+                                th:checked="${privacy.showEmail}">
+                            <label for="showEmail"></label>
+                        </div>
                     </div>
 
-                    <div class="form-group"
-                        style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                    <div class="privacy-module"
+                        style="display:flex; align-items:center; justify-content:space-between; padding: 1.25rem 0; border-bottom: 1px solid var(--color-glass-border);">
                         <div>
-                            <label class="form-label" style="margin-bottom:0;">📱 Phone Number</label>
-                            <p class="card-meta" style="margin:0;">Show your phone number to other members</p>
+                            <label class="form-label" style="margin-bottom:0.25rem; font-size: 1.05rem;">📱 Secure
+                                Phonic Link</label>
+                            <p class="text-muted" style="margin:0; font-size: 0.85rem;">Broadcast telemetry-capable
+                                mobile ID.</p>
                         </div>
-                        <label style="position:relative; display:inline-block; width:50px; height:26px;">
-                            <input type="checkbox" name="showPhone" value="true" th:checked="${privacy.showPhone}"
-                                style="opacity:0; width:0; height:0;">
-                            <span
-                                style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:26px; transition:.3s;"
-                                th:styleappend="${privacy.showPhone ? 'background-color:var(--accent)' : ''}"></span>
-                        </label>
+                        <div class="cyber-switch">
+                            <input type="checkbox" name="showPhone" id="showPhone" value="true"
+                                th:checked="${privacy.showPhone}">
+                            <label for="showPhone"></label>
+                        </div>
                     </div>
 
-                    <div class="form-group"
-                        style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                    <div class="privacy-module"
+                        style="display:flex; align-items:center; justify-content:space-between; padding: 1.25rem 0; border-bottom: 1px solid var(--color-glass-border);">
                         <div>
-                            <label class="form-label" style="margin-bottom:0;">📍 Location</label>
-                            <p class="card-meta" style="margin:0;">Show your city and country in your profile</p>
+                            <label class="form-label" style="margin-bottom:0.25rem; font-size: 1.05rem;">📍 Geographic
+                                Node</label>
+                            <p class="text-muted" style="margin:0; font-size: 0.85rem;">Reveal current regional anchor
+                                coordinates.</p>
                         </div>
-                        <label style="position:relative; display:inline-block; width:50px; height:26px;">
-                            <input type="checkbox" name="showLocation" value="true" th:checked="${privacy.showLocation}"
-                                style="opacity:0; width:0; height:0;">
-                            <span
-                                style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:26px; transition:.3s;"
-                                th:styleappend="${privacy.showLocation ? 'background-color:var(--accent)' : ''}"></span>
-                        </label>
+                        <div class="cyber-switch">
+                            <input type="checkbox" name="showLocation" id="showLocation" value="true"
+                                th:checked="${privacy.showLocation}">
+                            <label for="showLocation"></label>
+                        </div>
                     </div>
 
-                    <div class="form-group"
-                        style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0;">
+                    <div class="privacy-module"
+                        style="display:flex; align-items:center; justify-content:space-between; padding: 1.25rem 0; margin-bottom: 2rem;">
                         <div>
-                            <label class="form-label" style="margin-bottom:0;">💼 Employment Status</label>
-                            <p class="card-meta" style="margin:0;">Show your employment status to other members</p>
+                            <label class="form-label" style="margin-bottom:0.25rem; font-size: 1.05rem;">💼 Corporate
+                                Status</label>
+                            <p class="text-muted" style="margin:0; font-size: 0.85rem;">Broadcast active employment and
+                                legal status.</p>
                         </div>
-                        <label style="position:relative; display:inline-block; width:50px; height:26px;">
-                            <input type="checkbox" name="showEmployment" value="true"
-                                th:checked="${privacy.showEmployment}" style="opacity:0; width:0; height:0;">
-                            <span
-                                style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:26px; transition:.3s;"
-                                th:styleappend="${privacy.showEmployment ? 'background-color:var(--accent)' : ''}"></span>
-                        </label>
+                        <div class="cyber-switch">
+                            <input type="checkbox" name="showEmployment" id="showEmployment" value="true"
+                                th:checked="${privacy.showEmployment}">
+                            <label for="showEmployment"></label>
+                        </div>
                     </div>
                 </div>
-                <div class="card-footer" style="display:flex; gap:0.75rem;">
-                    <button type="submit" class="btn btn-primary">Save Privacy Settings</button>
-                    <a th:href="@{/web/profile}" class="btn btn-secondary">Cancel</a>
+                <div class="card-footer"
+                    style="display:flex; gap:1.5rem; align-items: center; border-top: 1px solid var(--color-glass-border); padding-top: 2rem;">
+                    <button type="submit" class="btn btn-magnetic-primary" data-magnetic>Commit Configuration</button>
+                    <a th:href="@{/web/profile}" class="btn btn-magnetic" data-magnetic>Discard Changes</a>
                 </div>
             </form>
         </div>

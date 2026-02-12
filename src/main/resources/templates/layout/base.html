@@ -42,58 +42,73 @@
 
     <!-- Navbar -->
     <!-- Navbar -->
-    <nav class="navbar glass-nav" th:fragment="navbar"
-        style="backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border);">
-        <div class="container">
-            <a href="/web/dashboard" class="navbar-brand kinetic-text" style="font-family: var(--font-display);">🎓
-                <span>DPI Community</span></a>
+    <!-- Neural Command Bar -->
+    <header class="neural-head" th:fragment="navbar">
+        <nav class="command-deck">
+            <!-- Left: System Status & ID -->
+            <div class="deck-left">
+                <div class="sys-stat-group">
+                    <span class="sys-dot"></span>
+                    <span class="sys-dot"></span>
+                    <span class="sys-dot"></span>
+                </div>
+                <div class="project-id kinetic-text" style="font-family: var(--font-display);">
+                    <span class="hex-deco">0x4D</span>
+                    <a href="/web/dashboard">DPI::NET</a>
+                </div>
+            </div>
 
-            <button class="nav-toggle btn-magnetic" data-magnetic aria-label="Toggle navigation">☰</button>
-
-            <ul class="nav-links">
-                <li><a th:href="@{/web/dashboard}"
-                        th:classappend="${activeNav == 'dashboard' ? 'active' : ''}">Dashboard</a></li>
-                <li><a th:href="@{/web/forum}" th:classappend="${activeNav == 'forum' ? 'active' : ''}">Forum</a></li>
-                <li><a th:href="@{/web/events}" th:classappend="${activeNav == 'events' ? 'active' : ''}">Events</a>
+            <!-- Center: Navigation Modules -->
+            <ul class="deck-modules">
+                <li><a th:href="@{/web/dashboard}" class="deck-module"
+                        th:classappend="${activeNav == 'dashboard' ? 'active' : ''}" data-hover="glitch">DASHBOARD</a>
                 </li>
-                <li><a th:href="@{/web/knowledge}"
-                        th:classappend="${activeNav == 'knowledge' ? 'active' : ''}">Q&amp;A</a></li>
-                <li><a th:href="@{/web/notices}" th:classappend="${activeNav == 'notices' ? 'active' : ''}">Notices</a>
+                <li><a th:href="@{/web/forum}" class="deck-module"
+                        th:classappend="${activeNav == 'forum' ? 'active' : ''}" data-hover="glitch">FORUM</a></li>
+                <li><a th:href="@{/web/events}" class="deck-module"
+                        th:classappend="${activeNav == 'events' ? 'active' : ''}" data-hover="glitch">EVENTS</a></li>
+                <li><a th:href="@{/web/knowledge}" class="deck-module"
+                        th:classappend="${activeNav == 'knowledge' ? 'active' : ''}" data-hover="glitch">UPLINK</a></li>
+                <li><a th:href="@{/web/notices}" class="deck-module"
+                        th:classappend="${activeNav == 'notices' ? 'active' : ''}" data-hover="glitch">BROADCASTS</a>
                 </li>
-                <li><a th:href="@{/web/memories}"
-                        th:classappend="${activeNav == 'memories' ? 'active' : ''}">Memories</a></li>
-                <li><a th:href="@{/web/jobs}" th:classappend="${activeNav == 'jobs' ? 'active' : ''}">Jobs</a></li>
-                <li><a th:href="@{/web/mentorship}"
-                        th:classappend="${activeNav == 'mentorship' ? 'active' : ''}">Mentorship</a></li>
-                <li><a th:href="@{/web/directory}"
-                        th:classappend="${activeNav == 'directory' ? 'active' : ''}">Directory</a></li>
+                <li><a th:href="@{/web/memories}" class="deck-module"
+                        th:classappend="${activeNav == 'memories' ? 'active' : ''}" data-hover="glitch">ARCHIVE</a></li>
+                <li><a th:href="@{/web/jobs}" class="deck-module"
+                        th:classappend="${activeNav == 'jobs' ? 'active' : ''}" data-hover="glitch">CONTRACTS</a></li>
+                <li><a th:href="@{/web/mentorship}" class="deck-module"
+                        th:classappend="${activeNav == 'mentorship' ? 'active' : ''}" data-hover="glitch">NEURAL</a>
+                </li>
+                <li><a th:href="@{/web/directory}" class="deck-module"
+                        th:classappend="${activeNav == 'directory' ? 'active' : ''}" data-hover="glitch">DIRECTORY</a>
+                </li>
                 <li sec:authorize="hasRole('ADMINISTRATOR')">
-                    <a th:href="@{/web/admin/approvals}" th:classappend="${activeNav == 'admin' ? 'active' : ''}"
-                        style="color: var(--color-cyber-copper);">⚙ Admin</a>
+                    <a th:href="@{/web/admin/approvals}" class="deck-module admin-module"
+                        th:classappend="${activeNav == 'admin' ? 'active' : ''}" data-hover="glitch">>> ROOT ACCESS</a>
                 </li>
             </ul>
 
-            <div class="nav-right" style="display: flex; align-items: center; gap: 1rem;">
-                <button id="theme-toggle" class="btn btn-sm btn-magnetic" data-magnetic aria-label="Toggle Theme"
-                    style="padding: 0.25rem 0.75rem; border-color: var(--color-glass-border); border-radius: 50%;">
+            <!-- Right: Identity & Phase Shift -->
+            <div class="deck-right">
+                <button id="theme-toggle" class="phase-shift-btn" data-magnetic aria-label="Toggle Phase">
                     <span id="theme-icon">👁</span>
                 </button>
 
-                <div class="nav-user" sec:authorize="isAuthenticated()"
-                    style="padding: 0.25rem 0.75rem; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid var(--color-glass-border);">
-                    <a th:href="@{/web/profile}"
-                        style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem;">
-                        <span>👤</span> <span sec:authentication="name" style="font-weight: 500;">User</span>
+                <div class="bio-auth-chip" sec:authorize="isAuthenticated()">
+                    <a th:href="@{/web/profile}">
+                        <span class="auth-status"></span>
+                        <span sec:authentication="name" class="auth-id">USER_ID</span>
                     </a>
                 </div>
 
-                <form th:action="@{/web/auth/logout}" method="post" style="display:inline;"
-                    sec:authorize="isAuthenticated()">
-                    <button type="submit" class="btn btn-sm btn-ghost" style="opacity: 0.8 !important;">Logout</button>
+                <form th:action="@{/web/auth/logout}" method="post" sec:authorize="isAuthenticated()">
+                    <button type="submit" class="disconnect-btn">EJECT</button>
                 </form>
+
+                <button class="nav-toggle btn-magnetic" data-magnetic aria-label="Toggle navigation">☰</button>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <script>
         (function () {

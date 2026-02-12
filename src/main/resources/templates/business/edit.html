@@ -14,30 +14,70 @@
     <div th:replace="~{layout/base :: navbar}"></div>
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
-                <h1>✏️ Edit Business Profile</h1>
+            <div class="page-header gsap-reveal">
+                <h1 class="kinetic-text">✏️ Asset Modification</h1>
+                <p class="text-muted" style="margin-top: 0.5rem;">Modify core parameters for the corporate node: <span
+                        th:text="${business.businessName}" style="color: var(--color-moss-emerald);"></span></p>
             </div>
-            <form th:action="@{/web/business/{id}/edit(id=${business.id})}" method="post" class="card"
-                style="max-width:600px;">
-                <div class="form-group"><label class="form-label">Business Name</label><input type="text"
-                        name="businessName" class="form-control" th:value="${business.businessName}" required></div>
-                <div class="form-group"><label class="form-label">Tagline</label><input type="text" name="tagline"
-                        class="form-control" th:value="${business.tagline}"></div>
-                <div class="form-group"><label class="form-label">Industry</label><input type="text" name="industry"
-                        class="form-control" th:value="${business.industry}"></div>
-                <div class="form-group"><label class="form-label">Description</label><textarea name="description"
-                        class="form-control" rows="4" th:text="${business.description}"></textarea></div>
-                <div class="form-group"><label class="form-label">Website</label><input type="url" name="website"
-                        class="form-control" th:value="${business.website}"></div>
-                <div class="form-group"><label class="form-label">Location</label><input type="text" name="location"
-                        class="form-control" th:value="${business.location}"></div>
-                <div class="form-group"><label class="form-label">Logo URL</label><input type="url" name="logoUrl"
-                        class="form-control" th:value="${business.logoUrl}"></div>
-                <div class="form-group"><label class="form-label">Established Date</label><input type="date"
-                        name="establishedDate" class="form-control" th:value="${business.establishedDate}"></div>
-                <div style="display:flex;gap:0.75rem;">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a th:href="@{/web/business/{id}(id=${business.id})}" class="btn btn-secondary">Cancel</a>
+
+            <form th:action="@{/web/business/{id}/edit(id=${business.id})}" method="post"
+                class="card glass-card gsap-reveal" style="max-width:750px; padding: 2.5rem;">
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="form-label">Business Name Identifier</label>
+                    <input type="text" name="businessName" class="form-control glass-input"
+                        th:value="${business.businessName}" required>
+                </div>
+
+                <div class="grid grid-2" style="gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label class="form-label">Sector Tagline</label>
+                        <input type="text" name="tagline" class="form-control glass-input"
+                            th:value="${business.tagline}" placeholder="Short mission statement...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Industry Sector</label>
+                        <input type="text" name="industry" class="form-control glass-input"
+                            th:value="${business.industry}">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="form-label">Operational Brief (Description)</label>
+                    <textarea name="description" class="form-control glass-input" rows="6"
+                        th:text="${business.description}"></textarea>
+                </div>
+
+                <div class="grid grid-2" style="gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label class="form-label">Digital Presence (URL)</label>
+                        <input type="url" name="website" class="form-control glass-input"
+                            th:value="${business.website}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Regional Anchor (Location)</label>
+                        <input type="text" name="location" class="form-control glass-input"
+                            th:value="${business.location}">
+                    </div>
+                </div>
+
+                <div class="grid grid-2" style="gap: 1.5rem; margin-bottom: 2.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">Visual ID (Logo URL)</label>
+                        <input type="url" name="logoUrl" class="form-control glass-input"
+                            th:value="${business.logoUrl}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Inception Date</label>
+                        <input type="date" name="establishedDate" class="form-control glass-input"
+                            th:value="${business.establishedDate}">
+                    </div>
+                </div>
+
+                <div
+                    style="display:flex; gap:1rem; align-items: center; border-top: 1px solid var(--color-glass-border); padding-top: 2rem;">
+                    <button type="submit" class="btn btn-magnetic-primary" data-magnetic>Update Protocol</button>
+                    <a th:href="@{/web/business/{id}(id=${business.id})}" class="btn btn-magnetic" data-magnetic>Cancel
+                        Changes</a>
                 </div>
             </form>
         </div>

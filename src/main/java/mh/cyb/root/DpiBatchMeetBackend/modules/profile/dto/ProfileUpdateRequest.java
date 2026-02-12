@@ -9,7 +9,7 @@ public class ProfileUpdateRequest {
     private LocalDate dateOfBirth;
     // private String title;
     private String phoneNumber;
-    private String linkedInUrl;
+    private String linkedinUrl;
     private String githubUrl;
     private String portfolioUrl;
     private String locationCity;

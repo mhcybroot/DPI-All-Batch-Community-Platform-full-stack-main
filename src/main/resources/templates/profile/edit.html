@@ -15,53 +15,62 @@
     <div th:replace="~{layout/base :: navbar}"></div>
     <main class="main-content">
         <div class="container">
-            <div class="page-header">
-                <h1 class="kinetic-text">✏ Edit Identity Protocol</h1>
+            <div class="page-header gsap-reveal">
+                <h1 class="kinetic-text">✏ Identity Specification</h1>
+                <p class="text-muted" style="margin-top: 0.5rem;">Calibrate core identity parameters for the current
+                    node.</p>
             </div>
 
             <form th:action="@{/web/profile/edit}" method="post" class="card glass-card gsap-reveal"
-                style="max-width:700px; padding: 2rem;">
-                <div class="form-group">
-                    <label class="form-label text-muted">Bio-Data Narrative</label>
-                    <textarea name="bio" class="form-control glass-input" th:text="${profile.bio}" rows="3"
-                        placeholder="Enter your system description..."></textarea>
+                style="max-width:800px; padding: 3rem;">
+
+                <div class="form-group" style="margin-bottom: 2.5rem;">
+                    <label class="form-label">Bio-Data Narrative</label>
+                    <textarea name="bio" class="form-control glass-input" th:text="${profile.bio}" rows="5"
+                        placeholder="Detail your operational history and system specifications..."></textarea>
                 </div>
-                <div class="grid grid-2" style="gap: 1rem;">
+
+                <div class="grid grid-2" style="gap: 2rem; margin-bottom: 2.5rem;">
                     <div class="form-group">
-                        <label class="form-label text-muted">Date of Origin</label>
+                        <label class="form-label">Inception Date</label>
                         <input type="date" name="dateOfBirth" class="form-control glass-input"
                             th:value="${profile.dateOfBirth}">
                     </div>
                     <div class="form-group">
-                        <label class="form-label text-muted">Comms Link (Phone)</label>
+                        <label class="form-label">Secure Phonic Link (Comms)</label>
                         <input type="text" name="phoneNumber" class="form-control glass-input"
-                            th:value="${profile.phoneNumber}" placeholder="+880...">
+                            th:value="${profile.phoneNumber}" placeholder="+880 - XXX - XXXXXX">
                     </div>
                 </div>
 
                 <h3
-                    style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1.1rem; color: var(--color-silicon-gray);">
-                    External Uplinks</h3>
+                    style="margin: 2rem 0 1.5rem 0; font-family: var(--font-machine); font-size: 0.85rem; color: var(--color-moss-emerald); text-transform: uppercase; letter-spacing: 0.2em; border-bottom: 1px solid var(--color-glass-border); padding-bottom: 0.75rem;">
+                    Network Uplinks
+                </h3>
 
-                <div class="form-group">
-                    <label class="form-label text-muted">LinkedIn Signal</label>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="form-label">LinkedIn Protocol Signal</label>
                     <input type="url" name="linkedinUrl" class="form-control glass-input"
-                        th:value="${profile.linkedinUrl}" placeholder="https://linkedin.com/in/...">
-                </div>
-                <div class="form-group">
-                    <label class="form-label text-muted">GitHub Repository</label>
-                    <input type="url" name="githubUrl" class="form-control glass-input" th:value="${profile.githubUrl}"
-                        placeholder="https://github.com/...">
-                </div>
-                <div class="form-group">
-                    <label class="form-label text-muted">Portfolio Domain</label>
-                    <input type="url" name="portfolioUrl" class="form-control glass-input"
-                        th:value="${profile.portfolioUrl}" placeholder="https://...">
+                        th:value="${profile.linkedinUrl}" placeholder="https://linkedin.com/in/unique-id">
                 </div>
 
-                <div style="display:flex; gap:1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-magnetic-primary" data-magnetic>Save Protocol</button>
-                    <a th:href="@{/web/profile}" class="btn btn-magnetic" data-magnetic>Cancel</a>
+                <div class="grid grid-2" style="gap: 1.5rem; margin-bottom: 3rem;">
+                    <div class="form-group">
+                        <label class="form-label">GitHub Core Repository</label>
+                        <input type="url" name="githubUrl" class="form-control glass-input"
+                            th:value="${profile.githubUrl}" placeholder="https://github.com/source-node">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Personal Portfolio Domain</label>
+                        <input type="url" name="portfolioUrl" class="form-control glass-input"
+                            th:value="${profile.portfolioUrl}" placeholder="https://visual-archive.net">
+                    </div>
+                </div>
+
+                <div
+                    style="display:flex; gap:1.5rem; align-items: center; border-top: 1px solid var(--color-glass-border); padding-top: 2.5rem;">
+                    <button type="submit" class="btn btn-magnetic-primary" data-magnetic>Commit Identity Update</button>
+                    <a th:href="@{/web/profile}" class="btn btn-magnetic" data-magnetic>Abort Modification</a>
                 </div>
             </form>
         </div>

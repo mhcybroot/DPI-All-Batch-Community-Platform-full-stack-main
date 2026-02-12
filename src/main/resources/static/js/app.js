@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- The Biological Machine: Initialization ---
     initSystemBoot(); // Now handles both overlay and page reveal
+    initNeuralDeck(); // New Navbar Animation
     initMagneticButtons();
     initKineticTypography();
 });
@@ -170,4 +171,25 @@ function initKineticTypography() {
     headers.forEach(header => {
         header.classList.add('kinetic-text');
     });
+}
+/* --- Neural Command Bar Animation --- */
+function initNeuralDeck() {
+    if (typeof gsap === 'undefined') return;
+
+    const deck = document.querySelector('.command-deck');
+    const modules = document.querySelectorAll('.deck-module');
+
+    if (deck) {
+        // Entrance: Expand width, then fade in content
+        gsap.fromTo(deck,
+            { width: '0%', opacity: 0 },
+            { width: '90%', opacity: 1, duration: 1, ease: 'power4.out', delay: 0.5, clearProps: "all", force3D: true }
+        );
+
+        // Modules: Stagger in
+        gsap.fromTo(modules,
+            { y: -10, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, delay: 1, ease: 'back.out(1.7)', clearProps: "all", force3D: true }
+        );
+    }
 }

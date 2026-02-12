@@ -120,81 +120,289 @@ h3 {
 }
 
 /* ==========================================
-   Navbar
+   Navbar: Neural Command Deck
    ========================================== */
-.navbar {
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0.75rem 0;
+.neural-head {
     position: sticky;
-    top: 0;
-    z-index: 100;
+    top: 1rem;
+    z-index: 1000;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: center;
 }
 
-.navbar .container {
+.command-deck {
+    background: transparent;
+    /* Move background to pseudo-layer */
+    border: 1px solid var(--glass-border-color);
+    border-radius: 4px;
+    /* Techist sharp/rounded mix */
+    padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 2rem;
+    box-shadow: 0 10px 30px -10px var(--glass-shadow);
+    /* Avoid using clip-path on the container if it clips children hover glows */
+    min-width: 90%;
+    will-change: transform;
+    isolation: isolate;
+    /* Create clean stacking context */
+    position: relative;
+    transform: translateZ(0);
+    /* Force GPU layer */
+    backface-visibility: hidden;
 }
 
-.navbar-brand {
-    font-size: 1.25rem;
+.command-deck::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--bg-card);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    will-change: transform;
+}
+
+
+/* Left: System Status */
+.deck-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-right: 1px solid var(--border);
+    padding-right: 1.5rem;
+}
+
+.sys-stat-group {
+    display: flex;
+    gap: 4px;
+}
+
+.sys-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.sys-dot:nth-child(2) {
+    animation-delay: 0.2s;
+    background: var(--secondary);
+}
+
+.sys-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.project-id {
+    font-size: 1.1rem;
     font-weight: 700;
-    color: var(--text-heading);
+    letter-spacing: 0.05em;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.navbar-brand span {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.project-id a {
+    color: var(--text-heading);
 }
 
-.nav-links {
+.hex-deco {
+    font-family: var(--font-machine);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+/* Center: Modules */
+.deck-modules {
     display: flex;
     align-items: center;
     gap: 0.25rem;
     list-style: none;
-    flex-wrap: wrap;
+    flex: 1;
+    justify-content: center;
 }
 
-.nav-links a {
+.deck-module {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.25rem;
+    font-family: var(--font-machine);
+    font-size: 0.75rem;
     color: var(--text-muted);
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: var(--transition);
+    letter-spacing: 0.1em;
+    transition: color 0.3s var(--ease-organic), background 0.3s var(--ease-organic);
+    border: 1px solid transparent;
+    border-radius: 2px;
+    overflow: hidden;
+    text-transform: uppercase;
+    transform: translateZ(0);
 }
 
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--text);
-    background: var(--bg-card);
+.deck-module::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(184, 115, 51, 0.2), transparent);
+    transform: skewX(-25deg);
+    transition: left 0.6s var(--ease-organic);
+    pointer-events: none;
+    opacity: 0;
 }
 
-.nav-right {
+
+
+.deck-module:hover {
+    color: var(--primary);
+    background: rgba(45, 90, 39, 0.05);
+    /* Subtle moss tint */
+    border-color: var(--primary);
+    box-shadow: 0 0 10px var(--color-moss-emerald-dim);
+}
+
+.deck-module:hover::after {
+    left: 150%;
+    opacity: 1;
+}
+
+
+
+.deck-module.active {
+    color: var(--text-heading);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.deck-module.active::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--color-moss-emerald-dim);
+}
+
+
+.admin-module {
+    color: var(--color-cyber-copper) !important;
+}
+
+/* Right: Identity */
+.deck-right {
     display: flex;
     align-items: center;
     gap: 1rem;
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--border);
 }
 
-.nav-user {
-    font-size: 0.875rem;
-    color: var(--text-muted);
+.bio-auth-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 20px;
 }
 
-.nav-toggle {
-    display: none;
+.bio-auth-chip a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+}
+
+.auth-status {
+    width: 6px;
+    height: 6px;
+    background: #4caf50;
+    border-radius: 50%;
+    box-shadow: 0 0 5px #4caf50;
+}
+
+.auth-id {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.phase-shift-btn,
+.disconnect-btn {
     background: none;
     border: none;
-    color: var(--text);
-    font-size: 1.5rem;
     cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+
+.disconnect-btn {
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+}
+
+.disconnect-btn:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #fff;
+}
+
+.phase-shift-btn {
+    font-size: 1.2rem;
+    padding: 0.25rem;
+}
+
+.phase-shift-btn:hover {
+    color: var(--text-heading);
+    transform: rotate(45deg);
+}
+
+/* Responsive */
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .command-deck {
+        padding: 0.5rem;
+        gap: 1rem;
+        width: 95%;
+    }
+
+    .deck-modules {
+        display: none;
+        /* Hide standard nav on mobile */
+    }
+
+    .nav-toggle {
+        display: block;
+    }
+
+    .nav-links.open {
+        /* Re-use existing mobile logic or adapt */
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 110%;
+        left: 0;
+        right: 0;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        padding: 1rem;
+        z-index: 999;
+    }
 }
 
 /* ==========================================
