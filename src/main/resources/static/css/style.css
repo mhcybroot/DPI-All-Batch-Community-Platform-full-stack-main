@@ -531,6 +531,14 @@ h3 {
     font-size: 0.9375rem;
 }
 
+.card-body p {
+    margin-bottom: 0.5rem;
+}
+
+.card-body p:last-child {
+    margin-bottom: 0;
+}
+
 .card-footer {
     margin-top: 1rem;
     padding-top: 1rem;

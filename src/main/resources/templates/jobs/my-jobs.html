@@ -32,7 +32,7 @@
                         <span class="badge badge-primary" th:text="${job.status}">Status</span>
                     </div>
                     <div class="card-body">
-                        <p><strong th:text="${job.company}">Company</strong> · <span
+                        <p><strong th:text="${job.companyName}">Company</strong> · <span
                                 th:text="${job.location ?: 'Remote'}">Location</span></p>
                         <p class="card-meta">Posted on <span th:text="${job.createdAt}">Date</span></p>
                     </div>
@@ -40,9 +40,11 @@
                         <a th:href="@{/web/jobs/{id}/edit(id=${job.id})}" class="btn btn-sm btn-secondary">✎ Edit</a>
 
                         <form th:action="@{/web/jobs/{id}/status(id=${job.id})}" method="post" style="display:inline;">
-                            <input type="hidden" name="status" th:value="${job.status == 'OPEN' ? 'CLOSED' : 'OPEN'}">
+                            <input type="hidden" name="status"
+                                th:value="${job.status.name() == 'ACTIVE' ? 'CLOSED' : 'ACTIVE'}">
                             <button type="submit" class="btn btn-sm btn-warning"
-                                th:text="${job.status == 'OPEN' ? '🔒 Close' : '🔓 Reopen'}">Expected Action</button>
+                                th:text="${job.status.name() == 'ACTIVE' ? '🔒 Close' : '🔓 Reopen'}">Expected
+                                Action</button>
                         </form>
 
                         <form th:action="@{/web/jobs/{id}/delete(id=${job.id})}" method="post"

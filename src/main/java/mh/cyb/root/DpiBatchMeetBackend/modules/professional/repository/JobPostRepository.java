@@ -16,6 +16,8 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
     Page<JobPost> findByStatusAndJobType(JobStatus status, JobType jobType, Pageable pageable);
 
+    Page<JobPost> findByJobType(JobType jobType, Pageable pageable);
+
     List<JobPost> findByPostedBy_Id(Long userId);
 
     Page<JobPost> findByPostedBy(mh.cyb.root.DpiBatchMeetBackend.modules.user.domain.User postedBy, Pageable pageable);

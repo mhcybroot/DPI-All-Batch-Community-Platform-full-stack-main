@@ -32,6 +32,9 @@ public class JobViewController {
             @RequestParam(required = false) JobStatus status,
             @RequestParam(required = false) JobType jobType,
             Model model) {
+        if (status == null) {
+            status = JobStatus.ACTIVE;
+        }
         model.addAttribute("jobsPage", jobService.getAllJobs(status, jobType, PageRequest.of(page, 10)));
         model.addAttribute("paramStatus", status);
         model.addAttribute("paramJobType", jobType);

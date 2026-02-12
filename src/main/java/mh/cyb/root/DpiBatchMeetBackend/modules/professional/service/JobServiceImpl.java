@@ -35,10 +35,14 @@ public class JobServiceImpl implements JobService {
     @Transactional(readOnly = true)
     public Page<JobPostDto> getAllJobs(JobStatus status, JobType jobType, Pageable pageable) {
         Page<JobPost> posts;
-        if (jobType != null) {
+        if (status != null && jobType != null) {
             posts = jobPostRepository.findByStatusAndJobType(status, jobType, pageable);
-        } else {
+        } else if (status != null) {
             posts = jobPostRepository.findByStatus(status, pageable);
+        } else if (jobType != null) {
+            posts = jobPostRepository.findByJobType(jobType, pageable);
+        } else {
+            posts = jobPostRepository.findAll(pageable);
         }
         return posts.map(jobMapper::toDto);
     }

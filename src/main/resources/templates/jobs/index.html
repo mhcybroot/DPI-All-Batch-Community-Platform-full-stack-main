@@ -62,29 +62,40 @@
                     </form>
                 </div>
             </div>
-
+            <br />
             <div th:if="${jobsPage != null and jobsPage.hasContent()}">
-                <div th:each="job : ${jobsPage.content}" class="card glass-card gsap-reveal"
-                    style="margin-bottom:0.75rem;" data-magnetic>
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <a th:href="@{/web/jobs/{id}(id=${job.id})}" class="card-title h5 text-decoration-none"
-                                    th:text="${job.title}">Title</a>
-                                <span class="badge bg-secondary ms-2" th:text="${job.jobType}">Type</span>
+
+                <th:block th:each="job : ${jobsPage.content}">
+                    <div class="card glass-card gsap-reveal mb-4 " data-magnetic>
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a th:href="@{/web/jobs/{id}(id=${job.id})}"
+                                        class="card-title h5 text-decoration-none" th:text="${job.title}">Title</a>
+                                    <span class="badge bg-secondary ms-2" th:text="${job.jobType}">Type</span>
+                                </div>
+                                <span class="badge"
+                                    th:classappend="${job.status.name() == 'ACTIVE' ? 'bg-success' : 'bg-secondary'}"
+                                    th:text="${job.status}">ACTIVE</span>
                             </div>
-                            <span class="badge"
-                                th:classappend="${job.status.name() == 'ACTIVE' ? 'bg-success' : 'bg-secondary'}"
-                                th:text="${job.status}">ACTIVE</span>
+                        </div>
+                        <div class="card-body">
+                            <p><strong th:text="${job.companyName}">Company</strong> · <span
+                                    th:text="${job.location ?: 'Remote'}">Location</span></p>
+                            <p class="card-meta text-muted"
+                                th:text="${#temporals.format(job.createdAt, 'MMM d, yyyy')}">
+                                Date</p>
+                        </div>
+                        <div class="card-footer">
+                            <a th:href="@{/web/jobs/{id}(id=${job.id})}" class="btn btn-secondary btn-sm">View
+                                Details</a>
+                            <a th:if="${job.applicationLink}" th:href="${job.applicationLink}" target="_blank"
+                                class="btn btn-primary btn-sm">Apply Now ↗</a>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <p><strong th:text="${job.company}">Company</strong> · <span
-                                th:text="${job.location ?: 'Remote'}">Location</span></p>
-                        <p class="card-meta text-muted" th:text="${#temporals.format(job.createdAt, 'MMM d, yyyy')}">
-                            Date</p>
-                    </div>
-                </div>
+                    <br />
+                </th:block>
+                <br />
                 <div class="pagination" th:if="${jobsPage.totalPages > 1}">
                     <a th:if="${jobsPage.number > 0}"
                         th:href="@{/web/jobs(page=${jobsPage.number - 1}, status=${paramStatus}, jobType=${paramJobType})}">←
@@ -95,10 +106,13 @@
                         →</a>
                 </div>
             </div>
+            <br />
             <div class="empty-state" th:if="${jobsPage == null or !jobsPage.hasContent()}">
                 <div class="empty-icon">💼</div>
                 <p>No job postings yet.</p>
             </div>
+
+
         </div>
     </main>
     <footer class="footer">

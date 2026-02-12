@@ -23,23 +23,25 @@
                 <div class="card-body">
                     <div class="grid grid-3" style="margin-bottom:1rem;">
                         <div><strong>🏢 Company</strong>
-                            <p th:text="${job.company}">Company</p>
+                            <p th:text="${job.companyName}">Company</p>
                         </div>
                         <div><strong>📍 Location</strong>
                             <p th:text="${job.location ?: 'Remote'}">Location</p>
-                        </div>
-                        <div><strong>💰 Salary</strong>
-                            <p th:text="${job.salaryRange ?: 'Not disclosed'}">Salary</p>
                         </div>
                     </div>
                     <div style="white-space:pre-line;" th:text="${job.description}">Description</div>
                     <p class="card-meta" style="margin-top:1rem;">Posted <span th:text="${job.createdAt}">Date</span>
                     </p>
                 </div>
-                <div class="card-footer" th:if="${job.applicationUrl}">
-                    <a th:href="${job.applicationUrl}" target="_blank" class="btn btn-primary">Apply Now →</a>
+                <div class="card-footer">
+                    <a th:if="${job.applicationLink}" th:href="${job.applicationLink}" target="_blank"
+                        class="btn btn-primary">Apply Now ↗</a>
+                    <a th:unless="${job.applicationLink}"
+                        th:href="'mailto:' + ${job.postedBy.email} + '?subject=Application for ' + ${job.title}"
+                        class="btn btn-secondary">Contact Poster ✉</a>
                 </div>
             </div>
+            <div style="height: 3rem;"></div>
         </div>
     </main>
     <footer class="footer">
