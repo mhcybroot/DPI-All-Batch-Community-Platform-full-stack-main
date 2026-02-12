@@ -48,6 +48,8 @@ public class KnowledgeServiceImpl implements KnowledgeService {
             questions = questionRepository.findByIsSolvedFalse(pageable);
         } else if ("votes".equalsIgnoreCase(sort)) {
             questions = questionRepository.findAllByOrderByUpvotesDesc(pageable);
+        } else if ("answers".equalsIgnoreCase(sort)) {
+            questions = questionRepository.findAllOrderByAnswerCountDesc(pageable);
         } else {
             questions = questionRepository.findAllByOrderByCreatedAtDesc(pageable);
         }

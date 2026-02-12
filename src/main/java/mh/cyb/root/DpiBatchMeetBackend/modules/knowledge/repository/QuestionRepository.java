@@ -15,4 +15,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     Page<Question> findAllByOrderByUpvotesDesc(Pageable pageable);
 
     Page<Question> findByIsSolvedFalse(Pageable pageable);
+
+    @org.springframework.data.jpa.repository.Query("SELECT q FROM Question q LEFT JOIN q.answers a GROUP BY q ORDER BY COUNT(a) DESC")
+    Page<Question> findAllOrderByAnswerCountDesc(Pageable pageable);
 }

@@ -135,4 +135,9 @@ public class PollServiceImpl implements PollService {
         return pollRepository.findByClosedFalse().stream()
                 .map(pollMapper::toDto).collect(Collectors.toList());
     }
+
+    @Override
+    public boolean hasUserVoted(Long pollId, Long userId) {
+        return voteRepository.findByPollIdAndVoterId(pollId, userId).isPresent();
+    }
 }

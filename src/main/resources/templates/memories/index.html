@@ -82,24 +82,60 @@
             </script>
 
             <!-- Gallery -->
-            <div class="grid grid-3 floating-grid" th:if="${memories != null and !memories.isEmpty()}">
-                <div class="card glass-card gsap-reveal" th:each="memory : ${memories}" data-magnetic>
-                    <div class="card-header">
-                        <span class="card-title kinetic-text" th:text="${memory.title}">Title</span>
+            <div class="grid grid-3 floating-grid" th:if="${memories != null and !memories.isEmpty()}"
+                style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="card glass-card gsap-reveal" th:each="memory : ${memories}" data-magnetic
+                    style="overflow: hidden; padding: 0; display: flex; flex-direction: column; height: 100%;">
+
+                    <!-- Media Section -->
+                    <div style="position: relative; aspect-ratio: 4/3; overflow: hidden; background: #000;">
+                        <img th:if="${memory.mediaType.name() == 'IMAGE'}" th:src="${memory.mediaUrl}" alt="Memory"
+                            style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease-organic);"
+                            class="memory-img">
+
+                        <video th:if="${memory.mediaType.name() == 'VIDEO'}" th:src="${memory.mediaUrl}" controls
+                            style="width: 100%; height: 100%; object-fit: cover;">
+                        </video>
+
+                        <div class="memory-overlay"
+                            style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); pointer-events: none;">
+                            <span class="badge" th:text="${memory.mediaType}"
+                                style="font-size: 0.7rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); padding: 0.2rem 0.5rem; border-radius: 4px; color: white;">TYPE</span>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p th:if="${memory.description}" th:text="${memory.description}" class="text-muted">Desc</p>
-                        <p class="card-meta">Type: <span th:text="${memory.mediaType}" class="text-copper">IMAGE</span>
-                        </p>
-                    </div>
-                    <div class="card-footer" th:if="${memory.uploaderId == currentUserId or isAdmin}">
-                        <form th:action="@{/web/memories/{id}/delete(id=${memory.id})}" method="post"
-                            onsubmit="return confirm('Delete this memory?')">
-                            <button type="submit" class="btn btn-danger btn-sm">🗑 Delete</button>
-                        </form>
+
+                    <!-- Content Section -->
+                    <div class="card-body" style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+                        <h4 class="card-title kinetic-text" th:text="${memory.title}"
+                            style="margin-bottom: 0.5rem; color: var(--color-frozen-white);">Title</h4>
+                        <p th:if="${memory.description}" th:text="${memory.description}" class="text-muted"
+                            style="font-size: 0.9rem; flex: 1;">Desc</p>
+
+                        <div
+                            style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                            <span class="mono-text" style="font-size: 0.75rem; color: var(--color-silicon-gray);"
+                                th:text="${#temporals.format(memory.createdAt, 'dd MMM yyyy')}">Date</span>
+
+                            <form th:if="${memory.uploaderId == currentUserId or isAdmin}"
+                                th:action="@{/web/memories/{id}/delete(id=${memory.id})}" method="post"
+                                onsubmit="return confirm('Delete this memory?')">
+                                <button type="submit" class="btn-text-danger"
+                                    style="font-size: 0.8rem; background: none; border: none; cursor: pointer; color: #ef4444;">Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <style>
+                .memory-img:hover {
+                    transform: scale(1.05);
+                }
+
+                .btn-text-danger:hover {
+                    text-decoration: underline;
+                }
+            </style>
             <div class="empty-state" th:if="${memories == null or memories.isEmpty()}">
                 <div class="empty-icon">🖼</div>
                 <p>No memories shared yet. Be the first!</p>

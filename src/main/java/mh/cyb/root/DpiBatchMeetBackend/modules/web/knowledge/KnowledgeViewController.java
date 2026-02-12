@@ -77,8 +77,8 @@ public class KnowledgeViewController {
             @RequestParam String voteType,
             @AuthenticationPrincipal UserDetails userDetails,
             RedirectAttributes redirectAttributes) {
-        User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
-        knowledgeService.voteQuestion(questionId, VoteType.valueOf(voteType), user);
+        // Voting is disabled
+        redirectAttributes.addFlashAttribute("errorMessage", "Voting is disabled.");
         return "redirect:/web/knowledge/" + questionId;
     }
 
@@ -88,8 +88,8 @@ public class KnowledgeViewController {
             @RequestParam String voteType,
             @AuthenticationPrincipal UserDetails userDetails,
             RedirectAttributes redirectAttributes) {
-        User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
-        knowledgeService.voteAnswer(answerId, VoteType.valueOf(voteType), user);
+        // Voting is disabled
+        redirectAttributes.addFlashAttribute("errorMessage", "Voting is disabled.");
         return "redirect:/web/knowledge/" + questionId;
     }
 

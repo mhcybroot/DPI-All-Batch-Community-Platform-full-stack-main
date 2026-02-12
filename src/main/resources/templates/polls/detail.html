@@ -15,6 +15,9 @@
     <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
         <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
     </div>
+    <div class="container" th:if="${errorMessage}" style="margin-top:1rem;">
+        <div class="alert alert-danger" data-auto-dismiss>⚠ <span th:text="${errorMessage}"></span></div>
+    </div>
     <main class="main-content">
         <div class="container">
             <div class="page-header" style="margin-bottom: 2rem;">
@@ -35,9 +38,12 @@
                             <input type="hidden" name="optionId" th:value="${option.id}">
 
                             <button type="submit" class="btn btn-magnetic"
+                                th:classappend="${hasVoted ? 'disabled' : ''}" th:disabled="${hasVoted}"
                                 style="flex: 1; text-align: left; justify-content: flex-start; background: rgba(255,255,255,0.05); border: 1px solid var(--color-glass-border);"
                                 data-magnetic>
                                 <span th:text="${option.optionText}">Option</span>
+                                <span th:if="${hasVoted}" class="badge badge-sm badge-secondary"
+                                    style="margin-left: auto;">VOTED</span>
                             </button>
 
                             <span class="card-meta" th:text="${option.voteCount + ' votes'}"
@@ -60,6 +66,11 @@
                     <div class="text-muted" style="margin-top: 2rem; font-size: 0.9rem; text-align: center;">
                         Total Votes Register: <span th:text="${poll.totalVotes}"
                             style="color: var(--color-cyber-copper);">0</span>
+                    </div>
+
+                    <div th:if="${hasVoted}"
+                        style="text-align: center; margin-top: 1rem; color: var(--color-moss-emerald);">
+                        ✓ You have participated in this consensus
                     </div>
                 </div>
             </div>

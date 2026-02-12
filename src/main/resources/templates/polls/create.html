@@ -29,8 +29,12 @@
 
                 <div class="form-group">
                     <label class="form-label text-muted">Linked Event ID (Optional)</label>
-                    <input type="number" name="eventId" class="form-control glass-input"
-                        placeholder="Associate with an event node...">
+                    <select name="eventId" class="form-control glass-input" style="color: var(--color-frozen-white);">
+                        <option value="" selected>-- Associate with an event node --</option>
+                        <option th:each="event : ${upcomingEvents}" th:value="${event.id}"
+                            th:text="${event.title + ' (' + #temporals.format(event.eventDate, 'MMM dd') + ')'}">
+                        </option>
+                    </select>
                 </div>
 
                 <div class="form-group" style="margin-top: 2rem;">

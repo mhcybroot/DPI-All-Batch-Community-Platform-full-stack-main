@@ -100,10 +100,10 @@
                     style="border-radius: 20px; padding: 0.5rem 1.5rem; border: none;">
                     <span>Newest Signals</span>
                 </a>
-                <a th:href="@{/web/knowledge(sort='votes')}" class="btn-magnetic"
-                    th:classappend="${sort == 'votes' ? 'btn-magnetic-primary' : ''}"
+                <a th:href="@{/web/knowledge(sort='answers')}" class="btn-magnetic"
+                    th:classappend="${sort == 'answers' ? 'btn-magnetic-primary' : ''}"
                     style="border-radius: 20px; padding: 0.5rem 1.5rem; border: none;">
-                    <span>Highest Resonance</span>
+                    <span>Most Discussed</span>
                 </a>
             </div>
 
@@ -115,10 +115,6 @@
 
                     <!-- Stats Column -->
                     <div style="display: flex; gap: 0.5rem; align-items: flex-start;">
-                        <div class="stat-badge" th:classappend="${q.upvotes > 0 ? 'answered' : ''}">
-                            <span class="stat-value" th:text="${q.upvotes}">0</span>
-                            <span class="stat-label">VOTES</span>
-                        </div>
                         <div class="stat-badge" th:classappend="${q.answerCount > 0 ? 'answered' : ''}">
                             <span class="stat-value" th:text="${q.answerCount}">0</span>
                             <span class="stat-label">ANS</span>

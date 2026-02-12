@@ -18,4 +18,6 @@ public interface PollService {
     List<PollDto> getEventPolls(Long eventId);
 
     List<PollDto> getActivePolls();
+
+    boolean hasUserVoted(Long pollId, Long userId);
 }

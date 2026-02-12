@@ -19,10 +19,13 @@ public class PollViewController {
 
     private final PollService pollService;
     private final UserService userService;
+    private final mh.cyb.root.DpiBatchMeetBackend.modules.event.service.EventService eventService;
 
-    public PollViewController(PollService pollService, UserService userService) {
+    public PollViewController(PollService pollService, UserService userService,
+            mh.cyb.root.DpiBatchMeetBackend.modules.event.service.EventService eventService) {
         this.pollService = pollService;
         this.userService = userService;
+        this.eventService = eventService;
     }
 
     @GetMapping("")
@@ -33,8 +36,10 @@ public class PollViewController {
     }
 
     @GetMapping("/{id:[0-9]+}")
-    public String pollDetail(@PathVariable Long id, Model model) {
+    public String pollDetail(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
         model.addAttribute("poll", pollService.getPollResults(id));
+        model.addAttribute("hasVoted", pollService.hasUserVoted(id, user.getId()));
         model.addAttribute("activeNav", "events");
         return "polls/detail";
     }
@@ -44,14 +49,19 @@ public class PollViewController {
             @RequestParam Long optionId,
             @AuthenticationPrincipal UserDetails userDetails,
             RedirectAttributes redirectAttributes) {
-        User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
-        pollService.vote(pollId, optionId, user);
-        redirectAttributes.addFlashAttribute("successMessage", "Vote submitted!");
+        try {
+            User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
+            pollService.vote(pollId, optionId, user);
+            redirectAttributes.addFlashAttribute("successMessage", "Vote submitted!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
         return "redirect:/web/polls/" + pollId;
     }
 
     @GetMapping("/create")
     public String createPollForm(Model model) {
+        model.addAttribute("upcomingEvents", eventService.getUpcomingEvents());
         model.addAttribute("activeNav", "events");
         return "polls/create";
     }
