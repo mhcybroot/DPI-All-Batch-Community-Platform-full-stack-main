@@ -1,9 +1,12 @@
 // Mobile nav toggle
 document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.querySelector('.nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
-        toggle.addEventListener('click', () => links.classList.toggle('open'));
+    const modules = document.querySelector('.deck-modules');
+    if (toggle && modules) {
+        toggle.addEventListener('click', () => {
+            modules.classList.toggle('open');
+            toggle.classList.toggle('active');
+        });
     }
 
     // --- The Biological Machine: Initialization ---

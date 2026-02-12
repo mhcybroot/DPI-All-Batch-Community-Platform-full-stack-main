@@ -140,18 +140,33 @@ h3 {
     padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
+    /* Slightly reduced gap */
     box-shadow: 0 10px 30px -10px var(--glass-shadow);
-    /* Avoid using clip-path on the container if it clips children hover glows */
     min-width: 90%;
     will-change: transform;
     isolation: isolate;
-    /* Create clean stacking context */
     position: relative;
     transform: translateZ(0);
-    /* Force GPU layer */
     backface-visibility: hidden;
 }
+
+@media (max-width: 1200px) {
+    .command-deck {
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        max-width: 96vw;
+    }
+}
+
+@media (min-width: 1201px) and (max-width: 1500px) {
+    .command-deck {
+        gap: 0.75rem;
+        min-width: 95%;
+    }
+}
+
+
 
 .command-deck::before {
     content: '';
@@ -171,10 +186,17 @@ h3 {
 .deck-left {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     border-right: 1px solid var(--border);
-    padding-right: 1.5rem;
+    padding-right: 1rem;
 }
+
+@media (max-width: 1400px) {
+    .deck-left .hex-deco {
+        display: none;
+    }
+}
+
 
 .sys-stat-group {
     display: flex;
@@ -228,6 +250,44 @@ h3 {
     justify-content: center;
 }
 
+@media (max-width: 1200px) {
+    .deck-modules {
+        position: fixed;
+        top: 4.5rem;
+        left: 5%;
+        right: 5%;
+        flex-direction: column;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        padding: 1.5rem;
+        border: 1px solid var(--glass-border-color);
+        border-radius: 8px;
+        gap: 0.5rem;
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: all 0.4s var(--ease-organic);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .deck-modules.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 1201px) and (max-width: 1500px) {
+    .deck-modules {
+        gap: 0.2rem;
+    }
+}
+
+
+
 .deck-module {
     position: relative;
     display: inline-flex;
@@ -244,6 +304,26 @@ h3 {
     text-transform: uppercase;
     transform: translateZ(0);
 }
+
+@media (max-width: 1200px) {
+    .deck-module {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 0.85rem 1rem;
+        font-size: 0.85rem;
+        background: rgba(255, 255, 255, 0.01);
+    }
+}
+
+@media (min-width: 1201px) and (max-width: 1500px) {
+    .deck-module {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+    }
+}
+
+
 
 .deck-module::after {
     content: '';
@@ -306,15 +386,22 @@ h3 {
     border-left: 1px solid var(--border);
 }
 
-.bio-auth-chip {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.25rem 0.75rem;
-    background: var(--bg-input);
-    border: 1px solid var(--border);
-    border-radius: 20px;
+@media (max-width: 1200px) {
+    .deck-left .project-id {
+        display: none;
+    }
+
+    .deck-right .bio-auth-chip .auth-id {
+        display: none;
+    }
+
+    .deck-right .disconnect-btn,
+    .deck-right .phase-shift-btn {
+        padding: 0.5rem;
+    }
 }
+
+
 
 .bio-auth-chip a {
     display: flex;
@@ -950,13 +1037,27 @@ tr:hover td {
 /* ==========================================
    Responsive
    ========================================== */
+.nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+@media (max-width: 1200px) {
+    .nav-toggle {
+        display: block;
+    }
+}
+
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;
-    }
-
-    .nav-toggle {
-        display: block;
     }
 
     .nav-links.open {
