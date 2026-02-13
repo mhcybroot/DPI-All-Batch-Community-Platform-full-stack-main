@@ -20,10 +20,13 @@ public class AdminViewController {
 
     private final ApprovalService approvalService;
     private final UserService userService;
+    private final mh.cyb.root.DpiBatchMeetBackend.modules.admin.service.AuditService auditService;
 
-    public AdminViewController(ApprovalService approvalService, UserService userService) {
+    public AdminViewController(ApprovalService approvalService, UserService userService,
+            mh.cyb.root.DpiBatchMeetBackend.modules.admin.service.AuditService auditService) {
         this.approvalService = approvalService;
         this.userService = userService;
+        this.auditService = auditService;
     }
 
     @GetMapping("/approvals")
@@ -75,5 +78,20 @@ public class AdminViewController {
         userService.createUser(request);
         redirectAttributes.addFlashAttribute("successMessage", "User created successfully!");
         return "redirect:/web/admin/approvals";
+    }
+
+    @GetMapping("/users/{id}")
+    public String viewUserDetails(@PathVariable Long id, Model model) {
+        model.addAttribute("user", userService.getUserDtoById(id));
+        model.addAttribute("auditLogs", auditService.getLogsByActor(id));
+        model.addAttribute("activeNav", "admin");
+        return "admin/user-details";
+    }
+
+    @GetMapping("/users")
+    public String viewAllUsers(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("activeNav", "admin");
+        return "admin/users";
     }
 }

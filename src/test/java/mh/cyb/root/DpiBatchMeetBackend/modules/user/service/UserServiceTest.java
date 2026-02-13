@@ -69,7 +69,7 @@ public class UserServiceTest {
                                 .id(1L)
                                 .email("new@example.com")
                                 .fullName("New User")
-                                .isEnabled(false)
+                                .enabled(false)
                                 .roles(Set.of(Role.MEMBER))
                                 .build();
 

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mh.cyb.root.DpiBatchMeetBackend.modules.user.domain.Role;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -16,5 +17,7 @@ public class UserDto {
     private String email;
     private String fullName;
     private Set<Role> roles;
-    private boolean isEnabled;
+    private boolean enabled;
+    private boolean accountNonLocked;
+    private LocalDateTime createdAt;
 }

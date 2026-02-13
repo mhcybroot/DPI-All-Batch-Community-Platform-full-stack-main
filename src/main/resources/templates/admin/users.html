@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Users — DPI Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+    <div class="container" th:if="${successMessage}" style="margin-top:1rem;">
+        <div class="alert alert-success" data-auto-dismiss>✓ <span th:text="${successMessage}"></span></div>
+    </div>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="kinetic-text">👥 All Users Audit</h1>
+                <p class="text-muted">Complete list of all registered users in the system</p>
+                <div class="actions" style="margin-top: 1rem;">
+                    <a th:href="@{/web/admin/approvals}" class="btn btn-secondary btn-magnetic" data-magnetic>← Back to
+                        Approvals</a>
+                    <a th:href="@{/web/admin/users/create}" class="btn btn-primary btn-magnetic" data-magnetic>+ Create
+                        User</a>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-4 section floating-grid" style="margin-bottom: 2rem;">
+                <div class="card glass-card stat-card gsap-reveal">
+                    <div class="stat-value" th:text="${users != null ? users.size() : 0}">0</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="card glass-card stat-card gsap-reveal">
+                    <div class="stat-value">👥</div>
+                    <div class="stat-label">Community</div>
+                </div>
+                <div class="card glass-card stat-card gsap-reveal">
+                    <div class="stat-value">🛡️</div>
+                    <div class="stat-label">System</div>
+                </div>
+                <div class="card glass-card stat-card gsap-reveal">
+                    <div class="stat-value">📊</div>
+                    <div class="stat-label">Audit</div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="card glass-card gsap-reveal" th:if="${users != null and !users.isEmpty()}">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Roles</th>
+                                <th>Status</th>
+                                <th>Account</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.id}">1</td>
+                                <td>
+                                    <a th:href="@{/web/admin/users/{id}(id=${user.id})}"
+                                        style="text-decoration: none; color: inherit;">
+                                        <strong th:text="${user.fullName ?: 'N/A'}">Name</strong>
+                                    </a>
+                                </td>
+                                <td th:text="${user.email}">email@example.com</td>
+                                <td>
+                                    <span class="badge badge-primary" th:each="role : ${user.roles}" th:text="${role}"
+                                        th:classappend="${role == 'ADMINISTRATOR' ? 'badge-danger' : (role == 'MODERATOR' ? 'badge-warning' : 'badge-primary')}"
+                                        style="margin-right: 0.25rem;">ROLE</span>
+                                </td>
+                                <td>
+                                    <span class="badge"
+                                        th:classappend="${user.isEnabled() ? 'badge-success' : 'badge-danger'}"
+                                        th:text="${user.isEnabled() ? 'Enabled' : 'Disabled'}">Status</span>
+                                </td>
+                                <td>
+                                    <span class="badge"
+                                        th:classappend="${user.isAccountNonLocked() ? 'badge-success' : 'badge-danger'}"
+                                        th:text="${user.isAccountNonLocked() ? 'Unlocked' : 'Locked'}">Account</span>
+                                </td>
+                                <td
+                                    th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'dd MMM yyyy') : 'N/A'}">
+                                    Date</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="empty-state glass-card gsap-reveal" th:if="${users == null or users.isEmpty()}">
+                <div class="empty-icon">👥</div>
+                <p>No users found in the system.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DPI Batch Community Platform</p>
+        </div>
+    </footer>
+</body>
+
+</html>
