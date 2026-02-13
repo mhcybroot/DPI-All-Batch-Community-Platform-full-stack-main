@@ -43,7 +43,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <p class="text-muted" th:text="${#strings.abbreviate(post.content, 150)}">Preview</p>
+                        <p class="text-muted" th:text="${#strings.abbreviate(post.content, 150)}"
+                            style="white-space: pre-wrap; word-break: break-word;">Preview</p>
                     </div>
                 </a>
             </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="UTF-8">
@@ -64,7 +65,8 @@
                         <div class="card glass-card" th:each="bday : ${todayBirthdays}" style="margin-bottom: 0.75rem;">
                             <div class="card-body">
                                 <strong th:text="${bday.fullName ?: 'Unknown'}" class="text-green">Name</strong>
-                                <span class="card-meta" th:if="${bday.age != null}" th:text="' — ' + ${bday.age} + ' years old'"></span>
+                                <span class="card-meta" th:if="${bday.age != null}"
+                                    th:text="' — ' + ${bday.age} + ' years old'"></span>
                             </div>
                         </div>
                     </div>
@@ -80,10 +82,13 @@
                     <div th:if="${notices != null and !notices.isEmpty()}">
                         <div class="card glass-card" th:each="notice : ${notices}" style="margin-bottom: 0.75rem;">
                             <div class="card-header">
-                                <span class="card-title text-copper" th:text="${notice.title ?: 'Untitled Notice'}">Notice</span>
-                                <span class="badge badge-warning" th:if="${notice.isPinned != null and notice.isPinned}">Pinned</span>
+                                <span class="card-title text-copper"
+                                    th:text="${notice.title ?: 'Untitled Notice'}">Notice</span>
+                                <span class="badge badge-warning"
+                                    th:if="${notice.isPinned != null and notice.isPinned}">Pinned</span>
                             </div>
-                            <div class="card-body" th:text="${notice.content ?: 'No content'}">Content</div>
+                            <div class="card-body" th:text="${notice.content ?: 'No content'}"
+                                style="white-space: pre-wrap; word-break: break-word;">Content</div>
                         </div>
                     </div>
                     <div class="card glass-card empty-state" th:if="${notices == null or notices.isEmpty()}">
@@ -101,14 +106,18 @@
                     <a th:each="activity : ${recentForumPosts}" th:href="@{/web/forum/posts/{id}(id=${activity.id})}"
                         class="card glass-card" style="text-decoration: none; color: inherit;" data-magnetic>
                         <div class="card-header">
-                            <span class="card-title text-green" th:text="${activity.title ?: 'Untitled Post'}">Post Title</span>
-                            <span class="badge badge-secondary" th:text="${activity.categoryName ?: 'General'}">Category</span>
+                            <span class="card-title text-green" th:text="${activity.title ?: 'Untitled Post'}">Post
+                                Title</span>
+                            <span class="badge badge-secondary"
+                                th:text="${activity.categoryName ?: 'General'}">Category</span>
                         </div>
                         <div class="card-body">
-                            <p class="text-muted" th:text="${activity.snippet ?: 'No preview available'}">Snippet...</p>
+                            <p class="text-muted" th:text="${activity.snippet ?: 'No preview available'}"
+                                style="white-space: pre-wrap; word-break: break-word;">Snippet...</p>
                             <div class="card-meta" style="margin-top: 0.5rem; font-size: 0.75rem;">
                                 <span th:text="${activity.authorName ?: 'Unknown'}">Author</span> •
-                                <span th:text="${activity.createdAt != null ? #temporals.format(activity.createdAt, 'dd MMM yyyy') : 'N/A'}">Date</span>
+                                <span
+                                    th:text="${activity.createdAt != null ? #temporals.format(activity.createdAt, 'dd MMM yyyy') : 'N/A'}">Date</span>
                             </div>
                         </div>
                     </a>

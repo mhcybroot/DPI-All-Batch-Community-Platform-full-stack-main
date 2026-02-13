@@ -33,7 +33,8 @@
                         <span th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}">Date</span>
                     </div>
                 </div>
-                <div class="card-body" style="white-space: pre-line; line-height: 1.6; color: var(--text);"
+                <div class="card-body"
+                    style="white-space: pre-wrap; word-break: break-word; line-height: 1.6; color: var(--text);"
                     th:text="${post.content}">Content</div>
                 <div class="card-footer" th:if="${post.authorId == currentUserId or isAdmin}"
                     style="gap: 1rem; border-top: 1px solid var(--glass-border-color); padding-top: 1rem;">
@@ -55,7 +56,8 @@
                 <div th:if="${commentsPage != null and commentsPage.hasContent()}" class="floating-grid">
                     <div class="card glass-card" th:each="comment : ${commentsPage.content}"
                         style="margin-bottom:1rem;">
-                        <div class="card-body" th:text="${comment.content}" style="color: var(--text-muted);">Comment
+                        <div class="card-body" th:text="${comment.content}"
+                            style="color: var(--text-muted); white-space: pre-wrap; word-break: break-word;">Comment
                         </div>
                         <div class="card-footer"
                             style="justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem;">
