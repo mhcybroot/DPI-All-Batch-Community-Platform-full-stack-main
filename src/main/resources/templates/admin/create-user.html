@@ -15,11 +15,14 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>⚙ Create New User</h1>
+                <h1 class="kinetic-text">⚙ Create New User</h1>
                 <div class="actions">
-                    <a th:href="@{/web/admin/approvals}" class="btn btn-secondary">Approvals</a>
-                    <a th:href="@{/web/admin/users/create}" class="btn btn-primary">Create User</a>
-                    <a th:href="@{/web/admin/audit-logs}" class="btn btn-secondary">Audit Logs</a>
+                    <a th:href="@{/web/admin/approvals}" class="btn btn-magnetic" data-magnetic>Pending
+                        Approvals</a>
+                    <a th:href="@{/web/admin/users}" class="btn btn-magnetic" data-magnetic>👥 All Users</a>
+                    <a th:href="@{/web/admin/users/create}" class="btn btn-magnetic-primary" data-magnetic>+ Create
+                        User</a>
+                    <a th:href="@{/web/admin/audit-logs}" class="btn btn-magnetic" data-magnetic>Audit Logs</a>
                 </div>
             </div>
             <form th:action="@{/web/admin/users/create}" method="post" class="card" style="max-width:500px;">

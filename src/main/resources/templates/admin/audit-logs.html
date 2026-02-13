@@ -15,11 +15,13 @@
     <main class="main-content">
         <div class="container">
             <div class="page-header">
-                <h1>📋 Audit Logs</h1>
+                <h1 class="kinetic-text">📋 Audit Logs</h1>
                 <div class="actions">
-                    <a th:href="@{/web/admin/approvals}" class="btn btn-secondary">Approvals</a>
-                    <a th:href="@{/web/admin/users/create}" class="btn btn-secondary">Create User</a>
-                    <a th:href="@{/web/admin/audit-logs}" class="btn btn-primary">Audit Logs</a>
+                    <a th:href="@{/web/admin/approvals}" class="btn btn-magnetic" data-magnetic>Pending
+                        Approvals</a>
+                    <a th:href="@{/web/admin/users}" class="btn btn-magnetic" data-magnetic>👥 All Users</a>
+                    <a th:href="@{/web/admin/users/create}" class="btn btn-magnetic" data-magnetic>+ Create User</a>
+                    <a th:href="@{/web/admin/audit-logs}" class="btn btn-magnetic-primary" data-magnetic>Audit Logs</a>
                 </div>
             </div>
             <div class="card" style="margin-bottom:1.5rem;">
