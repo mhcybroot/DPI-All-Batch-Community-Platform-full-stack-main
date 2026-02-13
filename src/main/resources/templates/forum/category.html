@@ -32,8 +32,8 @@
                 </div>
             </div>
 
-            <div class="grid grid-2 floating-grid" th:if="${posts != null and !posts.isEmpty()}">
-                <a th:each="post : ${posts}" th:href="@{/web/forum/posts/{id}(id=${post.id})}"
+            <div class="grid grid-2 floating-grid" th:if="${postsPage != null and postsPage.hasContent()}">
+                <a th:each="post : ${postsPage.content}" th:href="@{/web/forum/posts/{id}(id=${post.id})}"
                     class="card glass-card gsap-reveal" style="text-decoration: none; color: inherit;" data-magnetic>
                     <div class="card-header">
                         <span class="card-title text-green kinetic-text" th:text="${post.title}">Post Title</span>
@@ -48,7 +48,24 @@
                     </div>
                 </a>
             </div>
-            <div class="card glass-card empty-state gsap-reveal" th:if="${posts == null or posts.isEmpty()}">
+
+            <!-- Pagination -->
+            <div class="pagination" th:if="${postsPage.totalPages > 1}" style="margin-top: 2rem;">
+                <a th:if="${postsPage.hasPrevious()}"
+                    th:href="@{/web/forum/category/{id}(id=${categoryId}, page=${postsPage.number - 1})}"
+                    class="btn btn-secondary btn-sm">Previous</a>
+
+                <span th:each="i : ${#numbers.sequence(0, postsPage.totalPages - 1)}">
+                    <a th:href="@{/web/forum/category/{id}(id=${categoryId}, page=${i})}" th:text="${i + 1}"
+                        th:class="${i == postsPage.number ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}">1</a>
+                </span>
+
+                <a th:if="${postsPage.hasNext()}"
+                    th:href="@{/web/forum/category/{id}(id=${categoryId}, page=${postsPage.number + 1})}"
+                    class="btn btn-secondary btn-sm">Next</a>
+            </div>
+
+            <div class="card glass-card empty-state gsap-reveal" th:if="${postsPage == null or postsPage.isEmpty()}">
                 <p>No posts yet. Be the first to start a discussion!</p>
             </div>
 

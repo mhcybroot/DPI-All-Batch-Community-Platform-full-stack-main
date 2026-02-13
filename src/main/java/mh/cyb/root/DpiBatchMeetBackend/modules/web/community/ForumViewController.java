@@ -35,9 +35,13 @@ public class ForumViewController {
     }
 
     @GetMapping("/category/{id}")
-    public String categoryPosts(@PathVariable Long id, Model model) {
+    public String categoryPosts(@PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
         model.addAttribute("category", forumService.getCategoryById(id));
-        model.addAttribute("posts", forumService.getPostsByCategory(id));
+        model.addAttribute("postsPage",
+                forumService.getPostsByCategory(id, org.springframework.data.domain.PageRequest.of(page, size)));
         model.addAttribute("categoryId", id);
         model.addAttribute("activeNav", "forum");
         return "forum/category";

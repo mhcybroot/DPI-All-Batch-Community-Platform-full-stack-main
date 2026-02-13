@@ -42,6 +42,13 @@ public class ForumServiceImpl implements ForumService {
         }
 
         @Override
+        public org.springframework.data.domain.Page<ForumPostDto> getPostsByCategory(Long categoryId,
+                        org.springframework.data.domain.Pageable pageable) {
+                return postRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageable)
+                                .map(forumMapper::toDto);
+        }
+
+        @Override
         public List<ForumPostDto> getAllPosts() {
                 return postRepository.findAllByOrderByCreatedAtDesc().stream()
                                 .map(forumMapper::toDto)

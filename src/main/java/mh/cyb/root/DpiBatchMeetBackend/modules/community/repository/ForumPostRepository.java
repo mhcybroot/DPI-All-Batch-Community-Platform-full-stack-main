@@ -10,5 +10,8 @@ import java.util.List;
 public interface ForumPostRepository extends JpaRepository<ForumPost, Long> {
     List<ForumPost> findByCategoryIdOrderByCreatedAtDesc(Long categoryId);
 
+    org.springframework.data.domain.Page<ForumPost> findByCategoryIdOrderByCreatedAtDesc(Long categoryId,
+            org.springframework.data.domain.Pageable pageable);
+
     List<ForumPost> findAllByOrderByCreatedAtDesc();
 }

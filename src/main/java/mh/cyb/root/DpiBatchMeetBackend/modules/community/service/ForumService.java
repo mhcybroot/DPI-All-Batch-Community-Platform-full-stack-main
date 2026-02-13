@@ -8,6 +8,9 @@ public interface ForumService {
 
     List<ForumPostDto> getPostsByCategory(Long categoryId);
 
+    org.springframework.data.domain.Page<ForumPostDto> getPostsByCategory(Long categoryId,
+            org.springframework.data.domain.Pageable pageable);
+
     List<ForumPostDto> getAllPosts();
 
     ForumPostDto createPost(CreatePostRequest request, Long authorId);
