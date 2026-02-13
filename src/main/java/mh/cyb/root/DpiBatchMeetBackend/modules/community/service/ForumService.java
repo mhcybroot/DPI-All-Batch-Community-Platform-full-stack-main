@@ -14,6 +14,9 @@ public interface ForumService {
 
     List<ForumCommentDto> getCommentsByPost(Long postId);
 
+    org.springframework.data.domain.Page<ForumCommentDto> getCommentsByPost(Long postId,
+            org.springframework.data.domain.Pageable pageable);
+
     ForumCommentDto addComment(Long postId, CreateCommentRequest request, Long authorId);
 
     // Category CRUD

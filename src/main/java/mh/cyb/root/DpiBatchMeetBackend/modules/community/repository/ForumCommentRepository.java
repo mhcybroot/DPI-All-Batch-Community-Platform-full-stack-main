@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface ForumCommentRepository extends JpaRepository<ForumComment, Long> {
     List<ForumComment> findByPostIdOrderByCreatedAtAsc(Long postId);
+
+    org.springframework.data.domain.Page<ForumComment> findByPostIdOrderByCreatedAtAsc(Long postId,
+            org.springframework.data.domain.Pageable pageable);
 }

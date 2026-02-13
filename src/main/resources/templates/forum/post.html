@@ -50,10 +50,11 @@
             <!-- Comments -->
             <section class="section gsap-reveal">
                 <h2 class="section-title kinetic-text">💬 Comments (<span
-                        th:text="${comments != null ? comments.size() : 0}">0</span>)</h2>
+                        th:text="${commentsPage != null ? commentsPage.totalElements : 0}">0</span>)</h2>
 
-                <div th:if="${comments != null and !comments.isEmpty()}" class="floating-grid">
-                    <div class="card glass-card" th:each="comment : ${comments}" style="margin-bottom:1rem;">
+                <div th:if="${commentsPage != null and commentsPage.hasContent()}" class="floating-grid">
+                    <div class="card glass-card" th:each="comment : ${commentsPage.content}"
+                        style="margin-bottom:1rem;">
                         <div class="card-body" th:text="${comment.content}" style="color: var(--text-muted);">Comment
                         </div>
                         <div class="card-footer"
@@ -74,8 +75,24 @@
                     </div>
                 </div>
 
-                <div class="card glass-card empty-state" th:if="${comments == null or comments.isEmpty()}"
-                    style="margin-bottom: 2rem;">
+                <!-- Pagination -->
+                <div class="pagination" th:if="${commentsPage.totalPages > 1}">
+                    <a th:if="${commentsPage.hasPrevious()}"
+                        th:href="@{/web/forum/posts/{id}(id=${post.id}, page=${commentsPage.number - 1})}"
+                        class="btn btn-secondary btn-sm">Previous</a>
+
+                    <span th:each="i : ${#numbers.sequence(0, commentsPage.totalPages - 1)}">
+                        <a th:href="@{/web/forum/posts/{id}(id=${post.id}, page=${i})}" th:text="${i + 1}"
+                            th:class="${i == commentsPage.number ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}">1</a>
+                    </span>
+
+                    <a th:if="${commentsPage.hasNext()}"
+                        th:href="@{/web/forum/posts/{id}(id=${post.id}, page=${commentsPage.number + 1})}"
+                        class="btn btn-secondary btn-sm">Next</a>
+                </div>
+
+                <div class="card glass-card empty-state"
+                    th:if="${commentsPage == null or commentsPage.content.isEmpty()}" style="margin-bottom: 2rem;">
                     <p>No comments yet. Start the conversation!</p>
                 </div>
 

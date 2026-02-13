@@ -44,10 +44,14 @@ public class ForumViewController {
     }
 
     @GetMapping("/posts/{id}")
-    public String postDetail(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+    public String postDetail(@PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
         model.addAttribute("post", forumService.getPostById(id));
-        model.addAttribute("comments", forumService.getCommentsByPost(id));
+        model.addAttribute("commentsPage",
+                forumService.getCommentsByPost(id, org.springframework.data.domain.PageRequest.of(page, size)));
         model.addAttribute("currentUserId", user.getId());
         model.addAttribute("isAdmin", user.getRoles().contains(Role.ADMINISTRATOR));
         model.addAttribute("activeNav", "forum");

@@ -69,6 +69,13 @@ public class ForumServiceImpl implements ForumService {
         }
 
         @Override
+        public org.springframework.data.domain.Page<ForumCommentDto> getCommentsByPost(Long postId,
+                        org.springframework.data.domain.Pageable pageable) {
+                return commentRepository.findByPostIdOrderByCreatedAtAsc(postId, pageable)
+                                .map(forumMapper::toDto);
+        }
+
+        @Override
         public ForumCommentDto addComment(Long postId, CreateCommentRequest request, Long authorId) {
                 ForumPost post = postRepository.findById(postId)
                                 .orElseThrow(() -> new RuntimeException("Post not found"));
