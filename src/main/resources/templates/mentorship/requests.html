@@ -30,13 +30,14 @@
                     <div th:if="${myRequests != null and !myRequests.isEmpty()}">
                         <div class="card" th:each="req : ${myRequests}" style="margin-bottom:0.75rem;">
                             <div class="card-body">
-                                <p><strong>Mentor:</strong> <span th:text="${req.mentorName ?: 'Mentor'}">Name</span>
+                                <p><strong>Mentor:</strong> <span th:text="${req.mentor.name ?: 'Mentor'}">Name</span>
                                 </p>
-                                <p th:if="${req.message}" class="card-meta" th:text="${req.message}">Message</p>
+                                <p th:if="${req.requestMessage}" class="card-meta" th:text="${req.requestMessage}">
+                                    Message</p>
                             </div>
                             <div class="card-footer">
                                 <span class="badge"
-                                    th:classappend="${req.status.name() == 'ACCEPTED' ? 'badge-success' : (req.status.name() == 'REJECTED' ? 'badge-danger' : 'badge-warning')}"
+                                    th:classappend="${req.status.name() == 'ACTIVE' ? 'badge-success' : (req.status.name() == 'REJECTED' ? 'badge-danger' : 'badge-warning')}"
                                     th:text="${req.status}">Status</span>
                             </div>
                         </div>
@@ -52,13 +53,14 @@
                     <div th:if="${incomingRequests != null and !incomingRequests.isEmpty()}">
                         <div class="card" th:each="req : ${incomingRequests}" style="margin-bottom:0.75rem;">
                             <div class="card-body">
-                                <p><strong>From:</strong> <span th:text="${req.menteeName ?: 'Member'}">Name</span></p>
-                                <p th:if="${req.message}" class="card-meta" th:text="${req.message}">Message</p>
+                                <p><strong>From:</strong> <span th:text="${req.mentee.name ?: 'Member'}">Name</span></p>
+                                <p th:if="${req.requestMessage}" class="card-meta" th:text="${req.requestMessage}">
+                                    Message</p>
                             </div>
                             <div class="card-footer" th:if="${req.status.name() == 'PENDING'}">
                                 <form th:action="@{/web/mentorship/requests/{id}/update(id=${req.id})}" method="post"
                                     style="display:inline;">
-                                    <input type="hidden" name="status" value="ACCEPTED">
+                                    <input type="hidden" name="status" value="ACTIVE">
                                     <button class="btn btn-success btn-sm" type="submit">✓ Accept</button>
                                 </form>
                                 <form th:action="@{/web/mentorship/requests/{id}/update(id=${req.id})}" method="post"
@@ -69,7 +71,7 @@
                             </div>
                             <div class="card-footer" th:if="${req.status.name() != 'PENDING'}">
                                 <span class="badge"
-                                    th:classappend="${req.status.name() == 'ACCEPTED' ? 'badge-success' : 'badge-danger'}"
+                                    th:classappend="${req.status.name() == 'ACTIVE' ? 'badge-success' : 'badge-danger'}"
                                     th:text="${req.status}">Status</span>
                             </div>
                         </div>
