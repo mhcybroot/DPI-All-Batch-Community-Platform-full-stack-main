@@ -133,6 +133,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto updateUser(Long id, mh.cyb.root.DpiBatchMeetBackend.modules.user.dto.UpdateUserRequest request) {
+        User user = getUserById(id);
+
+        user.setEnabled(request.isEnabled());
+        user.setAccountNonLocked(request.isAccountNonLocked());
+
+        if (request.getRoles() != null) {
+            user.getRoles().clear();
+            request.getRoles().forEach(roleStr -> {
+                try {
+                    user.getRoles().add(Role.valueOf(roleStr));
+                } catch (IllegalArgumentException e) {
+                    // Ignore invalid roles
+                }
+            });
+        }
+
+        return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(userMapper::toDto)

@@ -21,5 +21,7 @@ public interface UserService {
 
     UserDto getUserDtoById(Long id);
 
+    UserDto updateUser(Long id, mh.cyb.root.DpiBatchMeetBackend.modules.user.dto.UpdateUserRequest request);
+
     List<UserDto> getAllUsers();
 }

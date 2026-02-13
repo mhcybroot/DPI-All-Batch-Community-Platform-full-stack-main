@@ -84,8 +84,18 @@ public class AdminViewController {
     public String viewUserDetails(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.getUserDtoById(id));
         model.addAttribute("auditLogs", auditService.getLogsByActor(id));
+        model.addAttribute("allRoles", Role.values()); // Pass roles for the edit form
         model.addAttribute("activeNav", "admin");
         return "admin/user-details";
+    }
+
+    @PostMapping("/users/{id}/update")
+    public String updateUser(@PathVariable Long id,
+            mh.cyb.root.DpiBatchMeetBackend.modules.user.dto.UpdateUserRequest request,
+            RedirectAttributes redirectAttributes) {
+        userService.updateUser(id, request);
+        redirectAttributes.addFlashAttribute("successMessage", "User updated successfully.");
+        return "redirect:/web/admin/users/" + id;
     }
 
     @GetMapping("/users")

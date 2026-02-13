@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="UTF-8">
@@ -20,7 +21,8 @@
                 <h1 class="kinetic-text">👤 User Details</h1>
                 <p class="text-muted">Detailed view and audit logs for <span th:text="${user.fullName}">User</span></p>
                 <div class="actions" style="margin-top: 1rem;">
-                    <a th:href="@{/web/admin/users}" class="btn btn-secondary btn-magnetic" data-magnetic>← Back to Users</a>
+                    <a th:href="@{/web/admin/users}" class="btn btn-secondary btn-magnetic" data-magnetic>← Back to
+                        Users</a>
                 </div>
             </div>
 
@@ -32,17 +34,48 @@
                         <p><strong>ID:</strong> <span th:text="${user.id}">1</span></p>
                         <p><strong>Full Name:</strong> <span th:text="${user.fullName}">Name</span></p>
                         <p><strong>Email:</strong> <span th:text="${user.email}">email@example.com</span></p>
-                        <p><strong>Roles:</strong> <span th:each="role : ${user.roles}" th:text="${role} + ' '" class="badge badge-primary">ROLE</span></p>
+                        <p><strong>Created:</strong> <span
+                                th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'dd MMM yyyy HH:mm') : 'N/A'}">Date</span>
+                        </p>
                     </div>
                     <div>
-                        <h3 style="margin-bottom: 1rem;">Account Status</h3>
-                        <p><strong>Status:</strong> 
-                            <span class="badge" th:classappend="${user.enabled ? 'badge-success' : 'badge-danger'}" th:text="${user.enabled ? 'Enabled' : 'Disabled'}">Status</span>
-                        </p>
-                        <p><strong>Account:</strong> 
-                            <span class="badge" th:classappend="${user.accountNonLocked ? 'badge-success' : 'badge-danger'}" th:text="${user.accountNonLocked ? 'Unlocked' : 'Locked'}">Account</span>
-                        </p>
-                        <p><strong>Created:</strong> <span th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'dd MMM yyyy HH:mm') : 'N/A'}">Date</span></p>
+                        <h3 style="margin-bottom: 1rem;">Account Management</h3>
+                        <form th:action="@{/web/admin/users/{id}/update(id=${user.id})}" method="post">
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <label class="switch">
+                                    <input type="checkbox" name="enabled" th:checked="${user.enabled}">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span th:text="${user.enabled ? 'Enabled' : 'Disabled'}"
+                                    style="margin-left: 0.5rem; vertical-align: middle;">Status</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Account Lock</label>
+                                <label class="switch">
+                                    <input type="checkbox" name="accountNonLocked"
+                                        th:checked="${user.accountNonLocked}">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span th:text="${user.accountNonLocked ? 'Unlocked' : 'Locked'}"
+                                    style="margin-left: 0.5rem; vertical-align: middle;">Lock Status</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Roles</label>
+                                <div class="checkbox-group" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                    <div th:each="role : ${allRoles}">
+                                        <label
+                                            style="display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer;">
+                                            <input type="checkbox" name="roles" th:value="${role.name()}"
+                                                th:checked="${#lists.contains(user.roles, role)}">
+                                            <span th:text="${role.name()}" class="badge badge-primary">ROLE</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-top: 1rem;">Update
+                                User</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -66,7 +99,8 @@
                                 <td th:text="${#temporals.format(log.timestamp, 'dd MMM yyyy HH:mm:ss')}">Time</td>
                                 <td><span class="badge badge-secondary" th:text="${log.action}">Action</span></td>
                                 <td th:text="${log.targetId ?: '-'}">Target</td>
-                                <td th:text="${log.details}" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">Details</td>
+                                <td th:text="${log.details}"
+                                    style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">Details</td>
                                 <td th:text="${log.ipAddress ?: 'N/A'}">IP</td>
                             </tr>
                         </tbody>
