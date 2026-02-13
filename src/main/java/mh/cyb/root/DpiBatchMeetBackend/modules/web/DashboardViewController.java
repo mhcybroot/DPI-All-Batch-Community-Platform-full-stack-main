@@ -5,6 +5,7 @@ import mh.cyb.root.DpiBatchMeetBackend.modules.community.service.ForumService;
 import mh.cyb.root.DpiBatchMeetBackend.modules.community.service.NoticeService;
 
 import mh.cyb.root.DpiBatchMeetBackend.modules.event.service.EventService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class DashboardViewController {
             model.addAttribute("todayBirthdays", java.util.List.of());
         }
         try {
-            model.addAttribute("notices", noticeService.getAllActiveNotices());
+            model.addAttribute("notices", noticeService.getAllActiveNotices(PageRequest.of(0, 5)).getContent());
         } catch (Exception e) {
             model.addAttribute("notices", java.util.List.of());
         }
