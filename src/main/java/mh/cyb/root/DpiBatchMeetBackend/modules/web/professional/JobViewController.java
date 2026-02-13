@@ -29,13 +29,14 @@ public class JobViewController {
 
     @GetMapping("")
     public String listJobs(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) JobStatus status,
             @RequestParam(required = false) JobType jobType,
             Model model) {
         if (status == null) {
             status = JobStatus.ACTIVE;
         }
-        model.addAttribute("jobsPage", jobService.getAllJobs(status, jobType, PageRequest.of(page, 10)));
+        model.addAttribute("jobsPage", jobService.getAllJobs(status, jobType, PageRequest.of(page, size)));
         model.addAttribute("paramStatus", status);
         model.addAttribute("paramJobType", jobType);
         model.addAttribute("jobStatuses", JobStatus.values());

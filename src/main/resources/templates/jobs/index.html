@@ -35,7 +35,7 @@
             <div class="card glass-card mb-4 gsap-reveal">
                 <div class="card-body">
                     <form th:action="@{/web/jobs}" method="get" class="row g-3 align-items-end">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label text-muted">Status</label>
                             <select name="status" class="form-control glass-input" onchange="this.form.submit()">
                                 <option value="" style="background: var(--color-obsidian);">All Statuses</option>
@@ -44,7 +44,7 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label text-muted">Type</label>
                             <select name="jobType" class="form-control glass-input" onchange="this.form.submit()">
                                 <option value="" style="background: var(--color-obsidian);">All Types</option>
@@ -53,7 +53,18 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label class="form-label text-muted">Show</label>
+                            <select name="size" class="form-control glass-input" onchange="this.form.submit()">
+                                <option value="10" th:selected="${jobsPage.size == 10}"
+                                    style="background: var(--color-obsidian);">10</option>
+                                <option value="20" th:selected="${jobsPage.size == 20}"
+                                    style="background: var(--color-obsidian);">20</option>
+                                <option value="50" th:selected="${jobsPage.size == 50}"
+                                    style="background: var(--color-obsidian);">50</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
                             <a th:href="@{/web/jobs}" class="btn btn-magnetic w-100" data-magnetic
                                 style="border-color: var(--color-cyber-copper); color: var(--color-cyber-copper);">
                                 <span class="hover-text-reveal">Clear Filters</span>
@@ -98,11 +109,11 @@
                 <br />
                 <div class="pagination" th:if="${jobsPage.totalPages > 1}">
                     <a th:if="${jobsPage.number > 0}"
-                        th:href="@{/web/jobs(page=${jobsPage.number - 1}, status=${paramStatus}, jobType=${paramJobType})}">←
+                        th:href="@{/web/jobs(page=${jobsPage.number - 1}, size=${jobsPage.size}, status=${paramStatus}, jobType=${paramJobType})}">←
                         Prev</a>
                     <span class="active" th:text="${jobsPage.number + 1 + ' / ' + jobsPage.totalPages}">1/1</span>
                     <a th:if="${jobsPage.number < jobsPage.totalPages - 1}"
-                        th:href="@{/web/jobs(page=${jobsPage.number + 1}, status=${paramStatus}, jobType=${paramJobType})}">Next
+                        th:href="@{/web/jobs(page=${jobsPage.number + 1}, size=${jobsPage.size}, status=${paramStatus}, jobType=${paramJobType})}">Next
                         →</a>
                 </div>
             </div>
