@@ -77,10 +77,22 @@
             <!-- Answers Section -->
             <div class="gsap-reveal" style="margin-bottom: 2rem;">
                 <h2 class="kinetic-text" data-text="Responses" style="margin-bottom: 1.5rem;">
-                    Signal Responses (<span th:text="${answers != null ? answers.size() : 0}">0</span>)
+                    Signal Responses (<span th:text="${answersPage != null ? answersPage.totalElements : 0}">0</span>)
                 </h2>
 
-                <div th:each="answer : ${answers}" class="glass-card"
+                <!-- Items per page selector -->
+                <div class="pagination-controls" th:if="${answersPage != null and answersPage.totalElements > 0}">
+                    <form method="get" th:action="@{/web/knowledge/{id}(id=${question.id})}">
+                        <label>Show:</label>
+                        <select name="size" onchange="this.form.submit()">
+                            <option th:value="10" th:selected="${answersPage.size == 10}">10</option>
+                            <option th:value="20" th:selected="${answersPage.size == 20}">20</option>
+                            <option th:value="50" th:selected="${answersPage.size == 50}">50</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div th:each="answer : ${answersPage.content}" class="glass-card"
                     th:style="${answer.accepted ? 'margin-bottom:1rem; border-color: var(--color-neural-cyan); box-shadow: 0 0 20px var(--color-neural-dim);' : 'margin-bottom:1rem;'}"
                     style="margin-bottom:1rem;">
 
@@ -113,6 +125,23 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" th:if="${answersPage.totalPages > 1}" style="margin-top: 2rem;">
+                    <a th:if="${answersPage.hasPrevious()}"
+                        th:href="@{/web/knowledge/{id}(id=${question.id}, page=${answersPage.number - 1}, size=${answersPage.size})}"
+                        class="btn btn-secondary btn-sm">Previous</a>
+
+                    <span th:each="i : ${#numbers.sequence(0, answersPage.totalPages - 1)}">
+                        <a th:href="@{/web/knowledge/{id}(id=${question.id}, page=${i}, size=${answersPage.size})}"
+                            th:text="${i + 1}"
+                            th:class="${i == answersPage.number ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}">1</a>
+                    </span>
+
+                    <a th:if="${answersPage.hasNext()}"
+                        th:href="@{/web/knowledge/{id}(id=${question.id}, page=${answersPage.number + 1}, size=${answersPage.size})}"
+                        class="btn btn-secondary btn-sm">Next</a>
                 </div>
             </div>
 

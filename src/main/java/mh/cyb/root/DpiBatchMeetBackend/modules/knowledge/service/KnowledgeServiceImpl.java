@@ -83,9 +83,9 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AnswerDto> getAnswers(Long questionId) {
-        return answerRepository.findByQuestionIdOrderByIsAcceptedDescUpvotesDesc(questionId)
-                .stream().map(this::mapToDto).collect(Collectors.toList());
+    public Page<AnswerDto> getAnswers(Long questionId, Pageable pageable) {
+        return answerRepository.findByQuestionIdOrderByIsAcceptedDescUpvotesDesc(questionId, pageable)
+                .map(this::mapToDto);
     }
 
     @Override

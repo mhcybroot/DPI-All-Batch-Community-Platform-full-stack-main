@@ -149,11 +149,12 @@ class KnowledgeServiceImplTest {
     }
 
     @Test
-    void getAnswers_ShouldReturnList() {
-        when(answerRepository.findByQuestionIdOrderByIsAcceptedDescUpvotesDesc(1L))
-                .thenReturn(Collections.emptyList());
+    void getAnswers_ShouldReturnPage() {
+        when(answerRepository.findByQuestionIdOrderByIsAcceptedDescUpvotesDesc(anyLong(),
+                any(org.springframework.data.domain.Pageable.class)))
+                .thenReturn(org.springframework.data.domain.Page.empty());
 
-        var result = knowledgeService.getAnswers(1L);
+        var result = knowledgeService.getAnswers(1L, org.springframework.data.domain.Pageable.unpaged());
 
         assertNotNull(result);
     }

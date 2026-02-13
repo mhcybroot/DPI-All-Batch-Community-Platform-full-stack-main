@@ -77,9 +77,9 @@ class KnowledgeControllerTest {
 
     @Test
     void getAnswers_ShouldReturnOk() {
-        when(knowledgeService.getAnswers(1L)).thenReturn(Collections.emptyList());
+        when(knowledgeService.getAnswers(anyLong(), any())).thenReturn(Page.empty());
 
-        ResponseEntity<List<AnswerDto>> response = knowledgeController.getAnswers(1L);
+        ResponseEntity<Page<AnswerDto>> response = knowledgeController.getAnswers(1L, 0, 10);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());

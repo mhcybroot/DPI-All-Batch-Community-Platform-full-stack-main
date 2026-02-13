@@ -36,9 +36,12 @@ public class KnowledgeViewController {
     }
 
     @GetMapping("/{id}")
-    public String questionDetail(@PathVariable Long id, Model model) {
+    public String questionDetail(@PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
         model.addAttribute("question", knowledgeService.getQuestionById(id));
-        model.addAttribute("answers", knowledgeService.getAnswers(id));
+        model.addAttribute("answersPage", knowledgeService.getAnswers(id, PageRequest.of(page, size)));
         model.addAttribute("activeNav", "knowledge");
         return "knowledge/detail";
     }

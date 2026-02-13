@@ -64,8 +64,12 @@ public class KnowledgeController {
 
     @GetMapping("/questions/{id}/answers")
     @Operation(summary = "Get Answers for a Question")
-    public ResponseEntity<List<AnswerDto>> getAnswers(@PathVariable Long id) {
-        return ResponseEntity.ok(knowledgeService.getAnswers(id));
+    public ResponseEntity<Page<AnswerDto>> getAnswers(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(knowledgeService.getAnswers(id, pageable));
     }
 
     @PostMapping("/questions/{id}/vote")

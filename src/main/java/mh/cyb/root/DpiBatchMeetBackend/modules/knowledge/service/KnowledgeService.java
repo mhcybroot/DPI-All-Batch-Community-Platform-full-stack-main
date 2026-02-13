@@ -17,7 +17,8 @@ public interface KnowledgeService {
 
     AnswerDto addAnswer(Long questionId, CreateAnswerRequest request, User user);
 
-    List<AnswerDto> getAnswers(Long questionId);
+    // List<AnswerDto> getAnswers(Long questionId); // Deprecated/Replaced
+    Page<AnswerDto> getAnswers(Long questionId, Pageable pageable);
 
     void voteQuestion(Long questionId, VoteType voteType, User user);
 

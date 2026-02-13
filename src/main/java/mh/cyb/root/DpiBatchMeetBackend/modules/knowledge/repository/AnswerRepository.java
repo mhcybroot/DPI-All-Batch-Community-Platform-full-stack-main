@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
     List<Answer> findByQuestionIdOrderByIsAcceptedDescUpvotesDesc(Long questionId);
+
+    org.springframework.data.domain.Page<Answer> findByQuestionIdOrderByIsAcceptedDescUpvotesDesc(Long questionId,
+            org.springframework.data.domain.Pageable pageable);
 }
