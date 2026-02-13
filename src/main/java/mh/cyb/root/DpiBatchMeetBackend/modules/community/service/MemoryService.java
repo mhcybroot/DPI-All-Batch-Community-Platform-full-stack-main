@@ -7,6 +7,8 @@ import java.util.List;
 public interface MemoryService {
     List<MemoryDto> getAllMemories();
 
+    org.springframework.data.domain.Page<MemoryDto> getAllMemories(org.springframework.data.domain.Pageable pageable);
+
     MemoryDto uploadMemory(UploadMemoryRequest request, Long uploaderId);
 
     void deleteMemory(Long id, Long requesterId, boolean isAdmin);

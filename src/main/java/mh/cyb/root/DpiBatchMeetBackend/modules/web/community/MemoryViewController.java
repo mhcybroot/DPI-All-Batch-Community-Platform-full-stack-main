@@ -25,9 +25,13 @@ public class MemoryViewController {
     }
 
     @GetMapping("")
-    public String listMemories(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+    public String listMemories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
-        model.addAttribute("memories", memoryService.getAllMemories());
+        model.addAttribute("memoriesPage",
+                memoryService.getAllMemories(org.springframework.data.domain.PageRequest.of(page, size)));
         model.addAttribute("currentUserId", user.getId());
         model.addAttribute("isAdmin", user.getRoles().contains(Role.ADMINISTRATOR));
         model.addAttribute("activeNav", "memories");

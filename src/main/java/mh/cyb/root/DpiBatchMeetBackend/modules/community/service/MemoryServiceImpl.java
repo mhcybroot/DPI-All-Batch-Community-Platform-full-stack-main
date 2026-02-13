@@ -29,6 +29,13 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
+    public org.springframework.data.domain.Page<MemoryDto> getAllMemories(
+            org.springframework.data.domain.Pageable pageable) {
+        return memoryRepository.findAllByOrderByCreatedAtDesc(pageable)
+                .map(memoryMapper::toDto);
+    }
+
+    @Override
     public MemoryDto uploadMemory(UploadMemoryRequest request, Long uploaderId) {
         Memory memory = memoryMapper.toEntity(request);
         memory.setUploaderId(uploaderId);

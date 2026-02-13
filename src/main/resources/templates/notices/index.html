@@ -78,6 +78,8 @@
                     th:href="@{/web/notices(page=${noticesPage.number + 1},size=${noticesPage.size})}"
                     class="btn-magnetic">Next →</a>
             </div>
+
+
             <div class="empty-state" th:if="${noticesPage == null or !noticesPage.hasContent()}">
                 <div class="empty-icon">📢</div>
                 <p>No active notices at the moment.</p>

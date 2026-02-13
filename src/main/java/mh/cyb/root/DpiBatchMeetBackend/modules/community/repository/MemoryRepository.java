@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface MemoryRepository extends JpaRepository<Memory, Long> {
     List<Memory> findAllByOrderByCreatedAtDesc();
+
+    org.springframework.data.domain.Page<Memory> findAllByOrderByCreatedAtDesc(
+            org.springframework.data.domain.Pageable pageable);
 }
