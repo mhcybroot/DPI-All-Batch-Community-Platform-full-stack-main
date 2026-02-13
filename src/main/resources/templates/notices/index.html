@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="UTF-8">
@@ -26,8 +27,20 @@
                 </div>
             </div>
 
-            <div th:if="${notices != null and !notices.isEmpty()}" class="floating-grid">
-                <div class="card glass-card gsap-reveal" th:each="notice : ${notices}"
+            <!-- Items per page selector -->
+            <div class="pagination-controls" th:if="${noticesPage != null and noticesPage.hasContent()}">
+                <form method="get" th:action="@{/web/notices}">
+                    <label>Show:</label>
+                    <select name="size" onchange="this.form.submit()">
+                        <option th:value="10" th:selected="${noticesPage.size == 10}">10</option>
+                        <option th:value="20" th:selected="${noticesPage.size == 20}">20</option>
+                        <option th:value="50" th:selected="${noticesPage.size == 50}">50</option>
+                    </select>
+                </form>
+            </div>
+
+            <div th:if="${noticesPage != null and noticesPage.hasContent()}" class="floating-grid">
+                <div class="card glass-card gsap-reveal" th:each="notice : ${noticesPage.content}"
                     style="margin-bottom:1.5rem; position: relative;"
                     th:styleappend="${notice.isPinned != null and notice.isPinned ? 'border-color: var(--color-cyber-copper); box-shadow: 0 0 15px var(--color-cyber-copper-dim);' : ''}">
                     <div class="card-header">
@@ -50,8 +63,22 @@
                     <div class="card-body text-muted" style="white-space:pre-line;" th:text="${notice.content}">Content
                     </div>
                 </div>
+
+
             </div>
-            <div class="empty-state" th:if="${notices == null or notices.isEmpty()}">
+            <!-- Pagination -->
+            <div class="pagination" th:if="${noticesPage.totalPages > 1}"
+                style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem;">
+                <a th:if="${noticesPage.number > 0}"
+                    th:href="@{/web/notices(page=${noticesPage.number - 1},size=${noticesPage.size})}"
+                    class="btn-magnetic">← Previous</a>
+                <span class="glass-card" style="padding: 0.5rem 1rem; align-self: center;"
+                    th:text="${noticesPage.number + 1 + ' / ' + noticesPage.totalPages}">1/1</span>
+                <a th:if="${noticesPage.number < noticesPage.totalPages - 1}"
+                    th:href="@{/web/notices(page=${noticesPage.number + 1},size=${noticesPage.size})}"
+                    class="btn-magnetic">Next →</a>
+            </div>
+            <div class="empty-state" th:if="${noticesPage == null or !noticesPage.hasContent()}">
                 <div class="empty-icon">📢</div>
                 <p>No active notices at the moment.</p>
             </div>

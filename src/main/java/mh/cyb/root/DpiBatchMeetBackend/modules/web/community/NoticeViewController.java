@@ -24,8 +24,12 @@ public class NoticeViewController {
     }
 
     @GetMapping("")
-    public String listNotices(Model model) {
-        model.addAttribute("notices", noticeService.getAllActiveNotices());
+    public String listNotices(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+        model.addAttribute("noticesPage",
+                noticeService.getAllActiveNotices(org.springframework.data.domain.PageRequest.of(page, size)));
         model.addAttribute("activeNav", "notices");
         return "notices/index";
     }

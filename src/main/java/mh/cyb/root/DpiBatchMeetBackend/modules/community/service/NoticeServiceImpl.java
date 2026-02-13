@@ -32,6 +32,14 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public org.springframework.data.domain.Page<NoticeDto> getAllActiveNotices(
+            org.springframework.data.domain.Pageable pageable) {
+        return noticeRepository
+                .findByExpiresAtAfterOrExpiresAtIsNullOrderByIsPinnedDescCreatedAtDesc(LocalDateTime.now(), pageable)
+                .map(noticeMapper::toDto);
+    }
+
+    @Override
     public NoticeDto createNotice(CreateNoticeRequest request, Long authorId) {
         Notice notice = noticeMapper.toEntity(request);
         notice.setAuthorId(authorId);

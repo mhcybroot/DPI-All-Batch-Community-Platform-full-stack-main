@@ -7,6 +7,9 @@ import java.util.List;
 public interface NoticeService {
     List<NoticeDto> getAllActiveNotices();
 
+    org.springframework.data.domain.Page<NoticeDto> getAllActiveNotices(
+            org.springframework.data.domain.Pageable pageable);
+
     NoticeDto createNotice(CreateNoticeRequest request, Long authorId);
 
     NoticeDto updateNotice(Long id, CreateNoticeRequest request);

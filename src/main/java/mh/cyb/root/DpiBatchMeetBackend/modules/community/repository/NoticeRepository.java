@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     List<Notice> findByExpiresAtAfterOrExpiresAtIsNullOrderByIsPinnedDescCreatedAtDesc(LocalDateTime now);
+
+    org.springframework.data.domain.Page<Notice> findByExpiresAtAfterOrExpiresAtIsNullOrderByIsPinnedDescCreatedAtDesc(
+            LocalDateTime now, org.springframework.data.domain.Pageable pageable);
 }
