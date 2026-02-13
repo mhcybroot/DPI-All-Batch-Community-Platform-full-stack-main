@@ -38,11 +38,11 @@ public class Profile extends BaseEntity {
     private String githubUrl;
     private String portfolioUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employment_status_id")
     private EmploymentStatus employmentStatus;
 

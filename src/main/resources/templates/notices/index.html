@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="UTF-8">
@@ -29,7 +29,7 @@
             <div th:if="${notices != null and !notices.isEmpty()}" class="floating-grid">
                 <div class="card glass-card gsap-reveal" th:each="notice : ${notices}"
                     style="margin-bottom:1.5rem; position: relative;"
-                    th:styleappend="${notice.isPinned ? 'border-color: var(--color-cyber-copper); box-shadow: 0 0 15px var(--color-cyber-copper-dim);' : ''}">
+                    th:styleappend="${notice.isPinned != null and notice.isPinned ? 'border-color: var(--color-cyber-copper); box-shadow: 0 0 15px var(--color-cyber-copper-dim);' : ''}">
                     <div class="card-header">
                         <span class="card-title kinetic-text" th:text="${notice.title}">Title</span>
                         <span class="badge" th:if="${notice.isPinned}"

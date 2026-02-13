@@ -67,6 +67,36 @@
                     </div>
                 </div>
 
+                <h3
+                    style="margin: 2rem 0 1.5rem 0; font-family: var(--font-machine); font-size: 0.85rem; color: var(--color-moss-emerald); text-transform: uppercase; letter-spacing: 0.2em; border-bottom: 1px solid var(--color-glass-border); padding-bottom: 0.75rem;">
+                    Geolocation & Status
+                </h3>
+
+                <div class="grid grid-2" style="gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input type="text" name="locationCity" class="form-control glass-input"
+                            th:value="${profile.locationCity}" placeholder="Dhaka">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Country</label>
+                        <input type="text" name="locationCountry" class="form-control glass-input"
+                            th:value="${profile.locationCountry}" placeholder="Bangladesh">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 3rem;">
+                    <label class="form-label">Employment Status</label>
+                    <select name="employmentStatus" class="form-control glass-input">
+                        <option value="">-- Select Status --</option>
+                        <option th:value="'Full-time job'" th:selected="${profile.employmentStatus == 'Full-time job'}">Full-time job</option>
+                        <option th:value="'Student'" th:selected="${profile.employmentStatus == 'Student'}">Student</option>
+                        <option th:value="'Unemployed'" th:selected="${profile.employmentStatus == 'Unemployed'}">Unemployed</option>
+                        <option th:value="'Freelancer'" th:selected="${profile.employmentStatus == 'Freelancer'}">Freelancer</option>
+                        <option th:value="'Entrepreneur'" th:selected="${profile.employmentStatus == 'Entrepreneur'}">Entrepreneur</option>
+                    </select>
+                </div>
+
                 <div
                     style="display:flex; gap:1.5rem; align-items: center; border-top: 1px solid var(--color-glass-border); padding-top: 2.5rem;">
                     <button type="submit" class="btn btn-magnetic-primary" data-magnetic>Commit Identity Update</button>
