@@ -28,8 +28,10 @@ public class KnowledgeViewController {
 
     @GetMapping("")
     public String listQuestions(@RequestParam(defaultValue = "newest") String sort,
-            @RequestParam(defaultValue = "0") int page, Model model) {
-        model.addAttribute("questionsPage", knowledgeService.getAllQuestions(sort, PageRequest.of(page, 10)));
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+        model.addAttribute("questionsPage", knowledgeService.getAllQuestions(sort, PageRequest.of(page, size)));
         model.addAttribute("sort", sort);
         model.addAttribute("activeNav", "knowledge");
         return "knowledge/index";

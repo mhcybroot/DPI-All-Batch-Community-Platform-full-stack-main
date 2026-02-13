@@ -107,6 +107,19 @@
                 </a>
             </div>
 
+            <!-- Items per page selector -->
+            <div class="pagination-controls" th:if="${questionsPage != null and questionsPage.hasContent()}">
+                <form method="get" th:action="@{/web/knowledge}">
+                    <input type="hidden" name="sort" th:value="${sort}">
+                    <label>Show:</label>
+                    <select name="size" onchange="this.form.submit()">
+                        <option th:value="10" th:selected="${questionsPage.size == 10}">10</option>
+                        <option th:value="20" th:selected="${questionsPage.size == 20}">20</option>
+                        <option th:value="50" th:selected="${questionsPage.size == 50}">50</option>
+                    </select>
+                </form>
+            </div>
+
             <!-- Questions List -->
             <div th:if="${questionsPage != null and questionsPage.hasContent()}" class="floating-grid"
                 style="display: flex; flex-direction: column; gap: 1rem;">
@@ -148,12 +161,12 @@
                 <div class="pagination" th:if="${questionsPage.totalPages > 1}"
                     style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem;">
                     <a th:if="${questionsPage.number > 0}"
-                        th:href="@{/web/knowledge(sort=${sort},page=${questionsPage.number - 1})}"
+                        th:href="@{/web/knowledge(sort=${sort},page=${questionsPage.number - 1},size=${questionsPage.size})}"
                         class="btn-magnetic">← Previous Node</a>
                     <span class="glass-card" style="padding: 0.5rem 1rem; align-self: center;"
                         th:text="${questionsPage.number + 1 + ' / ' + questionsPage.totalPages}">1/1</span>
                     <a th:if="${questionsPage.number < questionsPage.totalPages - 1}"
-                        th:href="@{/web/knowledge(sort=${sort},page=${questionsPage.number + 1})}"
+                        th:href="@{/web/knowledge(sort=${sort},page=${questionsPage.number + 1},size=${questionsPage.size})}"
                         class="btn-magnetic">Next Node →</a>
                 </div>
             </div>
