@@ -26,7 +26,7 @@
                     <input type="text" name="query" class="form-control glass-input"
                         placeholder="Initiate query protocol..." th:value="${query}" hx-get="/web/directory/search"
                         hx-target="#results" hx-trigger="keyup changed delay:300ms" hx-include="this"
-                        hx-swap="innerHTML"
+                        hx-swap="outerHTML"
                         style="padding: 1rem 1.5rem; font-size: 1.2rem; background: rgba(0,0,0,0.2);">
                 </form>
             </div>
@@ -77,12 +77,25 @@
                 <div th:if="${results != null and !results.isEmpty()}" class="grid grid-3 floating-grid">
                     <div class="card glass-card gsap-reveal" th:each="profile : ${results}" data-magnetic
                         style="transition: transform 0.3s ease;">
-                        <div class="card-header">
-                            <span class="card-title kinetic-text" th:text="${profile.fullName ?: 'Member'}">Name</span>
+                        <div class="card-header" style="justify-content: space-between; align-items: center;">
+                            <span class="card-title kinetic-text"
+                                th:text="${profile.user.fullName ?: 'Member'}">Name</span>
+                            <span class="badge" th:if="${profile.employmentStatus}"
+                                th:text="${profile.employmentStatus}"
+                                style="background: rgba(0, 255, 242, 0.1); border: 1px solid var(--color-neon-cyan); color: var(--color-neon-cyan); font-size: 0.7rem; padding: 2px 6px;">Status</span>
                         </div>
                         <div class="card-body text-muted">
+                            <p th:if="${profile.locationCity} or ${profile.locationCountry}"
+                                style="margin-bottom: 0.5rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>📍</span>
+                                <span
+                                    th:text="${(profile.locationCity != null ? profile.locationCity : '') + (profile.locationCity != null and profile.locationCountry != null ? ', ' : '') + (profile.locationCountry != null ? profile.locationCountry : '')}">Location</span>
+                            </p>
+
                             <p th:if="${profile.bio}" th:text="${profile.bio}"
-                                style="margin-bottom:1rem; font-style: italic; opacity: 0.9;"></p>
+                                style="margin-bottom:1rem; font-style: italic; opacity: 0.9; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                            </p>
+
                             <div class="tag-list" th:if="${profile.skills != null}">
                                 <span class="tag" th:each="skill : ${profile.skills}" th:text="${skill.name}"
                                     style="background: var(--color-cyber-copper-dim); color: var(--color-cyber-copper); border: 1px solid var(--color-cyber-copper-dim);">Skill</span>

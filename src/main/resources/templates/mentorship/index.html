@@ -40,20 +40,21 @@
                 <div class="card glass-card gsap-reveal" th:each="mentor : ${mentorsPage.content}" data-magnetic
                     style="position: relative;">
                     <div class="card-header">
-                        <span class="card-title kinetic-text" th:text="${mentor.fullName ?: 'Mentor'}">Name</span>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="card-title kinetic-text" th:text="${mentor.user.name ?: 'Mentor'}">Name</span>
+                            <span th:if="${mentor.user.id == currentUserId}" class="badge bg-info">It's You</span>
+                        </div>
                     </div>
                     <div class="card-body text-muted">
                         <p th:if="${mentor.expertise}">
                             <span style="color: var(--color-moss-emerald);">⚡ Expertise:</span>
                             <span th:text="${mentor.expertise}">Expertise</span>
                         </p>
-                        <p th:if="${mentor.bio}" class="card-meta" th:text="${mentor.bio}"
-                            style="font-style: italic; opacity: 0.8;">Bio</p>
                     </div>
-                    <div class="card-footer"
+                    <div class="card-footer" th:if="${mentor.user.id != currentUserId}"
                         style="border-top: 1px solid var(--color-glass-border); padding-top: 1rem; margin-top: auto;">
                         <form th:action="@{/web/mentorship/connect}" method="post" style="display: flex; gap: 0.5rem;">
-                            <input type="hidden" name="mentorId" th:value="${mentor.userId}">
+                            <input type="hidden" name="mentorId" th:value="${mentor.user.id}">
                             <input type="text" name="message" class="form-control glass-input"
                                 placeholder="Introduce yourself..." style="flex-grow: 1; font-size: 0.85rem;">
                             <button type="submit" class="btn btn-sm btn-magnetic-primary">Connect</button>

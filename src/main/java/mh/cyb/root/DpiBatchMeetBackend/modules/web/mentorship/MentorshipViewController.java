@@ -28,7 +28,13 @@ public class MentorshipViewController {
 
     @GetMapping("")
     public String mentorshipHome(@RequestParam(defaultValue = "") String expertise,
-            @RequestParam(defaultValue = "0") int page, Model model) {
+            @RequestParam(defaultValue = "0") int page,
+            @AuthenticationPrincipal UserDetails userDetails,
+            Model model) {
+        if (userDetails != null) {
+            User user = userService.findByEmail(userDetails.getUsername()).orElseThrow();
+            model.addAttribute("currentUserId", user.getId());
+        }
         model.addAttribute("mentorsPage", mentorshipService.searchMentors(expertise, PageRequest.of(page, 12)));
         model.addAttribute("expertise", expertise);
         model.addAttribute("activeNav", "mentorship");

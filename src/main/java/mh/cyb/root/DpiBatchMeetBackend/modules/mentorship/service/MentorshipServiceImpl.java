@@ -31,17 +31,20 @@ public class MentorshipServiceImpl implements MentorshipService {
     public MentorProfileDto registerAsMentor(RegisterMentorRequest request, User user) {
         Optional<MentorProfile> existing = mentorProfileRepository.findByUser_Id(user.getId());
         MentorProfile profile;
+        // Default status if null
+        MentorStatus status = request.getStatus() != null ? request.getStatus() : MentorStatus.OPEN;
+
         if (existing.isPresent()) {
             profile = existing.get();
             profile.setExpertise(request.getExpertise());
             profile.setMaxMentees(request.getMaxMentees());
-            profile.setStatus(request.getStatus());
+            profile.setStatus(status);
         } else {
             profile = MentorProfile.builder()
                     .user(user)
                     .expertise(request.getExpertise())
                     .maxMentees(request.getMaxMentees())
-                    .status(request.getStatus())
+                    .status(status)
                     .build();
         }
         return mapToDto(mentorProfileRepository.save(profile));

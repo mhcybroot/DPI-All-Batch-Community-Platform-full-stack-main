@@ -4,6 +4,7 @@ import mh.cyb.root.DpiBatchMeetBackend.modules.profile.service.DirectoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,7 +25,9 @@ public class DirectoryViewController {
     }
 
     @GetMapping("/search")
-    public String searchDirectory(@RequestParam(defaultValue = "") String query, Model model) {
+    public String searchDirectory(@RequestParam(defaultValue = "") String query,
+            @RequestHeader(value = "HX-Request", required = false) boolean hxRequest,
+            Model model) {
         if (!query.isBlank()) {
             model.addAttribute("results", directoryService.searchProfiles(query));
         }
@@ -32,6 +35,9 @@ public class DirectoryViewController {
         model.addAttribute("activeNav", "directory");
 
         // If HTMX request, return only the fragment
+        if (hxRequest) {
+            return "directory/search :: #results";
+        }
         return "directory/search";
     }
 
