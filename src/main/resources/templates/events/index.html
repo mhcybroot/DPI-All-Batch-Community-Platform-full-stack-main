@@ -29,8 +29,20 @@
                 </div>
             </div>
 
-            <div class="grid grid-3 floating-grid" th:if="${events != null and !events.isEmpty()}">
-                <a th:each="event : ${events}" th:href="@{/web/events/{id}(id=${event.id})}"
+            <!-- Items per page selector -->
+            <div class="pagination-controls" th:if="${eventsPage != null and eventsPage.totalElements > 0}">
+                <form method="get" th:action="@{/web/events}">
+                    <label>Show:</label>
+                    <select name="size" onchange="this.form.submit()">
+                        <option th:value="10" th:selected="${eventsPage.size == 10}">10</option>
+                        <option th:value="20" th:selected="${eventsPage.size == 20}">20</option>
+                        <option th:value="50" th:selected="${eventsPage.size == 50}">50</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="grid grid-3 floating-grid" th:if="${eventsPage != null and eventsPage.hasContent()}">
+                <a th:each="event : ${eventsPage.content}" th:href="@{/web/events/{id}(id=${event.id})}"
                     class="card glass-card gsap-reveal" style="text-decoration:none;color:inherit;" data-magnetic>
                     <div class="card-header">
                         <span class="card-title kinetic-text" th:text="${event.title}">Event</span>
@@ -44,7 +56,23 @@
                 </a>
             </div>
 
-            <div class="empty-state glass-card gsap-reveal" th:if="${events == null or events.isEmpty()}">
+            <!-- Pagination -->
+            <div class="pagination" th:if="${eventsPage.totalPages > 1}" style="margin-top: 2rem;">
+                <a th:if="${eventsPage.hasPrevious()}"
+                    th:href="@{/web/events(page=${eventsPage.number - 1}, size=${eventsPage.size})}"
+                    class="btn btn-secondary btn-sm">Previous</a>
+
+                <span th:each="i : ${#numbers.sequence(0, eventsPage.totalPages - 1)}">
+                    <a th:href="@{/web/events(page=${i}, size=${eventsPage.size})}" th:text="${i + 1}"
+                        th:class="${i == eventsPage.number ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}">1</a>
+                </span>
+
+                <a th:if="${eventsPage.hasNext()}"
+                    th:href="@{/web/events(page=${eventsPage.number + 1}, size=${eventsPage.size})}"
+                    class="btn btn-secondary btn-sm">Next</a>
+            </div>
+
+            <div class="empty-state glass-card gsap-reveal" th:if="${eventsPage == null or eventsPage.isEmpty()}">
                 <div class="empty-icon" style="filter: drop-shadow(0 0 10px var(--color-moss-emerald));">📅</div>
                 <p class="text-muted">Chronometer Offline. No upcoming events synchronized.</p>
             </div>

@@ -29,6 +29,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public org.springframework.data.domain.Page<EventSummaryDto> getUpcomingEvents(
+            org.springframework.data.domain.Pageable pageable) {
+        return eventRepository.findByStatusOrderByEventDateAsc(EventStatus.UPCOMING, pageable)
+                .map(eventMapper::toSummaryDto);
+    }
+
+    @Override
     public EventDto getEventById(Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));

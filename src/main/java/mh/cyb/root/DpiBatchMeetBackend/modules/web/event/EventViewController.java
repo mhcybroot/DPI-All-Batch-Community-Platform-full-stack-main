@@ -33,8 +33,11 @@ public class EventViewController {
     }
 
     @GetMapping("")
-    public String listEvents(Model model) {
-        model.addAttribute("events", eventService.getUpcomingEvents());
+    public String listEvents(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+        model.addAttribute("eventsPage",
+                eventService.getUpcomingEvents(org.springframework.data.domain.PageRequest.of(page, size)));
         model.addAttribute("activeNav", "events");
         return "events/index";
     }

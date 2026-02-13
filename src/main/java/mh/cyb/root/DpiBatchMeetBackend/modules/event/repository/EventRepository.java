@@ -12,6 +12,9 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByStatusOrderByEventDateAsc(EventStatus status);
 
+    org.springframework.data.domain.Page<Event> findByStatusOrderByEventDateAsc(EventStatus status,
+            org.springframework.data.domain.Pageable pageable);
+
     List<Event> findByOrganizerId(Long organizerId);
 
     List<Event> findByEventDateAfterOrderByEventDateAsc(LocalDateTime date);

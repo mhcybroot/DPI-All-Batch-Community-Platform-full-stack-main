@@ -53,43 +53,55 @@
                 <h2 class="section-title kinetic-text">💬 Comments (<span
                         th:text="${commentsPage != null ? commentsPage.totalElements : 0}">0</span>)</h2>
 
-                <div th:if="${commentsPage != null and commentsPage.hasContent()}" class="floating-grid">
-                    <div class="card glass-card" th:each="comment : ${commentsPage.content}"
-                        style="margin-bottom:1rem;">
-                        <div class="card-body" th:text="${comment.content}"
-                            style="color: var(--text-muted); white-space: pre-wrap; word-break: break-word;">Comment
+                <h3 class="kinetic-text">Comments (<span th:text="${commentsPage.totalElements}">0</span>)</h3>
+
+                <!-- Items per page selector -->
+                <div class="pagination-controls" th:if="${commentsPage != null and commentsPage.totalElements > 0}">
+                    <form method="get" th:action="@{/web/forum/posts/{id}(id=${post.id})}">
+                        <label>Show:</label>
+                        <select name="size" onchange="this.form.submit()">
+                            <option th:value="10" th:selected="${commentsPage.size == 10}">10</option>
+                            <option th:value="20" th:selected="${commentsPage.size == 20}">20</option>
+                            <option th:value="50" th:selected="${commentsPage.size == 50}">50</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="comments-list">
+                    <div class="card glass-card comment-card gsap-reveal" th:each="comment : ${commentsPage.content}">
+                        <div class="card-header">
+                            <span class="comment-author" th:text="${comment.authorName}">Author</span>
+                            <div class="comment-meta">
+                                <span th:text="${#temporals.format(comment.createdAt, 'dd MMM yy HH:mm')}">Date</span>
+                                <form th:if="${currentUserId == comment.authorId or isAdmin}"
+                                    th:action="@{/web/forum/comments/{id}/delete(id=${comment.id})}" method="post"
+                                    style="display:inline;" onsubmit="return confirm('Delete this comment?');">
+                                    <input type="hidden" name="postId" th:value="${post.id}">
+                                    <button type="submit" class="btn-link text-red">Delete</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="card-footer"
-                            style="justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem;">
-                            <span class="card-meta">
-                                <span th:text="${comment.authorName}"
-                                    style="color: var(--color-cyber-blue);">Author</span> •
-                                <span th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}">Date</span>
-                            </span>
-                            <form th:if="${comment.authorId == currentUserId or isAdmin}"
-                                th:action="@{/web/forum/comments/{id}/delete(id=${comment.id})}" method="post"
-                                onsubmit="return confirm('Delete this comment?')">
-                                <input type="hidden" name="postId" th:value="${post.id}">
-                                <button type="submit" class="btn btn-danger btn-sm btn-magnetic"
-                                    data-magnetic>🗑</button>
-                            </form>
+                        <div class="card-body">
+                            <p th:text="${comment.content}" style="white-space: pre-wrap; word-break: break-word;">
+                                Comment content</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Pagination -->
-                <div class="pagination" th:if="${commentsPage.totalPages > 1}">
+                <div class="pagination" th:if="${commentsPage.totalPages > 1}" style="margin-top: 2rem;">
                     <a th:if="${commentsPage.hasPrevious()}"
-                        th:href="@{/web/forum/posts/{id}(id=${post.id}, page=${commentsPage.number - 1})}"
+                        th:href="@{/web/forum/posts/{id}(id=${post.id}, page=${commentsPage.number - 1}, size=${commentsPage.size})}"
                         class="btn btn-secondary btn-sm">Previous</a>
 
                     <span th:each="i : ${#numbers.sequence(0, commentsPage.totalPages - 1)}">
-                        <a th:href="@{/web/forum/posts/{id}(id=${post.id}, page=${i})}" th:text="${i + 1}"
+                        <a th:href="@{/web/forum/posts/{id}(id=${post.id}, page=${i}, size=${commentsPage.size})}"
+                            th:text="${i + 1}"
                             th:class="${i == commentsPage.number ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}">1</a>
                     </span>
 
                     <a th:if="${commentsPage.hasNext()}"
-                        th:href="@{/web/forum/posts/{id}(id=${post.id}, page=${commentsPage.number + 1})}"
+                        th:href="@{/web/forum/posts/{id}(id=${post.id}, page=${commentsPage.number + 1}, size=${commentsPage.size})}"
                         class="btn btn-secondary btn-sm">Next</a>
                 </div>
 

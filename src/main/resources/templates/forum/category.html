@@ -32,6 +32,18 @@
                 </div>
             </div>
 
+            <!-- Items per page selector -->
+            <div class="pagination-controls" th:if="${postsPage != null and postsPage.totalElements > 0}">
+                <form method="get" th:action="@{/web/forum/category/{id}(id=${categoryId})}">
+                    <label>Show:</label>
+                    <select name="size" onchange="this.form.submit()">
+                        <option th:value="10" th:selected="${postsPage.size == 10}">10</option>
+                        <option th:value="20" th:selected="${postsPage.size == 20}">20</option>
+                        <option th:value="50" th:selected="${postsPage.size == 50}">50</option>
+                    </select>
+                </form>
+            </div>
+
             <div class="grid grid-2 floating-grid" th:if="${postsPage != null and postsPage.hasContent()}">
                 <a th:each="post : ${postsPage.content}" th:href="@{/web/forum/posts/{id}(id=${post.id})}"
                     class="card glass-card gsap-reveal" style="text-decoration: none; color: inherit;" data-magnetic>
@@ -52,16 +64,17 @@
             <!-- Pagination -->
             <div class="pagination" th:if="${postsPage.totalPages > 1}" style="margin-top: 2rem;">
                 <a th:if="${postsPage.hasPrevious()}"
-                    th:href="@{/web/forum/category/{id}(id=${categoryId}, page=${postsPage.number - 1})}"
+                    th:href="@{/web/forum/category/{id}(id=${categoryId}, page=${postsPage.number - 1}, size=${postsPage.size})}"
                     class="btn btn-secondary btn-sm">Previous</a>
 
                 <span th:each="i : ${#numbers.sequence(0, postsPage.totalPages - 1)}">
-                    <a th:href="@{/web/forum/category/{id}(id=${categoryId}, page=${i})}" th:text="${i + 1}"
+                    <a th:href="@{/web/forum/category/{id}(id=${categoryId}, page=${i}, size=${postsPage.size})}"
+                        th:text="${i + 1}"
                         th:class="${i == postsPage.number ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}">1</a>
                 </span>
 
                 <a th:if="${postsPage.hasNext()}"
-                    th:href="@{/web/forum/category/{id}(id=${categoryId}, page=${postsPage.number + 1})}"
+                    th:href="@{/web/forum/category/{id}(id=${categoryId}, page=${postsPage.number + 1}, size=${postsPage.size})}"
                     class="btn btn-secondary btn-sm">Next</a>
             </div>
 

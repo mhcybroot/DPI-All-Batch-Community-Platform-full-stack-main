@@ -54,7 +54,7 @@
                         <h1 class="kinetic-text" th:text="${question.title}"
                             style="margin-bottom:1rem; line-height: 1.3;">Title</h1>
 
-                        <div style="white-space:pre-line; margin-bottom:1.5rem; line-height: 1.6; color: var(--color-frozen-white); font-size: 1.1rem;"
+                        <div style="white-space: pre-wrap; word-break: break-word; margin-bottom:1.5rem; line-height: 1.6; color: var(--color-frozen-white); font-size: 1.1rem;"
                             th:text="${question.body}">Content</div>
 
                         <div class="tag-list" th:if="${question.tags != null}"
@@ -94,7 +94,7 @@
                                 <span>✓ VALIDATED SOLUTION</span>
                             </div>
 
-                            <div style="white-space:pre-line; line-height: 1.6; margin-bottom: 1rem;"
+                            <div style="white-space: pre-wrap; word-break: break-word; line-height: 1.6; margin-bottom: 1rem;"
                                 th:text="${answer.body}">Answer</div>
 
                             <div class="card-footer"

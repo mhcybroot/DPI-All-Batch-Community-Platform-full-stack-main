@@ -9,6 +9,9 @@ import java.util.List;
 public interface EventService {
     List<EventSummaryDto> getUpcomingEvents();
 
+    org.springframework.data.domain.Page<EventSummaryDto> getUpcomingEvents(
+            org.springframework.data.domain.Pageable pageable);
+
     EventDto getEventById(Long id);
 
     EventDto createEvent(CreateEventRequest request, User organizer);
