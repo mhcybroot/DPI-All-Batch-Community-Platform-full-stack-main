@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="UTF-8">
@@ -21,7 +22,7 @@
         <div class="container">
             <div class="page-header">
                 <h1 class="kinetic-text">👤 Identity Protocol</h1>
-                <div class="actions">
+                <div class="actions" th:if="${isOwner}">
                     <a th:href="@{/web/profile/edit}" class="btn btn-magnetic-primary" data-magnetic>✏ Edit Profile</a>
                     <a th:href="@{/web/profile/privacy}" class="btn btn-magnetic" data-magnetic>🔒 Privacy Settings</a>
                 </div>
@@ -39,8 +40,10 @@
                             <strong style="color: var(--color-moss-emerald);">Date of Origin:</strong>
                             <span th:text="${profile.dateOfBirth ?: 'Unknown'}">DOB</span>
 
-                            <strong style="color: var(--color-moss-emerald);">Comms Link:</strong>
-                            <span th:text="${profile.phoneNumber ?: 'Offline'}">Phone</span>
+                            <strong style="color: var(--color-moss-emerald);"
+                                th:if="${isOwner or (privacy != null and privacy.showPhone)}">Comms Link:</strong>
+                            <span th:if="${isOwner or (privacy != null and privacy.showPhone)}"
+                                th:text="${profile.phoneNumber ?: 'Offline'}">Phone</span>
                         </div>
                     </div>
                 </div>
@@ -87,10 +90,10 @@
 
                 <p th:if="${profile.skills == null or profile.skills.isEmpty()}" class="text-muted"
                     style="font-style: italic; margin-bottom: 1rem;">
-                    Skill database empty. Initiate upload.
+                    Skill database empty.
                 </p>
 
-                <form th:action="@{/web/profile/skills}" method="post"
+                <form th:if="${isOwner}" th:action="@{/web/profile/skills}" method="post"
                     style="display:flex; gap:0.5rem; align-items: center;">
                     <input type="text" name="skills" class="form-control glass-input"
                         placeholder="Upload skills (comma-separated)..." style="max-width:500px; flex-grow: 1;">

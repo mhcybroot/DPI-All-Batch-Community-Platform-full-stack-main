@@ -78,8 +78,10 @@
                     <div class="card glass-card gsap-reveal" th:each="profile : ${results}" data-magnetic
                         style="transition: transform 0.3s ease;">
                         <div class="card-header" style="justify-content: space-between; align-items: center;">
-                            <span class="card-title kinetic-text"
-                                th:text="${profile.user.fullName ?: 'Member'}">Name</span>
+                            <a th:href="@{/web/profile/{id}(id=${profile.user.id})}" class="kinetic-text"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="card-title" th:text="${profile.user.fullName ?: 'Member'}">Name</span>
+                            </a>
                             <span class="badge" th:if="${profile.employmentStatus}"
                                 th:text="${profile.employmentStatus}"
                                 style="background: rgba(0, 255, 242, 0.1); border: 1px solid var(--color-neon-cyan); color: var(--color-neon-cyan); font-size: 0.7rem; padding: 2px 6px;">Status</span>
